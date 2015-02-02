@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import connectionManager.Endpoint;
 import connectionManager.User;
+import static chat.Chat.userManagerEventHandler;
 
 public class EndpointManager {
 
@@ -20,7 +21,9 @@ public class EndpointManager {
 		UserManager um = getUserManager(id);
 		if (um == null) {
 			userManagers.put(id, um = new UserManager(u));
+			userManagerEventHandler.userManagerCreation(this, um);
 		}
+		userManagerEventHandler.userManagerChange(this, um);
 		return um;
 	}
 

@@ -28,7 +28,7 @@ public class EventHandler<T> implements EventHandlerIface<T>,
 	}
 
 	@SuppressWarnings("unchecked")
-	static <T> T createEventHandler(Class<T> eventHandlerClass) {
+	public static <T> T createEventHandler(Class<T> eventHandlerClass) {
 		return (T) Proxy.newProxyInstance(eventHandlerClass.getClassLoader(),
 				new Class[] { eventHandlerClass }, new EventHandler<Object>());
 	}

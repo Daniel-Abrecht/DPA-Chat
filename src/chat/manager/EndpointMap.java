@@ -3,7 +3,7 @@ package chat.manager;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import static chat.event.EventHandlers.*;
+import static chat.Chat.endpointEventHandler;
 import connectionManager.Endpoint;
 
 public class EndpointMap {

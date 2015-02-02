@@ -1,13 +1,12 @@
 package chat;
 
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-
+import static chat.event.EventHandler.createEventHandler;
 import ui.ChatroomManager;
 import ui.ProfileManager;
-import static chat.event.EventHandlers.*;
-import chat.eventListener.EndpointListener;
-import chat.manager.EndpointManager;
+import chat.event.EndpointEventHandler;
+import chat.event.UserManagerEventHandler;
+import chat.eventListenerImpl.EndpointListenerImpl;
+import chat.eventListenerImpl.UserManagerListenerImpl;
 import chat.manager.UserManager;
 import chat.receiveHandler.ResourceReciveHandler;
 import chat.receiveHandler.UserReciveHandler;
@@ -20,40 +19,28 @@ public class Chat {
 	private final static String multicastAddr = "231.255.255.10";
 	private final static int port = 3311;
 
-	private ConnectionManager cm;
-	private ChatroomManager crm;
+	public static ConnectionManager connectionManager = new ConnectionManager(multicastAddr, port);;
+	public static ChatroomManager chatroomManager = new ChatroomManager();
 
-	public Chat() {
-		crm = new ChatroomManager();
-		cm = new ConnectionManager(multicastAddr, port);
-		cm.addHandler(new UserReciveHandler());
-		cm.addHandler(new ResourceReciveHandler());
-		cm.start();
-		endpointEventHandler.addEventListener(new EndpointListener() {
-			@Override
-			public void endpointFound(EndpointManager em) {
-				InetAddress inetAddr = ((InetSocketAddress) em.getEndpoint()
-						.getSocketAddress()).getAddress();
-				System.out.println("Endpoint found: " + inetAddr);				
-			}
-
-			@Override
-			public void endpointLost(EndpointManager em) {
-				InetAddress inetAddr = ((InetSocketAddress) em.getEndpoint()
-						.getSocketAddress()).getAddress();
-				System.out.println("Endpoint lost: " + inetAddr);				
-			}
-		});
-	}
+	public static EndpointEventHandler endpointEventHandler = createEventHandler(EndpointEventHandler.class);
+	public static UserManagerEventHandler userManagerEventHandler = createEventHandler(UserManagerEventHandler.class);
 
 	public static void main(String[] args) {
-		Chat chat = new Chat();
-		chat.run();
+		
+		connectionManager.addHandler(new UserReciveHandler());
+		connectionManager.addHandler(new ResourceReciveHandler());
+		
+		endpointEventHandler.addEventListener(new EndpointListenerImpl());
+		userManagerEventHandler.addEventListener(new UserManagerListenerImpl());
+		
+		connectionManager.start();
+		
+		run();
 	}
 
-	private void run() {
+	private static void run() {
 
-		LocalUser user = cm.createUser();
+		LocalUser user = connectionManager.createUser();
 		UserManager userManager = new UserManager(user);
 		user.setName("test");
 		user.send(user);
@@ -70,8 +57,7 @@ public class Chat {
 		room2.setName("ChatRoom 2");
 		user.send(room2);
 
-		crm.setVisible(true);
-		crm.update();
+		chatroomManager.setVisible(true);
 
 		ProfileManager pm = new ProfileManager();
 		pm.setVisible(true);
