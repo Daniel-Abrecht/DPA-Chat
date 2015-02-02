@@ -1,14 +1,13 @@
 package chat;
 
-import static chat.manager.EndpointMap.endpointMap;
-
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 
 import ui.ChatroomManager;
 import ui.ProfileManager;
+import static chat.event.EventHandlers.*;
+import chat.eventListener.EndpointListener;
 import chat.manager.EndpointManager;
-import chat.manager.EndpointMap;
 import chat.manager.UserManager;
 import chat.receiveHandler.ResourceReciveHandler;
 import chat.receiveHandler.UserReciveHandler;
@@ -30,21 +29,22 @@ public class Chat {
 		cm.addHandler(new UserReciveHandler());
 		cm.addHandler(new ResourceReciveHandler());
 		cm.start();
-		try {
-			endpointMap.addEventListener("EndpointFound", this, Chat.class
-					.getMethod("onEndpointFound", EndpointMap.class,
-							EndpointManager.class));
-		} catch (NoSuchMethodException | SecurityException e) {
-			e.printStackTrace();
-		}
-	}
+		endpointEventHandler.addEventListener(new EndpointListener() {
+			@Override
+			public void endpointFound(EndpointManager em) {
+				InetAddress inetAddr = ((InetSocketAddress) em.getEndpoint()
+						.getSocketAddress()).getAddress();
+				System.out.println("Endpoint found: " + inetAddr);				
+			}
 
-	public void onEndpointFound(EndpointMap emap, EndpointManager em) {
-		InetAddress inetAddr = ((InetSocketAddress) em.getEndpoint()
-				.getSocketAddress()).getAddress();
-		System.out.println("Endpoint found: " + inetAddr);
-		crm.update();
-	};
+			@Override
+			public void endpointLost(EndpointManager em) {
+				InetAddress inetAddr = ((InetSocketAddress) em.getEndpoint()
+						.getSocketAddress()).getAddress();
+				System.out.println("Endpoint lost: " + inetAddr);				
+			}
+		});
+	}
 
 	public static void main(String[] args) {
 		Chat chat = new Chat();
@@ -75,6 +75,6 @@ public class Chat {
 
 		ProfileManager pm = new ProfileManager();
 		pm.setVisible(true);
-		
+
 	}
 }

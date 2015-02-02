@@ -16,4 +16,9 @@ public class ChatRoom extends Resource {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	@Override
+	public String toString() {
+		return "ChatRoom [name=" + name + "]";
+	}
 }

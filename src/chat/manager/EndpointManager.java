@@ -3,11 +3,10 @@ package chat.manager;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import chat.other.EventTarget;
 import connectionManager.Endpoint;
 import connectionManager.User;
 
-public class EndpointManager extends EventTarget {
+public class EndpointManager {
 
 	private Endpoint endpoint;
 	private Map<Byte, UserManager> userManagers = new ConcurrentHashMap<Byte, UserManager>();

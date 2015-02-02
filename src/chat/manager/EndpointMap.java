@@ -3,11 +3,10 @@ package chat.manager;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import chat.other.EventTarget;
+import static chat.event.EventHandlers.*;
 import connectionManager.Endpoint;
 
-public class EndpointMap extends EventTarget {
+public class EndpointMap {
 	public static EndpointMap endpointMap = new EndpointMap();
 	private Map<Endpoint, EndpointManager> emm = new ConcurrentHashMap<Endpoint, EndpointManager>();
 	public EndpointManager sync(Endpoint e) {
@@ -15,7 +14,7 @@ public class EndpointMap extends EventTarget {
 		if (em == null){
 			em = new EndpointManager(e);
 			emm.put(e, em);
-			dispatchEvent("EndpointFound", em);
+			endpointEventHandler.endpointFound(em);
 		}
 		return em;
 	}
