@@ -20,7 +20,7 @@ public class Chat {
 	private final static int port = 3311;
 
 	public static ConnectionManager connectionManager = new ConnectionManager(multicastAddr, port);;
-	public static ChatroomManager chatroomManager = new ChatroomManager();
+	public static ChatroomManager chatroomManager = ChatroomManager.getInstance();
 
 	public static EndpointEventHandler endpointEventHandler = createEventHandler(EndpointEventHandler.class);
 	public static UserManagerEventHandler userManagerEventHandler = createEventHandler(UserManagerEventHandler.class);
