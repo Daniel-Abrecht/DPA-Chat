@@ -10,6 +10,8 @@ import java.awt.ScrollPane;
 public class VScrollList extends ScrollPane {
 	private Panel listPanel = new Panel();
 	private Panel listHelperPanel = new Panel();
+	DefaultListItem active;
+
 	public VScrollList() {
 		super(ScrollPane.SCROLLBARS_AS_NEEDED);
 		listPanel.setLayout(new GridLayout(0, 1));
@@ -17,16 +19,31 @@ public class VScrollList extends ScrollPane {
 		listHelperPanel.add(listPanel, BorderLayout.NORTH);
 		super.add(listHelperPanel);
 	}
+
 	@Override
-	public Component add(Component comp){
+	public Component add(Component comp) {
 		return listPanel.add(comp);
 	}
+
 	@Override
-	public void revalidate(){
+	public void revalidate() {
 		listPanel.revalidate();
 	}
+
 	@Override
-	public void removeAll(){
+	public void removeAll() {
 		listPanel.removeAll();
+	}
+
+	public void setActive(DefaultListItem active) {
+		if (this.active != null)
+			this.active.setActive(false);
+		if (active != null)
+			active.setActive(true);
+		this.active = active;
+	}
+
+	public DefaultListItem getActive() {
+		return active;
 	}
 }

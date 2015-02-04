@@ -56,7 +56,7 @@ public class ConnectionManager extends Endpoint {
 		reciveHandlers.add(reciveHandler);
 	}
 
-	public void send(LocalUser u, Object o) {
+	public void send(User u, Object o) {
 		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
 				.create();
 		String str = gson.toJson(new Container(o));
@@ -71,14 +71,6 @@ public class ConnectionManager extends Endpoint {
 		packet.setUserId(u.getId());
 		packet.fill(buffer, 0, buffer.length, 0);
 		client.send(packet);
-	}
-
-	public LocalUser createUser() {
-		LocalUser u = new LocalUser(this);
-		if (tryAddUser(u))
-			return u;
-		else
-			return null;
 	}
 
 }

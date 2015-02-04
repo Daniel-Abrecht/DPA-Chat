@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 import connectionManager.ConnectionManager;
 import connectionManager.Container;
-import connectionManager.LocalUser;
 import connectionManager.ReceiveHandler;
 import connectionManager.RemoteEndpoint;
 import connectionManager.User;
@@ -50,9 +49,9 @@ public class ConnectionManagerTest {
 		
 		cm.addHandler(userReciveHandler);
 		
-		LocalUser user = cm.createUser();
+		User user = new User();
 		user.setName("test");
-		user.send(user);
+		cm.send(user,user);
 	}
 
 }

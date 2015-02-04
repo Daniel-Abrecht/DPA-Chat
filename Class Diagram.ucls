@@ -262,16 +262,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="30" language="java" name="connectionManager.LocalUser" project="DPA-Chat" 
-    file="/DPA-Chat/src/connectionManager/LocalUser.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="3389" y="752"/>    
-    <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="false" protected="false" private="false" static="false"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="31" language="java" name="connectionManager.Client" project="DPA-Chat" 
+  <class id="30" language="java" name="connectionManager.Client" project="DPA-Chat" 
     file="/DPA-Chat/src/connectionManager/Client.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="3085" y="1244"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
@@ -280,7 +271,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="32" language="java" name="connectionManager.Server.DataParser" project="DPA-Chat" 
+  <class id="31" language="java" name="connectionManager.Server.DataParser" project="DPA-Chat" 
     file="/DPA-Chat/src/connectionManager/Server.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="2245" y="1508"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
@@ -289,7 +280,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="33" language="java" name="connectionManager.Container.ContainerDeserializer" project="DPA-Chat" 
+  <class id="32" language="java" name="connectionManager.Container.ContainerDeserializer" project="DPA-Chat" 
     file="/DPA-Chat/src/connectionManager/Container.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="11" y="561"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
@@ -298,7 +289,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="34" language="java" name="connectionManager.Server" project="DPA-Chat" 
+  <class id="33" language="java" name="connectionManager.Server" project="DPA-Chat" 
     file="/DPA-Chat/src/connectionManager/Server.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="2575" y="1509"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
@@ -307,7 +298,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="35" language="java" name="connectionManager.Container" project="DPA-Chat" 
+  <class id="34" language="java" name="connectionManager.Container" project="DPA-Chat" 
     file="/DPA-Chat/src/connectionManager/Container.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="11" y="399"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
@@ -316,7 +307,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="36" language="java" name="connectionManager.Endpoint" project="DPA-Chat" 
+  <class id="35" language="java" name="connectionManager.Endpoint" project="DPA-Chat" 
     file="/DPA-Chat/src/connectionManager/Endpoint.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="3054" y="835"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
@@ -325,7 +316,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="37" language="java" name="ui.ProfileManager" project="DPA-Chat" file="/DPA-Chat/src/ui/ProfileManager.java" 
+  <class id="36" language="java" name="ui.ProfileManager" project="DPA-Chat" file="/DPA-Chat/src/ui/ProfileManager.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-223" y="275"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
@@ -334,7 +325,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="38" language="java" name="ui.ChatroomManager" project="DPA-Chat" 
+  <class id="37" language="java" name="ui.ChatroomManager" project="DPA-Chat" 
     file="/DPA-Chat/src/ui/ChatroomManager.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="132" y="53"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
@@ -343,7 +334,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="39" language="java" name="ui.Image" project="DPA-Chat" file="/DPA-Chat/src/ui/Image.java" binary="false" 
+  <class id="38" language="java" name="ui.Image" project="DPA-Chat" file="/DPA-Chat/src/ui/Image.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-225" y="108"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
@@ -352,7 +343,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="40" language="java" name="ui.DefaultListItem" project="DPA-Chat" 
+  <class id="39" language="java" name="ui.DefaultListItem" project="DPA-Chat" 
     file="/DPA-Chat/src/ui/DefaultListItem.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="516" y="-57"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
@@ -361,7 +352,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="41" language="java" name="ui.VScrollList" project="DPA-Chat" file="/DPA-Chat/src/ui/VScrollList.java" 
+  <class id="40" language="java" name="ui.VScrollList" project="DPA-Chat" file="/DPA-Chat/src/ui/VScrollList.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-42" y="-150"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
@@ -370,7 +361,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="42" language="java" name="ui.ChatroomManager.ChatroomItem" project="DPA-Chat" 
+  <class id="41" language="java" name="ui.ChatroomManager.ChatroomItem" project="DPA-Chat" 
     file="/DPA-Chat/src/ui/ChatroomManager.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="411" y="221"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
@@ -379,7 +370,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="43" language="java" name="ui.ChatRoomEditor" project="DPA-Chat" file="/DPA-Chat/src/ui/ChatRoomEditor.java" 
+  <class id="42" language="java" name="ui.ChatRoomEditor" project="DPA-Chat" file="/DPA-Chat/src/ui/ChatRoomEditor.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="248" y="-122"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
@@ -388,7 +379,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="44" language="java" name="ui.ChatroomManager.ChatroomManagerListener" project="DPA-Chat" 
+  <class id="43" language="java" name="ui.ChatroomManager.ChatroomManagerListener" project="DPA-Chat" 
     file="/DPA-Chat/src/ui/ChatroomManager.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="47" y="211"/>    
     <display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 
@@ -397,341 +388,433 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
+  <generalization id="44">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="8"/>  
+  </generalization>  
   <association id="45">    
-    <end type="SOURCE" refId="24" navigable="false">      
-      <attribute id="46" name="resourcePool"/>      
-      <multiplicity id="47" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="22" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="48">    
-    <end type="SOURCE" refId="20"/>    
-    <end type="TARGET" refId="24"/>  
-  </generalization>  
-  <realization id="49">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="7"/>  
-  </realization>  
-  <realization id="50">    
-    <end type="SOURCE" refId="13"/>    
-    <end type="TARGET" refId="9"/>  
-  </realization>  
-  <association id="51">    
-    <end type="SOURCE" refId="37" navigable="false">      
-      <attribute id="52" name="img"/>      
-      <multiplicity id="53" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="39" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="54">    
-    <end type="SOURCE" refId="31" navigable="false">      
-      <attribute id="55" name="queue"/>      
-      <multiplicity id="56" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="27" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="57">    
-    <end type="SOURCE" refId="38" navigable="false">      
-      <attribute id="58" name="chatRoomEditor"/>      
-      <multiplicity id="59" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="43" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="60">    
-    <end type="SOURCE" refId="25" navigable="false">      
-      <attribute id="61" name="dataPackets"/>      
-      <multiplicity id="62" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="27" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="63">    
-    <end type="SOURCE" refId="29" navigable="false">      
-      <attribute id="64" name="server">        
-        <position height="22" width="49" x="2345" y="1398"/>      
-      </attribute>      
-      <multiplicity id="65" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="34" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="66">    
-    <end type="SOURCE" refId="18"/>    
-    <end type="TARGET" refId="26"/>  
-  </realization>  
-  <association id="67">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="68" name="userManagers"/>      
-      <multiplicity id="69" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="16" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <nesting id="70">    
-    <end type="SOURCE" refId="35"/>    
-    <end type="TARGET" refId="33"/>  
-  </nesting>  
-  <generalization id="71">    
-    <end type="SOURCE" refId="21"/>    
-    <end type="TARGET" refId="24"/>  
-  </generalization>  
-  <generalization id="72">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="4"/>  
-  </generalization>  
-  <nesting id="73">    
-    <end type="SOURCE" refId="34"/>    
-    <end type="TARGET" refId="32"/>  
-  </nesting>  
-  <realization id="74">    
-    <end type="SOURCE" refId="14"/>    
-    <end type="TARGET" refId="9"/>  
-  </realization>  
-  <generalization id="75">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="7"/>  
-  </generalization>  
-  <association id="76">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="77" name="endpoint"/>      
-      <multiplicity id="78" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="36" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="79">    
-    <end type="SOURCE" refId="16" navigable="false">      
-      <attribute id="80" name="user"/>      
-      <multiplicity id="81" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="28" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="82">    
     <end type="SOURCE" refId="22" navigable="false">      
-      <attribute id="83" name="resources"/>      
-      <multiplicity id="84" minimum="0" maximum="2147483647"/>    
+      <attribute id="46" name="resources">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="47" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="24" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="85">    
-    <end type="SOURCE" refId="29"/>    
-    <end type="TARGET" refId="36"/>  
-  </generalization>  
-  <generalization id="86">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="8"/>  
-  </generalization>  
-  <generalization id="87">    
+  <association id="48">    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="49" name="user">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="50" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="51">    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="26"/>  
+  </realization>  
+  <generalization id="52">    
     <end type="SOURCE" refId="3"/>    
     <end type="TARGET" refId="9"/>  
   </generalization>  
-  <association id="88">    
-    <end type="SOURCE" refId="34" navigable="false">      
-      <attribute id="89" name="endpoints"/>      
-      <multiplicity id="90" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="25" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="91">    
-    <end type="SOURCE" refId="25"/>    
-    <end type="TARGET" refId="36"/>  
-  </generalization>  
-  <generalization id="92">    
-    <end type="SOURCE" refId="42"/>    
-    <end type="TARGET" refId="40"/>  
-  </generalization>  
-  <association id="93">    
-    <bendpoint x="1728" y="1122"/>    
-    <bendpoint x="3135" y="1126"/>    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="94" name="connectionManager"/>      
-      <multiplicity id="95" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="29" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="96">    
-    <bendpoint x="1520" y="425"/>    
-    <bendpoint x="1520" y="141"/>    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="97" name="endpointEventHandler"/>      
-      <multiplicity id="98" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="99">    
-    <end type="SOURCE" refId="38" navigable="false">      
-      <attribute id="100" name="vScrollList"/>      
-      <multiplicity id="101" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="41" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <nesting id="102">    
-    <end type="SOURCE" refId="38"/>    
-    <end type="TARGET" refId="44"/>  
-  </nesting>  
-  <association id="103">    
-    <bendpoint x="295" y="374"/>    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="104" name="chatroomManager"/>      
-      <multiplicity id="105" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="38" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="106">    
+  <association id="53">    
     <end type="SOURCE" refId="16" navigable="false">      
-      <attribute id="107" name="resourcePools"/>      
-      <multiplicity id="108" minimum="0" maximum="2147483647"/>    
+      <attribute id="54" name="resourcePools">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="55" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="22" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="109">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="110" name="userManagerEventHandler"/>      
-      <multiplicity id="111" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="112">    
-    <end type="SOURCE" refId="34" navigable="false">      
-      <attribute id="113" name="connectionManager"/>      
-      <multiplicity id="114" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="29" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="115">    
-    <end type="SOURCE" refId="29" navigable="false">      
-      <attribute id="116" name="reciveHandlers"/>      
-      <multiplicity id="117" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="26" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="118">    
-    <end type="SOURCE" refId="22" navigable="false">      
-      <attribute id="119" name="resourceEventHandler">        
-        <position height="22" width="150" x="2200" y="44"/>      
+  <association id="56">    
+    <end type="SOURCE" refId="33" navigable="false">      
+      <attribute id="57" name="endpoints">        
+        <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="120" minimum="0" maximum="1"/>    
+      <multiplicity id="58" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
+    <end type="TARGET" refId="25" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="121">    
-    <end type="SOURCE" refId="30"/>    
-    <end type="TARGET" refId="28"/>  
+  <generalization id="59">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="4"/>  
   </generalization>  
-  <nesting id="122">    
-    <end type="SOURCE" refId="38"/>    
-    <end type="TARGET" refId="42"/>  
-  </nesting>  
-  <association id="123">    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="124" name="emm"/>      
-      <multiplicity id="125" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="17" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="126">    
+  <realization id="60">    
     <end type="SOURCE" refId="22"/>    
     <end type="TARGET" refId="4"/>  
   </realization>  
-  <association id="127">    
-    <end type="SOURCE" refId="29" navigable="false">      
-      <attribute id="128" name="client"/>      
-      <multiplicity id="129" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="31" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="130">    
-    <end type="SOURCE" refId="5"/>    
+  <generalization id="61">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="24"/>  
+  </generalization>  
+  <generalization id="62">    
+    <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <realization id="63">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="26"/>  
   </realization>  
-  <association id="131">    
-    <end type="SOURCE" refId="22" navigable="false">      
-      <attribute id="132" name="userManager"/>      
-      <multiplicity id="133" minimum="0" maximum="1"/>    
+  <association id="64">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="65" name="userManagers">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="66" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="16" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="134">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="4"/>  
-  </generalization>  
-  <association id="135">    
-    <end type="SOURCE" refId="36" navigable="false">      
-      <attribute id="136" name="users"/>      
-      <multiplicity id="137" minimum="0" maximum="2147483647"/>    
+  <association id="67">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="68" name="userManager">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="69" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="28" navigable="true"/>    
+    <end type="TARGET" refId="16" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="138">    
-    <end type="SOURCE" refId="38" navigable="false">      
-      <attribute id="139" name="chatroomManager"/>      
-      <multiplicity id="140" minimum="0" maximum="1"/>    
+  <association id="70">    
+    <end type="SOURCE" refId="29" navigable="false">      
+      <attribute id="71" name="server">        
+        <position height="22" width="49" x="2345" y="1398"/>      
+      </attribute>      
+      <multiplicity id="72" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="33" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="73">    
+    <end type="SOURCE" refId="37" navigable="false">      
+      <attribute id="74" name="chatroomManager">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="75" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="37" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="76">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="7"/>  
+  </realization>  
+  <generalization id="77">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="24"/>  
+  </generalization>  
+  <association id="78">    
+    <end type="SOURCE" refId="33" navigable="false">      
+      <attribute id="79" name="connectionManager">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="80" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="29" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="81">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="4"/>  
+  </realization>  
+  <association id="82">    
+    <bendpoint x="1520" y="425"/>    
+    <bendpoint x="1520" y="141"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="83" name="endpointEventHandler">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="84" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="85">    
+    <end type="SOURCE" refId="36" navigable="false">      
+      <attribute id="86" name="img">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="87" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="38" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="141">    
-    <end type="SOURCE" refId="23"/>    
-    <end type="TARGET" refId="24"/>  
-  </generalization>  
-  <association id="142">    
-    <end type="SOURCE" refId="21" navigable="false">      
-      <attribute id="143" name="user"/>      
-      <multiplicity id="144" minimum="0" maximum="1"/>    
+  <association id="88">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="89" name="resourceEventHandler">        
+        <position height="22" width="150" x="2200" y="44"/>      
+      </attribute>      
+      <multiplicity id="90" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="28" navigable="true"/>    
+    <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="145">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="9"/>  
-  </realization>  
-  <generalization id="146">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="4"/>  
+  <association id="91">    
+    <bendpoint x="295" y="374"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="92" name="chatroomManager">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="93" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="37" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="94">    
+    <end type="SOURCE" refId="41"/>    
+    <end type="TARGET" refId="39"/>  
   </generalization>  
-  <association id="147">    
+  <nesting id="95">    
+    <end type="SOURCE" refId="33"/>    
+    <end type="TARGET" refId="31"/>  
+  </nesting>  
+  <association id="96">    
+    <end type="SOURCE" refId="29" navigable="false">      
+      <attribute id="97" name="reciveHandlers">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="98" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="26" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="99">    
+    <end type="SOURCE" refId="37" navigable="false">      
+      <attribute id="100" name="vScrollList">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="101" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="40" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="102">    
+    <end type="SOURCE" refId="37" navigable="false">      
+      <attribute id="103" name="chatRoomEditor">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="104" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="42" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="105">    
+    <end type="SOURCE" refId="37"/>    
+    <end type="TARGET" refId="41"/>  
+  </nesting>  
+  <generalization id="106">    
+    <end type="SOURCE" refId="25"/>    
+    <end type="TARGET" refId="35"/>  
+  </generalization>  
+  <association id="107">    
+    <end type="SOURCE" refId="29" navigable="false">      
+      <attribute id="108" name="client">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="109" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="30" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="110">    
     <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="148" name="endpointMap"/>      
-      <multiplicity id="149" minimum="0" maximum="1"/>    
+      <attribute id="111" name="endpointMap">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="112" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="15" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="150">    
+  <association id="113">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="114" name="user">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="115" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="116">    
+    <end type="SOURCE" refId="37"/>    
+    <end type="TARGET" refId="43"/>  
+  </nesting>  
+  <realization id="117">    
     <end type="SOURCE" refId="12"/>    
     <end type="TARGET" refId="8"/>  
   </realization>  
-  <realization id="151">    
-    <end type="SOURCE" refId="19"/>    
-    <end type="TARGET" refId="26"/>  
+  <nesting id="118">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="32"/>  
+  </nesting>  
+  <association id="119">    
+    <end type="SOURCE" refId="25" navigable="false">      
+      <attribute id="120" name="dataPackets">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="121" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="27" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="122">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="9"/>  
   </realization>  
-  <association id="152">    
-    <end type="SOURCE" refId="30" navigable="false">      
-      <attribute id="153" name="connectionManager"/>      
-      <multiplicity id="154" minimum="0" maximum="1"/>    
+  <generalization id="123">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="7"/>  
+  </generalization>  
+  <generalization id="124">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <association id="125">    
+    <end type="SOURCE" refId="24" navigable="false">      
+      <attribute id="126" name="resourcePool">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="127" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="22" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="128">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="129" name="emm">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="130" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="17" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="131">    
+    <bendpoint x="1728" y="1122"/>    
+    <bendpoint x="3135" y="1126"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="132" name="connectionManager">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="133" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="29" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="134">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="135" name="userManagerEventHandler">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="136" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="137">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="9"/>  
+  </realization>  
+  <association id="138">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="139" name="endpoint">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="140" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="35" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="141">    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="24"/>  
+  </generalization>  
+  <realization id="142">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="9"/>  
+  </realization>  
+  <generalization id="143">    
+    <end type="SOURCE" refId="29"/>    
+    <end type="TARGET" refId="35"/>  
+  </generalization>  
+  <association id="144">    
+    <end type="SOURCE" refId="30" navigable="false">      
+      <attribute id="145" name="queue">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="146" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="27" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="147">    
+    <end type="SOURCE" refId="35" navigable="false">      
+      <attribute id="148" name="users">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="149" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="false" initial-value="false" signature="true" 

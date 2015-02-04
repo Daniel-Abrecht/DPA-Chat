@@ -4,8 +4,11 @@ import static chat.manager.EndpointMap.endpointMap;
 
 import java.util.Collection;
 import java.util.Iterator;
+
+import chat.Chat;
 import chat.manager.EndpointManager;
 import chat.manager.UserManager;
+
 import com.google.gson.annotations.Expose;
 
 public abstract class Resource {
@@ -22,6 +25,10 @@ public abstract class Resource {
 		} else {
 			parent.register(this, id);
 		}
+	}
+	
+	public boolean isRegistred(){
+		return resourcePool != null;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -46,6 +53,10 @@ public abstract class Resource {
 
 	public static Resource reconstruct(Object x, UserManager user) {
 		return ((Resource) x).reconstruct(user);
+	}
+	
+	public void updateRemote() {
+		Chat.connectionManager.send(resourcePool.getUserManager().getUser(), this);
 	}
 
 	public static <T extends Resource> void every(Class<T> resourceType,

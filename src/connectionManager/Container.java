@@ -44,7 +44,7 @@ public class Container {
 	}
 
 	public static Container parse(String s) {
-		GsonBuilder gson = new GsonBuilder();
+		GsonBuilder gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
 		gson.registerTypeAdapter(Container.class, new ContainerDeserializer());
 		Container c = gson.create().fromJson(s, Container.class);
 		return c;

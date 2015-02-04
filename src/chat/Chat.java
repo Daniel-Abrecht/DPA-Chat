@@ -10,9 +10,8 @@ import chat.eventListenerImpl.UserManagerListenerImpl;
 import chat.manager.UserManager;
 import chat.receiveHandler.ResourceReciveHandler;
 import chat.receiveHandler.UserReciveHandler;
-import chat.resources.ChatRoom;
 import connectionManager.ConnectionManager;
-import connectionManager.LocalUser;
+import connectionManager.User;
 
 public class Chat {
 
@@ -24,6 +23,7 @@ public class Chat {
 
 	public static EndpointEventHandler endpointEventHandler = createEventHandler(EndpointEventHandler.class);
 	public static UserManagerEventHandler userManagerEventHandler = createEventHandler(UserManagerEventHandler.class);
+	public static UserManager currentUserManager;
 
 	public static void main(String[] args) {
 		
@@ -40,22 +40,12 @@ public class Chat {
 
 	private static void run() {
 
-		LocalUser user = connectionManager.createUser();
+		User user = new User();
+
 		UserManager userManager = new UserManager(user);
+		currentUserManager = userManager;
 		user.setName("test");
-		user.send(user);
-
-		ChatRoom room = new ChatRoom();
-		room.register(userManager);
-		room.setName("ChatRoom 1");
-		user.send(room);
-		room.setName("ChatRoom 1 Modified");
-		user.send(room);
-
-		ChatRoom room2 = new ChatRoom();
-		room2.register(userManager);
-		room2.setName("ChatRoom 2");
-		user.send(room2);
+		connectionManager.send(user,user);
 
 		chatroomManager.setVisible(true);
 
