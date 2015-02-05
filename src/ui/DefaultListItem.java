@@ -5,9 +5,8 @@ import java.awt.Panel;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public abstract class DefaultListItem implements MouseListener {
-	protected Panel root = new Panel();
-
+@SuppressWarnings("serial")
+public abstract class DefaultListItem extends Panel implements MouseListener {
 	private Color cNormal = new Color(200, 200, 255);
 	private Color cHover = new Color(255, 255, 255);
 	private Color cActive = new Color(255, 127, 0);
@@ -19,27 +18,27 @@ public abstract class DefaultListItem implements MouseListener {
 			return;
 		onActive(b);
 		active = b;
-		root.setBackground(active ? cActive : cNormal);
+		setBackground(active ? cActive : cNormal);
 	}
 
 	public DefaultListItem() {
-		root.setBackground(cNormal);
-		root.addMouseListener(this);
+		setBackground(cNormal);
+		addMouseListener(this);
 	}
 
-	public void addTo(VScrollList sc) {
+	public void addTo(VScrollList sc,int i) {
 		this.slist = sc;
-		sc.add(root);
+		sc.add(this,i);
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		root.setBackground(active ? cActive : cHover);
+		setBackground(active ? cActive : cHover);
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
-		root.setBackground(active ? cActive : cNormal);
+		setBackground(active ? cActive : cNormal);
 	}
 
 	@Override

@@ -26,6 +26,11 @@ public class VScrollList extends ScrollPane {
 	}
 
 	@Override
+	public  Component add(Component comp, int i) {
+		return listPanel.add(comp,i);
+	}
+
+	@Override
 	public void revalidate() {
 		listPanel.revalidate();
 	}
@@ -46,4 +51,5 @@ public class VScrollList extends ScrollPane {
 	public DefaultListItem getActive() {
 		return active;
 	}
+
 }

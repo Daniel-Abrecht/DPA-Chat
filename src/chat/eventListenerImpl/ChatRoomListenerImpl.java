@@ -10,21 +10,20 @@ public class ChatRoomListenerImpl implements ResourceListener<ChatRoom> {
 	@Override
 	public void resourceCreation(ResourcePool<ChatRoom> resourcePool,
 			ChatRoom resource) {
-		// TODO Auto-generated method stub
 		System.out.println("resourceCreation: " + resource);
 	}
 
 	@Override
 	public void resourceChange(ResourcePool<ChatRoom> resourcePool,
 			ChatRoom resource) {
-		chatroomManager.update();
+		chatroomManager.update(resource);
 		System.out.println("resourceChange: " + resource);
 	}
 
 	@Override
 	public void resourceRemovation(ResourcePool<ChatRoom> resourcePool,
 			ChatRoom resource) {
-		// TODO Auto-generated method stub
+		chatroomManager.remove(resource.getId());
 		System.out.println("resourceRemovation: " + resource);
 	}
 

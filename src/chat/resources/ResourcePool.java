@@ -69,4 +69,8 @@ public class ResourcePool<T extends Resource> implements EventHandlerIface<Resou
 		resourceEventHandler.addEventListener(endpointListener);
 	}
 
+	public T getResource(Integer id) {
+		return resources.get(id);
+	}
+
 }

@@ -1,16 +1,18 @@
 package chat.resources;
 
 import ui.ChatRoomView;
+import chat.eventListener.ChatRoomListener;
 
 import com.google.gson.annotations.Expose;
 
 import connectionManager.Deserializable;
 
 @Deserializable
-public class ChatRoom extends Resource {
+public class ChatRoom extends Resource implements ChatRoomListener {
 	@Expose
 	private String name;
-	
+	private ChatRoomView chv;
+
 	public String getName() {
 		return name;
 	}
@@ -24,16 +26,31 @@ public class ChatRoom extends Resource {
 		return "ChatRoom [name=" + name + "]";
 	}
 
-	private ChatRoomView chv;
-	
-	public ChatRoomView getView(){
-		if(chv==null)
-			chv=new ChatRoomView();
+	public ChatRoomView getView() {
+		if (chv == null)
+			chv = new ChatRoomView();
 		return chv;
 	}
-	
+
 	public void display() {
 		getView().setVisible(true);
+	}
+
+	@Override
+	public void messageCreation(ResourcePool<Message> resourcePool,
+			Message message) {
+	}
+
+	@Override
+	public void messageChange(ResourcePool<Message> resourcePool,
+			Message message) {
+		getView().update(message);
+	}
+
+	@Override
+	public void messageRemovation(ResourcePool<Message> resourcePool,
+			Message message) {
+		getView().remove(message.getId());
 	}
 
 }

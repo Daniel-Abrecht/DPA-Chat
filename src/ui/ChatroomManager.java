@@ -12,18 +12,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import chat.manager.EndpointManager;
-import chat.manager.UserManager;
+import java.util.ArrayList;
 import chat.resources.ChatRoom;
-import chat.resources.Resource;
-import chat.resources.ResourceHandler;
-import chat.resources.ResourcePool;
 
 @SuppressWarnings("serial")
 public class ChatroomManager extends Frame {
 	private VScrollList vScrollList = new VScrollList();
 	private ChatRoomEditor chatRoomEditor = new ChatRoomEditor();
 	public ChatRoom selectedChatroom;
+	private ArrayList<ChatroomItem> chatRoomItems = new ArrayList<ChatroomItem>();
 	private static ChatroomManager chatroomManager;
 
 	public static ChatroomManager getInstance() {
@@ -81,21 +78,20 @@ public class ChatroomManager extends Frame {
 	}
 
 	private class ChatroomItem extends DefaultListItem {
-		private String name;
 		private Label label = new Label();
 		private ChatRoom chatRoom;
 
 		public ChatroomItem(ChatRoom chatRoom) {
-			this.chatRoom = chatRoom;
-			root.setLayout(new BorderLayout(50, 50));
-			root.add(label, BorderLayout.CENTER);
-			root.setPreferredSize(new Dimension(0, 50));
+			setChatRoom(chatRoom);
+			setLayout(new BorderLayout(50, 50));
+			add(label, BorderLayout.CENTER);
+			setPreferredSize(new Dimension(0, 50));
 			label.addMouseListener(this);
 		}
 
 		public void setName(String name) {
-			this.name = name;
-			label.setText(this.name);
+			chatRoom.setName(name);
+			label.setText(name);
 		}
 
 		@Override
@@ -108,26 +104,53 @@ public class ChatroomManager extends Frame {
 			selectedChatroom = chatRoom;
 		}
 
+		public ChatRoom getChatRoom() {
+			return chatRoom;
+		}
+
+		public void setChatRoom(ChatRoom chatRoom) {
+			this.chatRoom = chatRoom;
+			updateContent();
+		}
+
+		private void updateContent() {
+			setName(chatRoom.getName());
+		}
+
 	};
 
-	public void update() {
-		vScrollList.removeAll();
-		final ChatRoom lastSelectedChatroom = selectedChatroom;
-		selectedChatroom = null;
-		Resource.every(ChatRoom.class, new ResourceHandler<ChatRoom>() {
-			@Override
-			public void handler(EndpointManager endpointManager,
-					UserManager userManager,
-					ResourcePool<ChatRoom> resourcePool, ChatRoom chatRoom) {
-				String name = chatRoom.getName();
-				ChatroomItem btn = new ChatroomItem(chatRoom);
-				if (lastSelectedChatroom == chatRoom)
-					vScrollList.setActive(btn);
-				btn.setName(name);
-				btn.addTo(vScrollList);
+	public void update(ChatRoom chatRoom) {
+		Integer id = chatRoom.getId();
+		int i;
+		for (i = chatRoomItems.size(); i-- > 0;) {
+			ChatroomItem mv = chatRoomItems.get(i);
+			if (mv.getChatRoom().getId() <= id) {
+				if (mv.getChatRoom().getId() == id) {
+					mv.setChatRoom(chatRoom);
+					return;
+				} else {
+					break;
+				}
 			}
-		});
+		}
+		if (i < 0)
+			i = chatRoomItems.size();
+		else
+			i++;
+		ChatroomItem messageView = new ChatroomItem(chatRoom);
+		chatRoomItems.add(i, messageView);
+		messageView.addTo(vScrollList, i);
 		vScrollList.revalidate();
+	}
+
+	public void remove(Integer id) {
+		for (Integer i = chatRoomItems.size(); i-- > 0;) {
+			if (chatRoomItems.get(i).getChatRoom().getId() == id) {
+				chatRoomItems.remove(i);
+				vScrollList.remove(i);
+				break;
+			}
+		}
 	}
 
 }
