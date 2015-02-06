@@ -1,7 +1,6 @@
 package ui;
 
 import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
@@ -12,6 +11,8 @@ import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
+
 import chat.Chat;
 import chat.resources.ChatRoom;
 
@@ -21,13 +22,14 @@ class ChatRoomEditor extends Frame  {
 	private ChatRoom chatRoom;
 	public ChatRoomEditor(){
 		super();
+		setTitle("Chatroom Editor");
 		setSize(300,120);
 		setLayout(new BorderLayout());
 		Panel btns = new Panel();
 		btns.setLayout(new GridLayout(1,0));
 		btns.setPreferredSize(new Dimension(0,50));
-		Button abord = new Button("Abbrechen");
-		Button change = new Button("Übernehmen");
+		JButton abord = new JButton("Abbrechen");
+		JButton change = new JButton("Übernehmen");
 		abord.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {

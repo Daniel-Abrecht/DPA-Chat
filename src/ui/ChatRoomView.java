@@ -1,20 +1,71 @@
 package ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Panel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
+import chat.Chat;
+import chat.resources.ChatRoom;
 import chat.resources.Message;
 
 @SuppressWarnings("serial")
 public class ChatRoomView extends Frame {
 	private VScrollList messageList = new VScrollList();
 	private ArrayList<MessageView> messageViews = new ArrayList<MessageView>();
+	private ChatRoom chatRoom;
+	private Panel postFormPanel = new Panel();
+	private JTextArea postFormTextArea = new JTextArea();
+	private JButton sendButton = new JButton("▶");
 
-	public ChatRoomView() {
+	public ChatRoomView(ChatRoom chatRoom) {
+		messageList.setBackground(Color.BLACK);
+		setChatRoom(chatRoom);
 		setSize(800, 600);
 		setLayout(new BorderLayout());
 		add(messageList, BorderLayout.CENTER);
+		add(postFormPanel, BorderLayout.SOUTH);
+		postFormPanel.setPreferredSize(new Dimension(0, 200));
+		postFormPanel.setLayout(new BorderLayout());
+		JScrollPane scroll = new JScrollPane(postFormTextArea,
+				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		postFormTextArea.setLineWrap(true);
+		postFormPanel.add(scroll, BorderLayout.CENTER);
+		postFormPanel.add(sendButton, BorderLayout.EAST);
+		sendButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				sendMessage();
+			}
+		});
+	}
+
+	protected void sendMessage() {
+		String text = postFormTextArea.getText();
+		postFormTextArea.setText("");
+		Message msg = new Message();
+		msg.register(Chat.currentUserManager);
+		msg.setChatRoom(chatRoom);
+		msg.setContent(text);
+		msg.updateRemote();
+	}
+
+	private void setChatRoom(ChatRoom chatRoom) {
+		this.chatRoom = chatRoom;
+		updateUI();
+	}
+
+	private void updateUI() {
+		setTitle("Chatroom " + chatRoom.getName());
 	}
 
 	public void update(Message message) {

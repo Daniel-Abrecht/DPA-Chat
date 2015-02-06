@@ -28,7 +28,7 @@ public class ChatRoom extends Resource implements ChatRoomListener {
 
 	public ChatRoomView getView() {
 		if (chv == null)
-			chv = new ChatRoomView();
+			chv = new ChatRoomView(this);
 		return chv;
 	}
 

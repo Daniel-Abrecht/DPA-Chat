@@ -1,7 +1,6 @@
 package ui;
 
 import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -13,6 +12,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+
+import javax.swing.JButton;
+
 import chat.resources.ChatRoom;
 
 @SuppressWarnings("serial")
@@ -44,8 +46,8 @@ public class ChatroomManager extends Frame {
 		Panel buttons = new Panel();
 		buttons.setLayout(new GridLayout(1, 0));
 
-		Button newRoom = new Button("Neu");
-		Button editRoom = new Button("Umbenennen");
+		JButton newRoom = new JButton("Neu");
+		JButton editRoom = new JButton("Umbenennen");
 
 		buttons.add(editRoom);
 		editRoom.setEnabled(false);

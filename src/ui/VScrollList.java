@@ -1,25 +1,41 @@
 package ui;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Panel;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.awt.ScrollPane;
+
+import javax.swing.JScrollPane;
 
 @SuppressWarnings("serial")
-public class VScrollList extends ScrollPane {
+public class VScrollList extends JScrollPane {
 	private Panel listPanel = new Panel();
-	private Panel listHelperPanel = new Panel();
+	private Panel listHelperPanel;
 	DefaultListItem active;
 
-	public VScrollList() {
-		super(ScrollPane.SCROLLBARS_AS_NEEDED);
+	public VScrollList(Panel panel) {
+		super(panel,
+				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		listHelperPanel = panel;
 		listPanel.setLayout(new GridLayout(0, 1));
 		listHelperPanel.setLayout(new BorderLayout());
 		listHelperPanel.add(listPanel, BorderLayout.NORTH);
-		super.add(listHelperPanel);
+		listHelperPanel.revalidate();
 	}
 
+	@Override
+	public void setBackground(Color bg){
+		if(listHelperPanel!=null)
+			listHelperPanel.setBackground(bg);
+		super.setBackground(bg);
+	}
+	
+	public VScrollList(){
+		this(new Panel());
+	}
+	
 	@Override
 	public Component add(Component comp) {
 		return listPanel.add(comp);
@@ -32,7 +48,9 @@ public class VScrollList extends ScrollPane {
 
 	@Override
 	public void revalidate() {
-		listPanel.revalidate();
+		if(listPanel!=null)
+			listPanel.revalidate();
+		else super.revalidate();
 	}
 
 	@Override

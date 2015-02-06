@@ -7,8 +7,6 @@ import connectionManager.Deserializable;
 @Deserializable
 public class Message extends Resource {
 	@Expose
-	private String title;
-	@Expose
 	private String content;
 	@Expose
 	private Integer chatRoomId;
@@ -27,4 +25,11 @@ public class Message extends Resource {
 		return chatRoomId;
 	}
 
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
 }
