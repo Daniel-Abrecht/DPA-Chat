@@ -1,24 +1,22 @@
 package ui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Label;
-import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import chat.resources.ChatRoom;
 
 @SuppressWarnings("serial")
-public class ChatroomManager extends Frame {
+public class ChatroomManager extends JFrame {
 	private VScrollList vScrollList = new VScrollList();
 	private ChatRoomEditor chatRoomEditor = new ChatRoomEditor();
 	public ChatRoom selectedChatroom;
@@ -34,16 +32,15 @@ public class ChatroomManager extends Frame {
 	private ChatroomManager() {
 
 		super();
-
+		
 		setTitle("Chatroom Manager");
 		setSize(400, 600);
 		addWindowListener(new ChatroomManagerListener());
-		vScrollList.setBackground(new Color(0, 0, 0));
 		setLayout(new BorderLayout());
 
 		add(vScrollList, BorderLayout.CENTER);
 
-		Panel buttons = new Panel();
+		JPanel buttons = new JPanel();
 		buttons.setLayout(new GridLayout(1, 0));
 
 		JButton newRoom = new JButton("Neu");

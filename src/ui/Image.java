@@ -1,6 +1,5 @@
 package ui;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -9,9 +8,10 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.JComponent;
 
 @SuppressWarnings("serial")
-class Image extends Component {
+class Image extends JComponent {
 
 	BufferedImage img;
 

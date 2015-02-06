@@ -1,9 +1,10 @@
 package ui;
 
 import java.awt.Color;
-import java.awt.Panel;
+import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.Panel;
 
 @SuppressWarnings("serial")
 public abstract class DefaultListItem extends Panel implements MouseListener {
@@ -13,22 +14,24 @@ public abstract class DefaultListItem extends Panel implements MouseListener {
 	private boolean active = false;
 	private VScrollList slist;
 
+	public DefaultListItem() {
+		super();
+		setBackground(cNormal);
+		setFont(new Font(Font.SANS_SERIF,Font.PLAIN,18));
+		addMouseListener(this);
+	}
+
 	void setActive(boolean b) {
-		if(active==b)
+		if (active == b)
 			return;
 		onActive(b);
 		active = b;
 		setBackground(active ? cActive : cNormal);
 	}
 
-	public DefaultListItem() {
-		setBackground(cNormal);
-		addMouseListener(this);
-	}
-
-	public void addTo(VScrollList sc,int i) {
+	public void addTo(VScrollList sc, int i) {
 		this.slist = sc;
-		sc.add(this,i);
+		sc.add(this, i);
 	}
 
 	@Override
@@ -50,6 +53,7 @@ public abstract class DefaultListItem extends Panel implements MouseListener {
 	}
 
 	public abstract void onSelect();
+
 	public abstract void onActive(boolean b);
 
 	@Override

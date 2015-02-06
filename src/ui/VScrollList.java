@@ -1,56 +1,82 @@
 package ui;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Panel;
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridLayout;
-
+import java.awt.Rectangle;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.Scrollable;
 
 @SuppressWarnings("serial")
 public class VScrollList extends JScrollPane {
-	private Panel listPanel = new Panel();
-	private Panel listHelperPanel;
+	static public class VPanel extends JPanel implements Scrollable {
+		public VPanel() {
+			super();
+		}
+
+		@Override
+		public Dimension getPreferredScrollableViewportSize() {
+			return getPreferredSize();
+		}
+
+		@Override
+		public int getScrollableBlockIncrement(Rectangle visibleRect,
+				int orientation, int direction) {
+			return 0;
+		}
+
+		@Override
+		public boolean getScrollableTracksViewportHeight() {
+			return false;
+		}
+
+		@Override
+		public boolean getScrollableTracksViewportWidth() {
+			return true;
+		}
+
+		@Override
+		public int getScrollableUnitIncrement(Rectangle visibleRect,
+				int orientation, int direction) {
+			return 0;
+		}
+	}
+
+	private VPanel listPanel = new VPanel();
+	private VPanel listHelperPanel;
 	DefaultListItem active;
 
-	public VScrollList(Panel panel) {
-		super(panel,
-				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	public VScrollList(VPanel panel) {
+		super(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		listHelperPanel = panel;
 		listPanel.setLayout(new GridLayout(0, 1));
 		listHelperPanel.setLayout(new BorderLayout());
 		listHelperPanel.add(listPanel, BorderLayout.NORTH);
-		listHelperPanel.revalidate();
 	}
 
-	@Override
-	public void setBackground(Color bg){
-		if(listHelperPanel!=null)
-			listHelperPanel.setBackground(bg);
-		super.setBackground(bg);
+	public VScrollList() {
+		this(new VPanel());
 	}
-	
-	public VScrollList(){
-		this(new Panel());
-	}
-	
+
 	@Override
 	public Component add(Component comp) {
 		return listPanel.add(comp);
 	}
 
 	@Override
-	public  Component add(Component comp, int i) {
-		return listPanel.add(comp,i);
+	public Component add(Component comp, int i) {
+		return listPanel.add(comp, i);
 	}
 
 	@Override
 	public void revalidate() {
-		if(listPanel!=null)
+		if (listPanel != null)
 			listPanel.revalidate();
-		else super.revalidate();
+		else
+			super.revalidate();
 	}
 
 	@Override

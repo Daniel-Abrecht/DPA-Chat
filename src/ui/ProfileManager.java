@@ -2,12 +2,12 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
-import java.awt.Frame;
-import java.awt.TextField;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
-public class ProfileManager extends Frame {
-	private TextField name = new TextField();
+public class ProfileManager extends JFrame {
+	private JTextField name = new JTextField();
 	private Image img = new Image("resources/defaultProfileImage.png");
 	public ProfileManager() {
 		setLayout(new BorderLayout());

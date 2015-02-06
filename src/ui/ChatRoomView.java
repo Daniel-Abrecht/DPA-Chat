@@ -3,13 +3,14 @@ package ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Panel;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
@@ -18,11 +19,11 @@ import chat.resources.ChatRoom;
 import chat.resources.Message;
 
 @SuppressWarnings("serial")
-public class ChatRoomView extends Frame {
+public class ChatRoomView extends JFrame {
 	private VScrollList messageList = new VScrollList();
 	private ArrayList<MessageView> messageViews = new ArrayList<MessageView>();
 	private ChatRoom chatRoom;
-	private Panel postFormPanel = new Panel();
+	private JPanel postFormPanel = new JPanel();
 	private JTextArea postFormTextArea = new JTextArea();
 	private JButton sendButton = new JButton("▶");
 
@@ -39,6 +40,7 @@ public class ChatRoomView extends Frame {
 				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		postFormTextArea.setLineWrap(true);
+		postFormTextArea.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,18));
 		postFormPanel.add(scroll, BorderLayout.CENTER);
 		postFormPanel.add(sendButton, BorderLayout.EAST);
 		sendButton.addActionListener(new ActionListener() {
