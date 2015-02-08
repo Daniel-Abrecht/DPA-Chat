@@ -2,12 +2,17 @@ package connectionManager;
 
 import java.lang.reflect.Type;
 
+import serialisation.AnnotationProcessorAdapter;
+import serialisation.Deserializable;
+
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
-import com.google.gson.annotations.Expose;
+
+import serialisation.Expose;
 
 public class Container {
 
@@ -15,6 +20,11 @@ public class Container {
 	private String type;
 	@Expose
 	private Object object;
+	private static Gson gson = new GsonBuilder()
+			.registerTypeHierarchyAdapter(Object.class,
+					new AnnotationProcessorAdapter())
+			.registerTypeAdapter(Container.class, new ContainerDeserializer())
+			.create();
 
 	public Container(Object o) {
 		Class<?> c = o.getClass();
@@ -26,7 +36,8 @@ public class Container {
 		this.object = o;
 	}
 
-	static private class ContainerDeserializer implements JsonDeserializer<Container> {
+	static private class ContainerDeserializer implements
+			JsonDeserializer<Container> {
 		public Container deserialize(JsonElement json, Type typeOfT,
 				JsonDeserializationContext context) throws JsonParseException {
 			Container c = null;
@@ -44,9 +55,7 @@ public class Container {
 	}
 
 	public static Container parse(String s) {
-		GsonBuilder gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
-		gson.registerTypeAdapter(Container.class, new ContainerDeserializer());
-		Container c = gson.create().fromJson(s, Container.class);
+		Container c = gson.fromJson(s, Container.class);
 		return c;
 	}
 

@@ -6,6 +6,8 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
+import serialisation.AnnotationProcessorAdapter;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -14,6 +16,8 @@ public class ConnectionManager extends Endpoint {
 	private Server server;
 	private Client client;
 	private List<ReceiveHandler> reciveHandlers = new ArrayList<ReceiveHandler>();
+	private static Gson gson = new GsonBuilder().registerTypeHierarchyAdapter(
+			Object.class, new AnnotationProcessorAdapter()).create();
 
 	public ConnectionManager(String multicastAddr, int port) {
 		InetAddress addr;
@@ -27,16 +31,16 @@ public class ConnectionManager extends Endpoint {
 		client = new Client(addr, port);
 	}
 
-	public void start(){
+	public void start() {
 		server.start();
 		client.start();
 	}
 
-	public void end(){
+	public void end() {
 		server.end();
 		client.end();
 	}
-	
+
 	public void reciveHandler(RemoteEndpoint e, DataPacket dp) {
 		byte uid = dp.getUserId();
 		User u = e.getUser(uid);
@@ -44,9 +48,10 @@ public class ConnectionManager extends Endpoint {
 			e.setUser(uid, u = new User());
 		Container c = Container.parse(new String(dp.getBuffer()));
 		Object obj = c.getObject();
-		for(ReceiveHandler reciveHandler : reciveHandlers){
-			if(reciveHandler.getHandledClass().isAssignableFrom(obj.getClass())){
-				reciveHandler.onReceive(c,e,u);
+		for (ReceiveHandler reciveHandler : reciveHandlers) {
+			if (reciveHandler.getHandledClass()
+					.isAssignableFrom(obj.getClass())) {
+				reciveHandler.onReceive(c, e, u);
 				break;
 			}
 		}
@@ -57,8 +62,6 @@ public class ConnectionManager extends Endpoint {
 	}
 
 	public void send(User u, Object o) {
-		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
-				.create();
 		String str = gson.toJson(new Container(o));
 		System.out.println(str);
 		byte[] buffer = null;

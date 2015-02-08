@@ -1,6 +1,8 @@
 package connectionManager;
 
-import com.google.gson.annotations.Expose;
+import serialisation.Deserializable;
+
+import serialisation.Expose;
 
 @Deserializable
 public class User {

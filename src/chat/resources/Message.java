@@ -1,15 +1,13 @@
 package chat.resources;
 
-import com.google.gson.annotations.Expose;
-
-import connectionManager.Deserializable;
+import serialisation.Deserializable;
+import serialisation.Expose;
 
 @Deserializable
 public class Message extends Resource {
 	@Expose
 	private String content;
-	@Expose
-	private Integer chatRoomId;
+	@Expose(adapter=ResourceGsonAdapter.class)
 	private ChatRoom chatRoom;
 
 	public ChatRoom getChatRoom() {
@@ -18,11 +16,6 @@ public class Message extends Resource {
 	
 	public void setChatRoom(ChatRoom chatRoom) {
 		this.chatRoom = chatRoom;
-		this.chatRoomId = chatRoom.getId();
-	}
-
-	public Integer getChatRoomId() {
-		return chatRoomId;
 	}
 
 	public String getContent() {

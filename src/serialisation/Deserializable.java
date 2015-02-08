@@ -1,4 +1,4 @@
-package connectionManager;
+package serialisation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

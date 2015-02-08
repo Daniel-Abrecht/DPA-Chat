@@ -1,11 +1,10 @@
 package chat.resources;
 
+import serialisation.Deserializable;
 import ui.ChatRoomView;
 import chat.eventListener.ChatRoomListener;
 
-import com.google.gson.annotations.Expose;
-
-import connectionManager.Deserializable;
+import serialisation.Expose;
 
 @Deserializable
 public class ChatRoom extends Resource implements ChatRoomListener {

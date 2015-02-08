@@ -9,7 +9,7 @@ import chat.Chat;
 import chat.manager.EndpointManager;
 import chat.manager.UserManager;
 
-import com.google.gson.annotations.Expose;
+import serialisation.Expose;
 
 public abstract class Resource {
 	private ResourcePool<Resource> resourcePool;

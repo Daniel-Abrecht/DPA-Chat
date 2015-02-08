@@ -4,14 +4,14 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import serialisation.Deserializable;
 import chat.event.EventHandlerIface;
 import chat.event.ResourceEventHandler;
 import chat.eventListener.ResourceListener;
 import chat.manager.UserManager;
 
-import com.google.gson.annotations.Expose;
+import serialisation.Expose;
 
-import connectionManager.Deserializable;
 import static chat.event.EventHandler.createEventHandler;
 
 @Deserializable

@@ -1,7 +1,9 @@
 package chat.resources;
 
-import com.google.gson.annotations.Expose;
-import connectionManager.Deserializable;
+import serialisation.Deserializable;
+
+import serialisation.Expose;
+
 import connectionManager.User;
 
 @Deserializable
