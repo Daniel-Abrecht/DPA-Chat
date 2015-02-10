@@ -1,6 +1,6 @@
 package connectionManager;
 
-import java.net.SocketAddress;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,36 +8,45 @@ public class Endpoint {
 	private int userCount = 0;
 	protected final int maxUsers = 0x100;
 	protected User[] users = new User[maxUsers];
-	protected SocketAddress socketAddress;
+	protected InetAddress address;
+
+	public interface UserEventHandler extends UserListener,
+			EventHandlerIface<UserListener> {
+	};
+
+	public final UserEventHandler userEventHandler = EventHandler
+			.createEventHandler(UserEventHandler.class);
 
 	public User getUser(byte id) {
 		return users[id];
 	}
 
 	protected void setUser(byte id, User user) {
+		if (user.getEndpoint() != this)
+			user.setEndpoint(this);
+		user.setId(id);
 		if (users[id] == null && user != null) {
 			userCount++;
+			userEventHandler.userCreation(user);
 		} else if (users[id] != null && user == null) {
 			userCount--;
+			userEventHandler.userRemovation(user);
 		}
 		users[id] = user;
-		user.setId(id);
+		userEventHandler.userChange(user);
 	}
 
 	public void setUser(User user) {
 		byte id = user.getId();
-		if (users[id] == null && user != null) {
-			userCount++;
-		} else if (users[id] != null && user == null) {
-			userCount--;
-		}
-		users[id] = user;
+		setUser(id, user);
 	}
 
 	protected void removeUser(byte id, User user) {
-		if (users[id] != null)
-			userCount--;
+		if (users[id] == null)
+			return;
+		userCount--;
 		users[id] = null;
+		userEventHandler.userRemovation(user);
 	}
 
 	public int getUserCount() {
@@ -54,7 +63,9 @@ public class Endpoint {
 		}
 		users[i] = u;
 		u.setId((byte) i);
+		u.setEndpoint(this);
 		userCount++;
+		userEventHandler.userCreation(u);
 		return true;
 	}
 
@@ -69,12 +80,12 @@ public class Endpoint {
 		return userList;
 	}
 
-	protected void setSocketAddress(SocketAddress socketAddress) {
-		this.socketAddress = socketAddress;
+	protected void setAddress(InetAddress address) {
+		this.address = address;
 	}
 
-	public SocketAddress getSocketAddress() {
-		return socketAddress;
+	public InetAddress getAddress() {
+		return address;
 	}
 
 }

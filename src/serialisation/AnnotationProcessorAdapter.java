@@ -107,22 +107,22 @@ public class AnnotationProcessorAdapter implements GsonAdapter<Object> {
 						for (Class<?> fromType : numberClasses) {
 							try {
 								match = clazz.getConstructor(fromType);
-								if(fromType.equals(double.class)){
-									arg=n.doubleValue();
-								}else if(fromType.equals(double.class)){
-									arg=n.doubleValue();
-								}else if(fromType.equals(float.class)){
-									arg=n.floatValue();
-								}else if(fromType.equals(long.class)){
-									arg=n.longValue();
-								}else if(fromType.equals(int.class)){
-									arg=n.intValue();
-								}else if(fromType.equals(short.class)){
-									arg=n.shortValue();
-								}else if(fromType.equals(byte.class)){
-									arg=n.byteValue();
-								}else if(fromType.equals(String.class)){
-									arg=n.toString();
+								if (fromType.equals(double.class)) {
+									arg = n.doubleValue();
+								} else if (fromType.equals(double.class)) {
+									arg = n.doubleValue();
+								} else if (fromType.equals(float.class)) {
+									arg = n.floatValue();
+								} else if (fromType.equals(long.class)) {
+									arg = n.longValue();
+								} else if (fromType.equals(int.class)) {
+									arg = n.intValue();
+								} else if (fromType.equals(short.class)) {
+									arg = n.shortValue();
+								} else if (fromType.equals(byte.class)) {
+									arg = n.byteValue();
+								} else if (fromType.equals(String.class)) {
+									arg = n.toString();
 								}
 								break;
 							} catch (NoSuchMethodException | SecurityException e) {
@@ -174,6 +174,8 @@ public class AnnotationProcessorAdapter implements GsonAdapter<Object> {
 					}
 				} while ((classObject = classObject.getSuperclass()) != null
 						&& f == null);
+				if (f == null)
+					continue;
 				f.setAccessible(true);
 				JsonElement value = entry.getValue();
 				try {

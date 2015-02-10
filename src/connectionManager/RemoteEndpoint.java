@@ -1,6 +1,6 @@
 package connectionManager;
 
-import java.net.SocketAddress;
+import java.net.InetAddress;
 import java.util.Date;
 
 public class RemoteEndpoint extends Endpoint {
@@ -9,19 +9,14 @@ public class RemoteEndpoint extends Endpoint {
 	private DataPacket[] dataPackets = new DataPacket[0x80];
 	private final int packetExpires = 10 * 1000; // 10 seconds
 
-	public RemoteEndpoint(SocketAddress socketAddress) {
-		setSocketAddress(socketAddress);
+	public RemoteEndpoint(InetAddress socketAddress) {
+		setAddress(socketAddress);
 		updateLastMessageArrivalTime();
 	}
 
 	public Date getLastMessageArrivalTime() {
 		return lastMessageArrivalTime;
 	}
-
-	public SocketAddress getAddress() {
-		return socketAddress;
-	}
-
 
 	public void updateLastMessageArrivalTime() {
 		lastMessageArrivalTime = new Date();
@@ -30,6 +25,10 @@ public class RemoteEndpoint extends Endpoint {
 	public DataPacket createPacket(byte packetId, int packetSize) {
 		if (packetId > 0x3f) {
 			System.err.println("Impossible packet id!");
+			return null;
+		}
+		if (packetId < 0) {
+			System.err.println("Invalid packet size!");
 			return null;
 		}
 		return dataPackets[packetId] = new DataPacket(packetSize);

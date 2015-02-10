@@ -5,7 +5,7 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.MulticastSocket;
-import java.net.SocketAddress;
+import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -17,6 +17,7 @@ class Server extends Thread {
 	private ConnectionManager connectionManager;
 	private Map<InetAddress, RemoteEndpoint> endpoints = new ConcurrentHashMap<InetAddress, RemoteEndpoint>();
 	private InetAddress group;
+	private Endpoint localEndpoint;
 
 	private final int endpointExpires = 60 * 1000; // 1 minute
 
@@ -24,6 +25,11 @@ class Server extends Thread {
 		this.port = port;
 		this.connectionManager = cm;
 		this.group = addr;
+		try {
+			localEndpoint = getOrCreateEndpoint(InetAddress.getLocalHost());
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void end() {
@@ -46,7 +52,7 @@ class Server extends Thread {
 			}
 			boolean first = (bs[0] & 0x80) != 0;
 			byte packetId = (byte) (bs[0] & 0x7F);
-			RemoteEndpoint e = getOrCreateEndpoint(packet.getSocketAddress());
+			RemoteEndpoint e = getOrCreateEndpoint(((InetSocketAddress)packet.getSocketAddress()).getAddress());
 			e.updateLastMessageArrivalTime();
 			DataPacket dp = null;
 			int offset = 0;
@@ -106,11 +112,10 @@ class Server extends Thread {
 		}
 	}
 
-	public RemoteEndpoint getOrCreateEndpoint(SocketAddress socketAddress) {
-		InetAddress inetAddress = ((InetSocketAddress)socketAddress).getAddress();
+	public RemoteEndpoint getOrCreateEndpoint(InetAddress inetAddress) {
 		RemoteEndpoint e = endpoints.get(inetAddress);
 		if (e == null) {
-			e = new RemoteEndpoint(socketAddress);
+			e = new RemoteEndpoint(inetAddress);
 			endpoints.put(inetAddress, e);
 		}
 		return e;
@@ -124,6 +129,14 @@ class Server extends Thread {
 				e.cleanup();
 			}
 		}
+	}
+
+	public Endpoint getLocalEndpoint() {
+		return localEndpoint;
+	}
+
+	public void setLocalEndpoint(Endpoint localEndpoint) {
+		this.localEndpoint = localEndpoint;
 	}
 
 }

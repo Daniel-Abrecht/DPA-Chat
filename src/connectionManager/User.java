@@ -1,20 +1,21 @@
 package connectionManager;
 
 import serialisation.Deserializable;
-
 import serialisation.Expose;
 
 @Deserializable
 public class User {
-
-	private byte id;
-	@Expose private String name;
+	
+	private Byte id = null;
+	@Expose
+	private String name;
+	private Endpoint endpoint;
 
 	public void setId(byte id) {
 		this.id = id;
 	}
 
-	public byte getId() {
+	public Byte getId() {
 		return id;
 	}
 
@@ -29,6 +30,16 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + "]";
+	}
+
+	public void setEndpoint(Endpoint endpoint) {
+		if (id != null && endpoint.getUser(id) != this)
+			endpoint.setUser(id, this);
+		this.endpoint = endpoint;
+	}
+
+	public Endpoint getEndpoint() {
+		return endpoint;
 	}
 
 }

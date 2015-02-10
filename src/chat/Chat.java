@@ -1,6 +1,6 @@
 package chat;
 
-import static chat.event.EventHandler.createEventHandler;
+import static connectionManager.EventHandler.createEventHandler;
 import ui.ChatroomManager;
 import ui.ProfileManager;
 import chat.event.EndpointEventHandler;
@@ -41,7 +41,6 @@ public class Chat {
 	private static void run() {
 
 		User user = new User();
-
 		UserManager userManager = new UserManager(user);
 		currentUserManager = userManager;
 		user.setName("test");

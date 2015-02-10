@@ -3,7 +3,6 @@ package chat.resources;
 import serialisation.Deserializable;
 import ui.ChatRoomView;
 import chat.eventListener.ChatRoomListener;
-
 import serialisation.Expose;
 
 @Deserializable

@@ -60,4 +60,8 @@ public class UserManager {
 				+ "]";
 	}
 
+	void setUser(User user) {
+		this.user = user;
+	}
+
 }

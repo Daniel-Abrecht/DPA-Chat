@@ -1,5 +1,7 @@
 package connectionManager;
 
+import static chat.manager.EndpointMap.endpointMap;
+
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -7,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import serialisation.AnnotationProcessorAdapter;
+import chat.manager.EndpointManager;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -16,6 +19,7 @@ public class ConnectionManager extends Endpoint {
 	private Server server;
 	private Client client;
 	private List<ReceiveHandler> reciveHandlers = new ArrayList<ReceiveHandler>();
+	private Endpoint localEndpoint;
 	private static Gson gson = new GsonBuilder().registerTypeHierarchyAdapter(
 			Object.class, new AnnotationProcessorAdapter()).create();
 
@@ -29,6 +33,7 @@ public class ConnectionManager extends Endpoint {
 		}
 		server = new Server(this, addr, port);
 		client = new Client(addr, port);
+		this.localEndpoint = server.getLocalEndpoint();
 	}
 
 	public void start() {
@@ -48,6 +53,8 @@ public class ConnectionManager extends Endpoint {
 			e.setUser(uid, u = new User());
 		Container c = Container.parse(new String(dp.getBuffer()));
 		Object obj = c.getObject();
+		if(obj instanceof User)
+			e.setUser(uid, u=(User)obj);
 		for (ReceiveHandler reciveHandler : reciveHandlers) {
 			if (reciveHandler.getHandledClass()
 					.isAssignableFrom(obj.getClass())) {
@@ -62,6 +69,9 @@ public class ConnectionManager extends Endpoint {
 	}
 
 	public void send(User u, Object o) {
+		if(u.getEndpoint()==null){
+			localEndpoint.tryAddUser(u);
+		}
 		String str = gson.toJson(new Container(o));
 		System.out.println(str);
 		byte[] buffer = null;
@@ -74,6 +84,11 @@ public class ConnectionManager extends Endpoint {
 		packet.setUserId(u.getId());
 		packet.fill(buffer, 0, buffer.length, 0);
 		client.send(packet);
+	}
+
+	public EndpointManager getEndpointManager(InetAddress addr) {
+		Endpoint e = server.getOrCreateEndpoint(addr);
+		return endpointMap.sync(e);
 	}
 
 }

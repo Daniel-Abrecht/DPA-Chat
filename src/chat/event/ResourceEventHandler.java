@@ -1,5 +1,6 @@
 package chat.event;
 
+import connectionManager.EventHandlerIface;
 import chat.eventListener.ResourceListener;
 import chat.resources.Resource;
 

@@ -25,4 +25,9 @@ public class Message extends Resource {
 	public void setContent(String content) {
 		this.content = content;
 	}
+
+	@Override
+	public String toString() {
+		return "Message [content=" + content + ", chatRoom=" + chatRoom + "]";
+	}
 }

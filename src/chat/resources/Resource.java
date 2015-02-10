@@ -81,4 +81,8 @@ public abstract class Resource {
 		}
 	}
 
+	public ResourcePool<Resource> getResourcePool() {
+		return resourcePool;
+	}
+
 }

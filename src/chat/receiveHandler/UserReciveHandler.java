@@ -1,5 +1,6 @@
 package chat.receiveHandler;
 
+import static chat.manager.EndpointMap.endpointMap;
 import connectionManager.Container;
 import connectionManager.ReceiveHandler;
 import connectionManager.RemoteEndpoint;
@@ -13,8 +14,6 @@ public class UserReciveHandler implements ReceiveHandler {
 
 	@Override
 	public void onReceive(Container container,RemoteEndpoint e, User u) {
-		User user = (User)container.getObject();
-		e.setUser(user);
-		System.out.println(user);
+		endpointMap.sync(e).sync(u);
 	}
 }
