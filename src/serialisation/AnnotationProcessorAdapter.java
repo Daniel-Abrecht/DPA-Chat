@@ -176,12 +176,38 @@ public class AnnotationProcessorAdapter implements GsonAdapter<Object> {
 						&& f == null);
 				if (f == null)
 					continue;
-				f.setAccessible(true);
-				JsonElement value = entry.getValue();
-				try {
-					f.set(object, context.deserialize(value, f.getType()));
-				} catch (IllegalArgumentException | IllegalAccessException e) {
-					e.printStackTrace();
+				Expose annotation = f.getAnnotation(Expose.class);
+				if (annotation == null)
+					continue;
+				Class<? extends GsonAdapter<?>>[] adapterClass = annotation
+						.adapter();
+				if (adapterClass == null || adapterClass.length != 1) {
+					f.setAccessible(true);
+					JsonElement value = entry.getValue();
+					try {
+						f.set(object, context.deserialize(value, f.getType()));
+					} catch (IllegalArgumentException | IllegalAccessException e) {
+						e.printStackTrace();
+					}
+				} else {
+					GsonAdapter<Object> adapter;
+					JsonElement value = entry.getValue();
+					try {
+						@SuppressWarnings("unchecked")
+						GsonAdapter<Object> a = (GsonAdapter<Object>) adapterClass[0]
+								.newInstance();
+						adapter = a;
+					} catch (InstantiationException | IllegalAccessException e) {
+						e.printStackTrace();
+						continue;
+					}
+					Object v = adapter.deserialize(value, f.getType(), context);
+					try {
+						f.setAccessible(true);
+						f.set(object, v);
+					} catch (IllegalArgumentException | IllegalAccessException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 			return object;

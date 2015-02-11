@@ -33,13 +33,12 @@ public class ResourceGsonAdapter implements GsonAdapter<Resource> {
 	@Override
 	public Resource deserialize(JsonElement e, Type type,
 			JsonDeserializationContext context) throws JsonParseException {
-		System.err.println("test");
 		if(!e.isJsonObject())
 			return null;
 		JsonObject jsonObj = (JsonObject)e;
-		int rid = jsonObj.getAsInt();
-		byte uid = jsonObj.getAsByte();
-		String eip = jsonObj.getAsString();
+		int rid = jsonObj.get("rid").getAsJsonPrimitive().getAsInt();
+		byte uid = jsonObj.get("uid").getAsJsonPrimitive().getAsByte();
+		String eip = jsonObj.get("eip").getAsJsonPrimitive().getAsString();
 		EndpointManager em;
 		try {
 			em = connectionManager.getEndpointManager(InetAddress.getByName(eip));

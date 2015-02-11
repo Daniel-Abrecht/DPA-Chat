@@ -36,11 +36,25 @@ class Server extends Thread {
 		running = false;
 	}
 
+	final private static char[] hexArray = "0123456789ABCDEF".toCharArray();
+
+	protected static String bytesToHex(byte[] bytes) {
+		char[] hexChars = new char[bytes.length * 3];
+		for (int j = 0; j < bytes.length; j++) {
+			int v = bytes[j] & 0xFF;
+			hexChars[j * 3] = hexArray[v >>> 4];
+			hexChars[j * 3 + 1] = hexArray[v & 0x0F];
+			hexChars[j * 3 + 2] = (((j + 1) % 16) == 0) ? '\n' : ' ';
+		}
+		return new String(hexChars);
+	}
+
 	private class DataParser {
 
 		private int getInteger(byte[] bs, int offset) {
-			return (bs[offset] << 24) | (bs[offset + 1] << 16)
-					| (bs[offset + 2] << 8) | bs[offset + 3];
+			return ((bs[offset] & 0xFF) << 24)
+					| ((bs[offset + 1] & 0xFF) << 16)
+					| ((bs[offset + 2] & 0xFF) << 8) | (bs[offset + 3] & 0xFF);
 		}
 
 		public void parse(DatagramPacket packet) {
@@ -52,7 +66,8 @@ class Server extends Thread {
 			}
 			boolean first = (bs[0] & 0x80) != 0;
 			byte packetId = (byte) (bs[0] & 0x7F);
-			RemoteEndpoint e = getOrCreateEndpoint(((InetSocketAddress)packet.getSocketAddress()).getAddress());
+			RemoteEndpoint e = getOrCreateEndpoint(((InetSocketAddress) packet
+					.getSocketAddress()).getAddress());
 			e.updateLastMessageArrivalTime();
 			DataPacket dp = null;
 			int offset = 0;
@@ -62,6 +77,11 @@ class Server extends Thread {
 					return;
 				}
 				int packetSize = getInteger(bs, 1);
+				if (packetSize < 0) {
+					System.out.println("--dump--\n" + bytesToHex(bs)
+							+ "\n--dump end--");
+					return;
+				}
 				byte userId = bs[5];
 				dp = e.createPacket(packetId, packetSize);
 				dp.setUserId(userId);
