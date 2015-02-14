@@ -1,10 +1,14 @@
 package ui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Insets;
+import java.awt.Panel;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.Panel;
 
 @SuppressWarnings("serial")
 public abstract class DefaultListItem extends Panel implements MouseListener {
@@ -17,8 +21,23 @@ public abstract class DefaultListItem extends Panel implements MouseListener {
 	public DefaultListItem() {
 		super();
 		setBackground(cNormal);
-		setFont(new Font(Font.SANS_SERIF,Font.PLAIN,18));
+		setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 18));
 		addMouseListener(this);
+	}
+
+	@Override
+	public void paint(Graphics g) {
+		super.paint(g);
+		Rectangle r = g.getClipBounds();
+		g.setPaintMode();
+		g.clearRect(r.x, r.y, r.width, r.height);
+	};
+
+	@Override
+	public Dimension getPreferredSize() {
+		Insets ins = getParent().getInsets();
+		return new Dimension(getParent().getSize().width - ins.left - ins.right,
+				super.getPreferredSize().height);
 	}
 
 	void setActive(boolean b) {
@@ -27,6 +46,8 @@ public abstract class DefaultListItem extends Panel implements MouseListener {
 		onActive(b);
 		active = b;
 		setBackground(active ? cActive : cNormal);
+		repaint();
+		revalidate();
 	}
 
 	public void addTo(VScrollList sc, int i) {
@@ -37,11 +58,15 @@ public abstract class DefaultListItem extends Panel implements MouseListener {
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
 		setBackground(active ? cActive : cHover);
+		repaint();
+		revalidate();
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		setBackground(active ? cActive : cNormal);
+		repaint();
+		revalidate();
 	}
 
 	@Override

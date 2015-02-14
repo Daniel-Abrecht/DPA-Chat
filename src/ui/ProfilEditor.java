@@ -7,65 +7,64 @@ import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import chat.Chat;
-import chat.resources.ChatRoom;
+import connectionManager.User;
+import chat.manager.UserManager;
+import chat.resources.Profil;
 
 @SuppressWarnings("serial")
-class ChatRoomEditor extends JFrame  {
+class ProfilEditor extends JFrame {
 	public JTextField nameField = new JTextField();
-	private ChatRoom chatRoom;
-	public ChatRoomEditor(){
+	protected Profil profil;
+
+	public ProfilEditor() {
 		super();
-		setTitle("Chatroom Editor");
-		setSize(300,120);
+		setTitle("Profil Editor");
+		setSize(300, 120);
 		setLayout(new BorderLayout());
 		JPanel btns = new JPanel();
-		btns.setLayout(new GridLayout(1,0));
-		btns.setPreferredSize(new Dimension(0,50));
+		btns.setLayout(new GridLayout(1, 0));
+		btns.setPreferredSize(new Dimension(0, 50));
 		JButton abord = new JButton("Abbrechen");
 		JButton change = new JButton("Übernehmen");
-		abord.addActionListener(new ActionListener(){
+		abord.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 			}
 		});
-		change.addActionListener(new ActionListener(){
+		change.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setVisible(false);
 				save();
-				if(chatRoom.isRegistred()){
-					chatRoom.updateRemote();
-				}else{
-					chatRoom.register(Chat.currentProfil.getUserManager());
-					chatRoom.updateRemote();
-				}
 			}
 		});
 		btns.add(abord);
 		btns.add(change);
-		add(btns,BorderLayout.SOUTH);
+		add(btns, BorderLayout.SOUTH);
 		JPanel content = new JPanel();
-		content.setLayout(new GridLayout(0,2));
+		content.setLayout(new GridLayout(0, 2));
 		content.add(new Label("Name"));
 		content.add(nameField);
-		nameField.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,20));
-		add(content,BorderLayout.CENTER);
+		nameField.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 20));
+		add(content, BorderLayout.CENTER);
 	}
-	
+
 	protected void save() {
-		chatRoom.setName(nameField.getText());
+		profil.setName(nameField.getText());
+		profil.updateRemote();
 	}
-	
-	public void setTarget(ChatRoom chatRoom) {
-		nameField.setText(chatRoom.getName());
-		this.chatRoom = chatRoom;
+
+	public void setTarget(Profil profil) {
+		if (!profil.isRegistred()) {
+			UserManager um = new UserManager(new User());
+			profil.register(um);
+		}
+		nameField.setText(profil.getName());
+		this.profil = profil;
 	}
 }

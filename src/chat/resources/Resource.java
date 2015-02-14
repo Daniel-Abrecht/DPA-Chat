@@ -84,5 +84,9 @@ public abstract class Resource {
 	public ResourcePool<Resource> getResourcePool() {
 		return resourcePool;
 	}
+	
+	public UserManager getUserManager(){
+		return resourcePool.getUserManager();
+	}
 
 }

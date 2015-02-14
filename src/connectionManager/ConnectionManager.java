@@ -51,7 +51,13 @@ public class ConnectionManager extends Endpoint {
 		User u = e.getUser(uid);
 		if (u == null)
 			e.setUser(uid, u = new User());
-		Container c = Container.parse(new String(dp.getBuffer()));
+		Container c;
+		try {
+			c = Container.parse(new String(dp.getBuffer(),"UTF-8"));
+		} catch (UnsupportedEncodingException e2) {
+			e2.printStackTrace();
+			return;
+		}
 		Object obj = c.getObject();
 		if(obj instanceof User)
 			e.setUser(uid, u=(User)obj);

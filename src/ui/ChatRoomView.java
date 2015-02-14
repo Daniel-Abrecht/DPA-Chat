@@ -55,7 +55,7 @@ public class ChatRoomView extends JFrame {
 		String text = postFormTextArea.getText();
 		postFormTextArea.setText("");
 		Message msg = new Message();
-		msg.register(Chat.currentUserManager);
+		msg.register(Chat.currentProfil.getUserManager());
 		msg.setChatRoom(chatRoom);
 		msg.setContent(text);
 		msg.updateRemote();

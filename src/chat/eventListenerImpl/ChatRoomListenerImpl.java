@@ -1,9 +1,9 @@
 package chat.eventListenerImpl;
 
+import ui.ChatroomManager;
 import chat.eventListener.ResourceListener;
 import chat.resources.ChatRoom;
 import chat.resources.ResourcePool;
-import static chat.Chat.chatroomManager;
 
 public class ChatRoomListenerImpl implements ResourceListener<ChatRoom> {
 
@@ -16,14 +16,14 @@ public class ChatRoomListenerImpl implements ResourceListener<ChatRoom> {
 	@Override
 	public void resourceChange(ResourcePool<ChatRoom> resourcePool,
 			ChatRoom resource) {
-		chatroomManager.update(resource);
+		ChatroomManager.getInstance().update(resource);
 		System.out.println("resourceChange: " + resource);
 	}
 
 	@Override
 	public void resourceRemovation(ResourcePool<ChatRoom> resourcePool,
 			ChatRoom resource) {
-		chatroomManager.remove(resource.getId());
+		ChatroomManager.getInstance().remove(resource.getId());
 		System.out.println("resourceRemovation: " + resource);
 	}
 

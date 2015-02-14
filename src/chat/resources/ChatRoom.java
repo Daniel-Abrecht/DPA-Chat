@@ -9,7 +9,7 @@ import serialisation.Expose;
 public class ChatRoom extends Resource implements ChatRoomListener {
 	@Expose
 	private String name;
-	private ChatRoomView chv;
+	private ChatRoomView view;
 
 	public String getName() {
 		return name;
@@ -25,13 +25,9 @@ public class ChatRoom extends Resource implements ChatRoomListener {
 	}
 
 	public ChatRoomView getView() {
-		if (chv == null)
-			chv = new ChatRoomView(this);
-		return chv;
-	}
-
-	public void display() {
-		getView().setVisible(true);
+		if (view == null)
+			view = new ChatRoomView(this);
+		return view;
 	}
 
 	@Override

@@ -9,33 +9,35 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import chat.resources.ChatRoom;
+import chat.Chat;
+import chat.resources.Profil;
 
 @SuppressWarnings("serial")
-public class ChatroomManager extends JFrame {
+public class ProfilManager extends JFrame {
 	private VScrollList vScrollList = new VScrollList();
-	private ChatRoomEditor chatRoomEditor = new ChatRoomEditor();
-	public ChatRoom selectedChatroom;
-	private ArrayList<ChatroomItem> chatRoomItems = new ArrayList<ChatroomItem>();
-	private static ChatroomManager chatroomManager;
+	private ProfilEditor profilEditor = new ProfilEditor();
+	public Profil selectedProfil;
+	private ArrayList<ProfilItem> profilItems = new ArrayList<ProfilItem>();
+	private static ProfilManager profilManager;
 
-	public static ChatroomManager getInstance() {
-		if (chatroomManager != null)
-			return chatroomManager;
-		return chatroomManager = new ChatroomManager();
+	public static ProfilManager getInstance() {
+		if (profilManager != null)
+			return profilManager;
+		return profilManager = new ProfilManager();
 	}
 
-	private ChatroomManager() {
+	private ProfilManager() {
 
 		super();
 
-		setTitle("Chatroom Manager");
+		setTitle("User manager");
 		setSize(400, 600);
-		addWindowListener(new ChatroomManagerListener());
+		addWindowListener(new UserManagerListener());
 		setLayout(new BorderLayout());
 
 		add(vScrollList, BorderLayout.CENTER);
@@ -44,7 +46,7 @@ public class ChatroomManager extends JFrame {
 		buttons.setLayout(new GridLayout(1, 0));
 
 		JButton newRoom = new JButton("Neu");
-		JButton editRoom = new JButton("Umbenennen");
+		JButton editRoom = new JButton("Bearbeiten");
 
 		buttons.add(editRoom);
 		editRoom.setEnabled(false);
@@ -56,8 +58,8 @@ public class ChatroomManager extends JFrame {
 		newRoom.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				chatRoomEditor.setTarget(new ChatRoom());
-				chatRoomEditor.setVisible(true);
+				profilEditor.setTarget(new Profil());
+				profilEditor.setVisible(true);
 			}
 		});
 
@@ -70,18 +72,18 @@ public class ChatroomManager extends JFrame {
 
 	}
 
-	static class ChatroomManagerListener extends WindowAdapter {
+	static class UserManagerListener extends WindowAdapter {
 		public void windowClosing(WindowEvent e) {
 			e.getWindow().setVisible(false);
 		}
 	}
 
-	private class ChatroomItem extends DefaultListItem {
+	private class ProfilItem extends DefaultListItem {
 		private Label label = new Label();
-		private ChatRoom chatRoom;
+		private Profil profil;
 
-		public ChatroomItem(ChatRoom chatRoom) {
-			setChatRoom(chatRoom);
+		public ProfilItem(Profil profil) {
+			setProfil(profil);
 			setLayout(new BorderLayout(50, 50));
 			add(label, BorderLayout.CENTER);
 			setPreferredSize(new Dimension(0, 50));
@@ -90,37 +92,42 @@ public class ChatroomManager extends JFrame {
 
 		@Override
 		public void onSelect() {
-			chatRoom.getView().setVisible(true);
+			Chat.currentProfil = profil;
+			ChatroomManager.getInstance().setVisible(true);
 		}
 
 		@Override
 		public void onActive(boolean b) {
-			selectedChatroom = chatRoom;
+			if (b) {
+				selectedProfil = profil;
+			} else {
+				selectedProfil = null;
+			}
 		}
 
-		public ChatRoom getChatRoom() {
-			return chatRoom;
+		public Profil getProfil() {
+			return profil;
 		}
 
-		public void setChatRoom(ChatRoom chatRoom) {
-			this.chatRoom = chatRoom;
+		public void setProfil(Profil profil) {
+			this.profil = profil;
 			updateContent();
 		}
 
 		private void updateContent() {
-			label.setText(chatRoom.getName());
+			label.setText(profil.getName());
 		}
 
 	};
 
-	public void update(ChatRoom chatRoom) {
-		Integer id = chatRoom.getId();
+	public void update(Profil profil) {
+		Integer id = profil.getId();
 		int i;
-		for (i = chatRoomItems.size(); i-- > 0;) {
-			ChatroomItem mv = chatRoomItems.get(i);
-			if (mv.getChatRoom().getId() <= id) {
-				if (mv.getChatRoom().getId() == id) {
-					mv.setChatRoom(chatRoom);
+		for (i = profilItems.size(); i-- > 0;) {
+			ProfilItem mv = profilItems.get(i);
+			if (mv.getProfil().getId() <= id) {
+				if (mv.getProfil().getId() == id) {
+					mv.setProfil(profil);
 					return;
 				} else {
 					break;
@@ -128,19 +135,19 @@ public class ChatroomManager extends JFrame {
 			}
 		}
 		if (i < 0)
-			i = chatRoomItems.size();
+			i = profilItems.size();
 		else
 			i++;
-		ChatroomItem messageView = new ChatroomItem(chatRoom);
-		chatRoomItems.add(i, messageView);
+		ProfilItem messageView = new ProfilItem(profil);
+		profilItems.add(i, messageView);
 		messageView.addTo(vScrollList, i);
 		vScrollList.revalidate();
 	}
 
 	public void remove(Integer id) {
-		for (Integer i = chatRoomItems.size(); i-- > 0;) {
-			if (chatRoomItems.get(i).getChatRoom().getId() == id) {
-				chatRoomItems.remove(i);
+		for (Integer i = profilItems.size(); i-- > 0;) {
+			if (profilItems.get(i).getProfil().getId() == id) {
+				profilItems.remove(i);
 				vScrollList.remove(i);
 				break;
 			}

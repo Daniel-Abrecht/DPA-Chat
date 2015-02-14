@@ -49,10 +49,10 @@ public class RemoteEndpoint extends Endpoint {
 	protected void cleanup() {
 		for (int i = 0; i < dataPackets.length; i++) {
 			DataPacket d = dataPackets[i];
-			if(d==null)
+			if (d == null)
 				continue;
 			if (new Date().getTime() - d.getCreationTime().getTime() > packetExpires) {
-				removePacket((byte)i);
+				removePacket((byte) i);
 			}
 		}
 	}
