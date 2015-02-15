@@ -9,7 +9,9 @@ public class Message extends Resource {
 	private String content;
 	@Expose(adapter=ResourceGsonAdapter.class)
 	private ChatRoom chatRoom;
-
+	@Expose(adapter=ResourceGsonAdapter.class)
+	private Profil profil;
+	
 	public ChatRoom getChatRoom() {
 		return chatRoom;
 	}
@@ -29,5 +31,13 @@ public class Message extends Resource {
 	@Override
 	public String toString() {
 		return "Message [content=" + content + ", chatRoom=" + chatRoom + "]";
+	}
+
+	public Profil getProfil() {
+		return profil;
+	}
+
+	public void setProfil(Profil profil) {
+		this.profil = profil;
 	}
 }

@@ -3,9 +3,9 @@ package ui;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Rectangle;
 
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.Scrollable;
@@ -53,7 +53,7 @@ public class VScrollList extends JScrollPane {
 		super(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		listHelperPanel = panel;
-		listPanel.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
+		listPanel.setLayout(new BoxLayout(listPanel,BoxLayout.Y_AXIS));
 		listHelperPanel.setLayout(new BorderLayout());
 		listHelperPanel.add(listPanel, BorderLayout.NORTH);
 	}

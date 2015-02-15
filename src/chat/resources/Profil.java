@@ -2,7 +2,6 @@ package chat.resources;
 
 import serialisation.Deserializable;
 import serialisation.Expose;
-import ui.ProfilView;
 
 @Deserializable
 public class Profil extends Resource {
@@ -10,7 +9,6 @@ public class Profil extends Resource {
 	private String name;
 	@Expose
 	private String description;
-	private ProfilView view;
 
 	public String getDescription() {
 		return description;
@@ -18,12 +16,6 @@ public class Profil extends Resource {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public ProfilView getView() {
-		if (view == null)
-			view = new ProfilView();
-		return view;
 	}
 
 	public String getName() {
