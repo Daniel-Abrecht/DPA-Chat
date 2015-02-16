@@ -16,14 +16,16 @@ public class ProfilListenerImpl implements ResourceListener<Profil> {
 	@Override
 	public void resourceChange(ResourcePool<Profil> resourcePool,
 			Profil resource) {
-		ProfilManager.getInstance().update(resource);
+		if (resource.isLocal())
+			ProfilManager.getInstance().update(resource);
 		System.out.println("resourceChange: " + resource);
 	}
 
 	@Override
 	public void resourceRemovation(ResourcePool<Profil> resourcePool,
 			Profil resource) {
-		ProfilManager.getInstance().remove(resource.getId());
+		if (resource.isLocal())
+			ProfilManager.getInstance().remove(resource.getId());
 		System.out.println("resourceRemovation: " + resource);
 	}
 

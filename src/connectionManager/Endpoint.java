@@ -1,83 +1,61 @@
 package connectionManager;
 
 import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 public class Endpoint {
-	private int userCount = 0;
-	protected final int maxUsers = 0x100;
-	protected User[] users = new User[maxUsers];
+
+	private Date lastMessageArrivalTime;
+	private DataPacket[] dataPackets = new DataPacket[0x80];
+	private final int packetExpires = 10 * 1000; // 10 seconds
 	protected InetAddress address;
 
-	public interface UserEventHandler extends UserListener,
-			EventHandlerIface<UserListener> {
-	};
-
-	public final UserEventHandler userEventHandler = EventHandler
-			.createEventHandler(UserEventHandler.class);
-
-	public User getUser(byte id) {
-		return users[id];
+	public Endpoint(InetAddress socketAddress) {
+		setAddress(socketAddress);
+		updateLastMessageArrivalTime();
 	}
 
-	protected void setUser(byte id, User user) {
-		if (user.getEndpoint() != this)
-			user.setEndpoint(this);
-		user.setId(id);
-		if (users[id] == null && user != null) {
-			userCount++;
-			userEventHandler.userCreation(user);
-		} else if (users[id] != null && user == null) {
-			userCount--;
-			userEventHandler.userRemovation(user);
+	public Date getLastMessageArrivalTime() {
+		return lastMessageArrivalTime;
+	}
+
+	public void updateLastMessageArrivalTime() {
+		lastMessageArrivalTime = new Date();
+	}
+
+	public DataPacket createPacket(byte packetId, int packetSize) {
+		if (packetId > 0x3f) {
+			System.err.println("Impossible packet id!");
+			return null;
 		}
-		users[id] = user;
-		userEventHandler.userChange(user);
+		if (packetId < 0) {
+			System.err.println("Invalid packet size!");
+			return null;
+		}
+		return dataPackets[packetId] = new DataPacket(packetSize);
 	}
 
-	public void setUser(User user) {
-		byte id = user.getId();
-		setUser(id, user);
+	public DataPacket getPacket(byte packetId) {
+		return dataPackets[packetId];
 	}
 
-	protected void removeUser(byte id, User user) {
-		if (users[id] == null)
+	public void removePacket(byte packetId) {
+		if (packetId > 0x3f) {
+			System.err.println("Impossible packet id!");
 			return;
-		userCount--;
-		users[id] = null;
-		userEventHandler.userRemovation(user);
-	}
-
-	public int getUserCount() {
-		return userCount;
-	}
-
-	protected boolean tryAddUser(User u) {
-		if (u == null || userCount >= maxUsers)
-			return false;
-		int i;
-		for (i = 0; i < maxUsers; i++) {
-			if (users[i] == null)
-				break;
 		}
-		users[i] = u;
-		u.setId((byte) i);
-		u.setEndpoint(this);
-		userCount++;
-		userEventHandler.userCreation(u);
-		return true;
+		dataPackets[packetId] = null;
 	}
 
-	public List<User> getUsers() {
-		List<User> userList = new ArrayList<User>();
-		for (int i = 0; i < users.length; i++) {
-			User user = users[i];
-			if (user == null)
+	protected void cleanup() {
+		for (int i = 0; i < dataPackets.length; i++) {
+			DataPacket d = dataPackets[i];
+			if (d == null)
 				continue;
-			userList.add(user);
+			if (new Date().getTime() - d.getCreationTime().getTime() > packetExpires) {
+				removePacket((byte) i);
+			}
 		}
-		return userList;
 	}
 
 	protected void setAddress(InetAddress address) {
@@ -87,5 +65,4 @@ public class Endpoint {
 	public InetAddress getAddress() {
 		return address;
 	}
-
 }

@@ -5,6 +5,8 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.MulticastSocket;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.Map;
@@ -15,7 +17,7 @@ class Server extends Thread {
 	private MulticastSocket socket;
 	private boolean running;
 	private ConnectionManager connectionManager;
-	private Map<InetAddress, RemoteEndpoint> endpoints = new ConcurrentHashMap<InetAddress, RemoteEndpoint>();
+	private Map<InetAddress, Endpoint> endpoints = new ConcurrentHashMap<InetAddress, Endpoint>();
 	private InetAddress group;
 	private Endpoint localEndpoint;
 
@@ -29,6 +31,19 @@ class Server extends Thread {
 			localEndpoint = getOrCreateEndpoint(InetAddress.getLocalHost());
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
+		}
+	}
+
+	public static boolean isLocal(InetAddress addr) {
+		// Check if the address is a valid special local or loop back
+		if (addr.isAnyLocalAddress() || addr.isLoopbackAddress())
+			return true;
+
+		// Check if the address is defined on any interface
+		try {
+			return NetworkInterface.getByInetAddress(addr) != null;
+		} catch (SocketException e) {
+			return false;
 		}
 	}
 
@@ -66,7 +81,7 @@ class Server extends Thread {
 			}
 			boolean first = (bs[0] & 0x80) != 0;
 			byte packetId = (byte) (bs[0] & 0x7F);
-			RemoteEndpoint e = getOrCreateEndpoint(((InetSocketAddress) packet
+			Endpoint e = getOrCreateEndpoint(((InetSocketAddress) packet
 					.getSocketAddress()).getAddress());
 			e.updateLastMessageArrivalTime();
 			DataPacket dp = null;
@@ -82,9 +97,9 @@ class Server extends Thread {
 							+ "\n--dump end--");
 					return;
 				}
-				byte userId = bs[5];
+				byte type = bs[5];
 				dp = e.createPacket(packetId, packetSize);
-				dp.setUserId(userId);
+				dp.setType(type);
 			} else {
 				dp = e.getPacket(packetId);
 				if (dp == null)
@@ -132,17 +147,22 @@ class Server extends Thread {
 		}
 	}
 
-	public RemoteEndpoint getOrCreateEndpoint(InetAddress inetAddress) {
-		RemoteEndpoint e = endpoints.get(inetAddress);
+	public Endpoint getOrCreateEndpoint(InetAddress inetAddress) {
+		Endpoint e;
+		if (isLocal(inetAddress)) {
+			e = localEndpoint;
+		} else {
+			e = endpoints.get(inetAddress);
+		}
 		if (e == null) {
-			e = new RemoteEndpoint(inetAddress);
+			e = new Endpoint(inetAddress);
 			endpoints.put(inetAddress, e);
 		}
 		return e;
 	}
 
 	private void cleanup() {
-		for (RemoteEndpoint e : endpoints.values()) {
+		for (Endpoint e : endpoints.values()) {
 			if (new Date().getTime() - e.getLastMessageArrivalTime().getTime() > endpointExpires) {
 				endpoints.remove(e.getAddress());
 			} else {
@@ -153,10 +173,6 @@ class Server extends Thread {
 
 	public Endpoint getLocalEndpoint() {
 		return localEndpoint;
-	}
-
-	public void setLocalEndpoint(Endpoint localEndpoint) {
-		this.localEndpoint = localEndpoint;
 	}
 
 }

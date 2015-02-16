@@ -11,7 +11,7 @@ public class ProfilView extends JPanel {
 	private Profil profil;
 	public ProfilView() {
 		setLayout(new BorderLayout());
-		add(name,BorderLayout.CENTER);
+		add(name,BorderLayout.NORTH);
 	}
 	public Profil getProfil() {
 		return profil;

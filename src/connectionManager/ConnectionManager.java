@@ -14,14 +14,12 @@ import chat.manager.EndpointManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class ConnectionManager extends Endpoint {
+public class ConnectionManager {
 
 	private Server server;
 	private Client client;
 	private List<ReceiveHandler> reciveHandlers = new ArrayList<ReceiveHandler>();
 	private Endpoint localEndpoint;
-	private static Gson gson = new GsonBuilder().registerTypeHierarchyAdapter(
-			Object.class, new AnnotationProcessorAdapter()).create();
 
 	public ConnectionManager(String multicastAddr, int port) {
 		InetAddress addr;
@@ -46,25 +44,21 @@ public class ConnectionManager extends Endpoint {
 		client.end();
 	}
 
-	public void reciveHandler(RemoteEndpoint e, DataPacket dp) {
-		byte uid = dp.getUserId();
-		User u = e.getUser(uid);
-		if (u == null)
-			e.setUser(uid, u = new User());
+	public void reciveHandler(Endpoint e, DataPacket dp) {
 		Container c;
 		try {
-			c = Container.parse(new String(dp.getBuffer(),"UTF-8"));
+			String content = new String(dp.getBuffer(), "UTF-8");
+			System.out.println("Recived: " + content);
+			c = Container.parse(content, e);
 		} catch (UnsupportedEncodingException e2) {
 			e2.printStackTrace();
 			return;
 		}
 		Object obj = c.getObject();
-		if(obj instanceof User)
-			e.setUser(uid, u=(User)obj);
 		for (ReceiveHandler reciveHandler : reciveHandlers) {
 			if (reciveHandler.getHandledClass()
 					.isAssignableFrom(obj.getClass())) {
-				reciveHandler.onReceive(c, e, u);
+				reciveHandler.onReceive(c, e);
 				break;
 			}
 		}
@@ -74,10 +68,9 @@ public class ConnectionManager extends Endpoint {
 		reciveHandlers.add(reciveHandler);
 	}
 
-	public void send(User u, Object o) {
-		if(u.getEndpoint()==null){
-			localEndpoint.tryAddUser(u);
-		}
+	public void send(Object o) {
+		Gson gson = new GsonBuilder().registerTypeHierarchyAdapter(
+				Object.class, new AnnotationProcessorAdapter()).create();
 		String str = gson.toJson(new Container(o));
 		System.out.println(str);
 		byte[] buffer = null;
@@ -87,7 +80,6 @@ public class ConnectionManager extends Endpoint {
 			e.printStackTrace();
 		}
 		DataPacket packet = new DataPacket(buffer.length);
-		packet.setUserId(u.getId());
 		packet.fill(buffer, 0, buffer.length, 0);
 		client.send(packet);
 	}
@@ -95,6 +87,10 @@ public class ConnectionManager extends Endpoint {
 	public EndpointManager getEndpointManager(InetAddress addr) {
 		Endpoint e = server.getOrCreateEndpoint(addr);
 		return endpointMap.sync(e);
+	}
+
+	public EndpointManager getLocalEndpointManager() {
+		return endpointMap.sync(localEndpoint);
 	}
 
 }

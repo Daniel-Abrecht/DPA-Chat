@@ -2,6 +2,7 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
@@ -19,6 +20,7 @@ import chat.resources.Profil;
 
 @SuppressWarnings("serial")
 public class ProfilManager extends JFrame {
+	
 	private VScrollList vScrollList = new VScrollList();
 	private ProfilEditor profilEditor = new ProfilEditor();
 	public Profil selectedProfil;
@@ -40,6 +42,9 @@ public class ProfilManager extends JFrame {
 		addWindowListener(new UserManagerListener());
 		setLayout(new BorderLayout());
 
+		Label l = new Label("Profile");
+		l.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,30));
+		add(l, BorderLayout.NORTH);
 		add(vScrollList, BorderLayout.CENTER);
 
 		JPanel buttons = new JPanel();

@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
@@ -19,6 +20,12 @@ import com.google.gson.JsonSerializationContext;
 
 public class AnnotationProcessorAdapter implements GsonAdapter<Object> {
 
+	private Object[] args;
+	
+	public AnnotationProcessorAdapter(Object... args){
+		this.args = args;
+	}
+	
 	@Override
 	public JsonElement serialize(Object object, Type type,
 			JsonSerializationContext context) {
@@ -66,9 +73,9 @@ public class AnnotationProcessorAdapter implements GsonAdapter<Object> {
 					try {
 						@SuppressWarnings("unchecked")
 						GsonAdapter<Object> a = (GsonAdapter<Object>) adapterClass[0]
-								.newInstance();
+								.getConstructor(Object[].class).newInstance(new Object[]{args});
 						adapter = a;
-					} catch (InstantiationException | IllegalAccessException e) {
+					} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 						e.printStackTrace();
 						continue;
 					}
@@ -195,9 +202,9 @@ public class AnnotationProcessorAdapter implements GsonAdapter<Object> {
 					try {
 						@SuppressWarnings("unchecked")
 						GsonAdapter<Object> a = (GsonAdapter<Object>) adapterClass[0]
-								.newInstance();
+								.getConstructor(Object[].class).newInstance(new Object[]{args});
 						adapter = a;
-					} catch (InstantiationException | IllegalAccessException e) {
+					} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 						e.printStackTrace();
 						continue;
 					}

@@ -1,14 +1,7 @@
 package chat.resources;
 
-import static chat.manager.EndpointMap.endpointMap;
-
-import java.util.Collection;
-import java.util.Iterator;
-
 import chat.Chat;
 import chat.manager.EndpointManager;
-import chat.manager.UserManager;
-
 import serialisation.Expose;
 
 public abstract class Resource {
@@ -26,14 +19,14 @@ public abstract class Resource {
 			parent.register(this, id);
 		}
 	}
-	
-	public boolean isRegistred(){
+
+	public boolean isRegistred() {
 		return resourcePool != null;
 	}
 
 	@SuppressWarnings("unchecked")
-	public void register(UserManager userManager) {
-		register((ResourcePool<Resource>) userManager.getResourcePool(this
+	public void register(EndpointManager endpointManager) {
+		register((ResourcePool<Resource>) endpointManager.getResourcePool(this
 				.getClass()));
 	}
 
@@ -46,47 +39,30 @@ public abstract class Resource {
 		return id;
 	}
 
-	public Resource reconstruct(UserManager um) {
-		register(um);
+	public Resource reconstruct(EndpointManager em) {
+		register(em);
 		return this;
 	}
 
-	public static Resource reconstruct(Object x, UserManager user) {
-		return ((Resource) x).reconstruct(user);
-	}
-	
-	public void updateRemote() {
-		Chat.connectionManager.send(resourcePool.getUserManager().getUser(), this);
+	public static Resource reconstruct(Object x, EndpointManager em) {
+		return ((Resource) x).reconstruct(em);
 	}
 
-	public static <T extends Resource> void every(Class<T> resourceType,
-			ResourceHandler<T> rh) {
-		Collection<EndpointManager> endpoints = endpointMap.getEndpoints();
-		for (Iterator<EndpointManager> iterator = endpoints.iterator(); iterator
-				.hasNext();) {
-			EndpointManager endpointManager = iterator.next();
-			Collection<UserManager> userManagers = endpointManager
-					.getUserManagers();
-			for (UserManager userManager : userManagers) {
-				ResourcePool<T> resourcePool = userManager
-						.getResourcePool(resourceType);
-				Collection<T> resources = resourcePool.getResources();
-				for (Iterator<T> iterator2 = resources.iterator(); iterator2
-						.hasNext();) {
-					T resource = iterator2.next();
-					rh.handler(endpointManager, userManager, resourcePool,
-							resource);
-				}
-			}
-		}
+	public void updateRemote() {
+		Chat.connectionManager.send(this);
 	}
 
 	public ResourcePool<Resource> getResourcePool() {
 		return resourcePool;
 	}
-	
-	public UserManager getUserManager(){
-		return resourcePool.getUserManager();
+
+	public EndpointManager getEndpointManager() {
+		return resourcePool.getEndpointManager();
+	}
+
+	public boolean isLocal() {
+		EndpointManager e = getEndpointManager();
+		return e == Chat.connectionManager.getLocalEndpointManager();
 	}
 
 }

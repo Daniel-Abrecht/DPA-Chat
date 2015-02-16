@@ -44,7 +44,7 @@ class ChatRoomEditor extends JFrame  {
 				if(chatRoom.isRegistred()){
 					chatRoom.updateRemote();
 				}else{
-					chatRoom.register(Chat.currentProfil.getUserManager());
+					chatRoom.register(Chat.currentProfil.getEndpointManager());
 					chatRoom.updateRemote();
 				}
 			}

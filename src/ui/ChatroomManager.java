@@ -2,6 +2,7 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
@@ -9,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -38,6 +40,9 @@ public class ChatroomManager extends JFrame {
 		addWindowListener(new ChatroomManagerListener());
 		setLayout(new BorderLayout());
 
+		Label l = new Label("Chatrooms");
+		l.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,30));
+		add(l, BorderLayout.NORTH);
 		add(vScrollList, BorderLayout.CENTER);
 
 		JPanel buttons = new JPanel();

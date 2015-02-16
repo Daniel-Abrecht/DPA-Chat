@@ -1,83 +1,56 @@
 package chat.manager;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import chat.eventListenerImpl.ChatRoomListenerImpl;
+import chat.eventListenerImpl.MessageListenerImpl;
+import chat.eventListenerImpl.ProfilListenerImpl;
+import chat.resources.ChatRoom;
+import chat.resources.Message;
+import chat.resources.Profil;
+import chat.resources.Resource;
+import chat.resources.ResourcePool;
 import connectionManager.Endpoint;
-import connectionManager.User;
-import connectionManager.UserListener;
-import static chat.Chat.userManagerEventHandler;
 
 public class EndpointManager {
 
 	private Endpoint endpoint;
-	private Map<Byte, UserManager> userManagers = new ConcurrentHashMap<Byte, UserManager>();
+	private Map<Class<? extends Resource>, ResourcePool<? extends Resource>> resourcePools = new ConcurrentHashMap<Class<? extends Resource>, ResourcePool<? extends Resource>>();
 
 	public EndpointManager(Endpoint e) {
 		this.endpoint = e;
-		final EndpointManager self = this;
-		endpoint.userEventHandler.addEventListener(new UserListener() {
+		
+		ResourcePool<Profil> profilResourcePool = new ResourcePool<Profil>(this);
+		profilResourcePool.addEventListener(new ProfilListenerImpl());
+		resourcePools.put(Profil.class, profilResourcePool);
 
-			private void createOrChange(User user) {
-				UserManager userManager = userManagers.get(user.getId());
-				if (userManager == null) {
-					userManager = new UserManager(user);
-					userManagerEventHandler.userManagerCreation(self,
-							userManager);
-				} else if (userManager.getUser() == user) {
-					return;
-				}
-				userManager.setUser(user);
-				userManagers.put(user.getId(), userManager);
-				userManagerEventHandler.userManagerChange(self, userManager);
-			}
+		ResourcePool<ChatRoom> chatRoomResourcePool = new ResourcePool<ChatRoom>(this);
+		chatRoomResourcePool.addEventListener(new ChatRoomListenerImpl());
+		resourcePools.put(ChatRoom.class, chatRoomResourcePool);
 
-			@Override
-			public void userCreation(User user) {
-				createOrChange(user);
-			}
-
-			@Override
-			public void userChange(User user) {
-				createOrChange(user);
-			}
-
-			@Override
-			public void userRemovation(User user) {
-				UserManager userManager = userManagers.get(user.getId());
-				if (userManager == null)
-					return;
-				userManagers.remove(user.getId());
-				userManagerEventHandler
-						.userManagerRemovation(self, userManager);
-			}
-
-		});
+		ResourcePool<Message> messageResourcePool = new ResourcePool<Message>(this);
+		messageResourcePool.addEventListener(new MessageListenerImpl());
+		resourcePools.put(Message.class, messageResourcePool);
 	}
 
 	public Endpoint getEndpoint() {
 		return endpoint;
 	}
 
-	public UserManager getUserManager(byte userId) {
-		return userManagers.get(userId);
+	public boolean tryAdd(Resource resource) {
+		Class<? extends Resource> resClass = resource.getClass();
+		@SuppressWarnings("unchecked")
+		ResourcePool<Resource> resPool = (ResourcePool<Resource>) resourcePools.get(resClass);
+		if (resPool == null)
+			return false;
+		resPool.register(resource);
+		return true;
 	}
 
-	public Collection<UserManager> getUserManagers() {
-		return userManagers.values();
-	}
-
-	public UserManager sync(User u) {
-		byte id = u.getId();
-		UserManager um = getUserManager(id);
-		if (um == null) {
-			userManagers.put(id, um = new UserManager(u));
-			userManagerEventHandler.userManagerCreation(this, um);
-		} else if (um.getUser() == u)
-			return um;
-		userManagerEventHandler.userManagerChange(this, um);
-		return um;
+	@SuppressWarnings("unchecked")
+	public <T extends Resource> ResourcePool<T> getResourcePool(Class<T> resClass) {
+		return (ResourcePool<T>) resourcePools.get(resClass);
 	}
 
 }

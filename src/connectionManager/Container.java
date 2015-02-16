@@ -20,11 +20,6 @@ public class Container {
 	private String type;
 	@Expose
 	private Object object;
-	private static Gson gson = new GsonBuilder()
-			.registerTypeHierarchyAdapter(Object.class,
-					new AnnotationProcessorAdapter())
-			.registerTypeAdapter(Container.class, new ContainerDeserializer())
-			.create();
 
 	public Container(Object o) {
 		Class<?> c = o.getClass();
@@ -54,7 +49,12 @@ public class Container {
 		}
 	}
 
-	public static Container parse(String s) {
+	public static Container parse(String s, Object... o) {
+		Gson gson = new GsonBuilder()
+				.registerTypeHierarchyAdapter(Object.class,
+						new AnnotationProcessorAdapter(o))
+				.registerTypeAdapter(Container.class,
+						new ContainerDeserializer()).create();
 		Container c = gson.fromJson(s, Container.class);
 		return c;
 	}

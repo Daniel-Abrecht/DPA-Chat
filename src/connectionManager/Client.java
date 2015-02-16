@@ -19,10 +19,10 @@ public class Client extends Thread {
 		this.queue = new ArrayBlockingQueue<DataPacket>(256);
 	}
 
-	public void end(){
-		running=false;
+	public void end() {
+		running = false;
 	}
-	
+
 	public void send(DataPacket datas) {
 		while (true) {
 			try {
@@ -43,7 +43,7 @@ public class Client extends Thread {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		while (running ) {
+		while (running) {
 			DataPacket dataPacket;
 			try {
 				dataPacket = queue.take();
@@ -52,13 +52,15 @@ public class Client extends Thread {
 			}
 			byte[] datas = dataPacket.getBuffer();
 			int size = dataPacket.getSize();
-			byte userId = dataPacket.getUserId();
+			byte type = dataPacket.getType();
 			int offset = 0;
 			int packetNr = 0;
-			// 1 bit first packet flag=1, 7 bit packet id, 4 byte size, 1 byte userId, total: 6 byte
-			// 1 bit first packet flag=0, 7 bit packet id, 7bit reserved, 25bit packetNr, total 5 bit
+			// 1 bit first packet flag=1, 7 bit packet id, 4 byte size, 1 byte
+			// type, total: 6 byte
+			// 1 bit first packet flag=0, 7 bit packet id, 7bit reserved, 25bit
+			// packetNr, total 5 bit
 			// log2(((1<<(8*4)) -256-6)/(256-5)+1)+1 = 25
-			while (offset<size) {
+			while (offset < size) {
 				boolean firstPacket = (offset == 0);
 				int seek = 0;
 				buffer[seek++] = (byte) (idCounter | (firstPacket ? 0x80 : 0x00));
@@ -67,7 +69,7 @@ public class Client extends Thread {
 					buffer[seek++] = (byte) ((size >> 16) & 0xff);
 					buffer[seek++] = (byte) ((size >> 8) & 0xff);
 					buffer[seek++] = (byte) ((size >> 0) & 0xff);
-					buffer[seek++] = userId;
+					buffer[seek++] = type;
 				} else {
 					buffer[seek++] = (byte) ((packetNr >> 24) & 0x01);
 					buffer[seek++] = (byte) ((packetNr >> 16) & 0xff);
@@ -76,8 +78,8 @@ public class Client extends Thread {
 					packetNr++;
 				}
 				int space = buffer.length - seek;
-				if(space>size)
-					space=size;
+				if (space > size)
+					space = size;
 				System.arraycopy(datas, offset, buffer, seek, space);
 				offset += space;
 				seek += space;

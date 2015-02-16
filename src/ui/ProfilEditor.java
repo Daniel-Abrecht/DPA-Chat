@@ -11,8 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import connectionManager.User;
-import chat.manager.UserManager;
+import chat.Chat;
 import chat.resources.Profil;
 
 @SuppressWarnings("serial")
@@ -61,8 +60,7 @@ class ProfilEditor extends JFrame {
 
 	public void setTarget(Profil profil) {
 		if (!profil.isRegistred()) {
-			UserManager um = new UserManager(new User());
-			profil.register(um);
+			profil.register(Chat.connectionManager.getLocalEndpointManager());
 		}
 		nameField.setText(profil.getName());
 		this.profil = profil;

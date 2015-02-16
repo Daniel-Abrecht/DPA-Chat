@@ -6,7 +6,7 @@ import java.util.Date;
 class DataPacket {
 
 	private int size;
-	private byte userId;
+	private byte type;
 	private byte[] buffer;
 	private int currentSize;
 	private Date creationTime;
@@ -18,12 +18,12 @@ class DataPacket {
 		creationTime = new Date();
 	}
 
-	public void setUserId(byte userId) {
-		this.userId = userId;
+	public void setType(byte type) {
+		this.type = type;
 	}
 
-	public byte getUserId() {
-		return userId;
+	public byte getType() {
+		return type;
 	}
 
 	public Boolean fill(byte[] bs, int i, int j, int offset) {

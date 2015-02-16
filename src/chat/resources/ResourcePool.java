@@ -3,10 +3,11 @@ package chat.resources;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 import connectionManager.EventHandlerIface;
 import chat.event.ResourceEventHandler;
 import chat.eventListener.ResourceListener;
-import chat.manager.UserManager;
+import chat.manager.EndpointManager;
 import static connectionManager.EventHandler.createEventHandler;
 
 public class ResourcePool<T extends Resource> implements
@@ -15,13 +16,13 @@ public class ResourcePool<T extends Resource> implements
 	private int resIdCounter = 0;
 	private Map<Integer, T> resources = new ConcurrentHashMap<Integer, T>();
 
-	private final UserManager userManager;
+	private final EndpointManager endpointManager;
 
 	@SuppressWarnings("unchecked")
 	private ResourceEventHandler<T> resourceEventHandler = createEventHandler(ResourceEventHandler.class);
 
-	public ResourcePool(UserManager userManager) {
-		this.userManager = userManager;
+	public ResourcePool(EndpointManager endpointManager) {
+		this.endpointManager = endpointManager;
 	}
 
 	public Integer register(T resource) {
@@ -47,8 +48,8 @@ public class ResourcePool<T extends Resource> implements
 		return resources.values();
 	}
 
-	public UserManager getUserManager() {
-		return userManager;
+	public EndpointManager getEndpointManager() {
+		return endpointManager;
 	}
 
 	@Override
