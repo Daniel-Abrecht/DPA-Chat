@@ -1,6 +1,7 @@
 package chat.eventListenerImpl;
 
 import ui.ProfilManager;
+import ui.ProfilView;
 import chat.eventListener.ResourceListener;
 import chat.resources.Profil;
 import chat.resources.ResourcePool;
@@ -18,6 +19,7 @@ public class ProfilListenerImpl implements ResourceListener<Profil> {
 			Profil resource) {
 		if (resource.isLocal())
 			ProfilManager.getInstance().update(resource);
+		ProfilView.updateViewsWithProfile(resource);
 		System.out.println("resourceChange: " + resource);
 	}
 

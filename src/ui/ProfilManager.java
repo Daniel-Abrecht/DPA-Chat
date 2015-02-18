@@ -25,6 +25,7 @@ public class ProfilManager extends JFrame {
 	private ProfilEditor profilEditor = new ProfilEditor();
 	public Profil selectedProfil;
 	private ArrayList<ProfilItem> profilItems = new ArrayList<ProfilItem>();
+	private JButton editProfil;
 	private static ProfilManager profilManager;
 
 	public static ProfilManager getInstance() {
@@ -50,17 +51,17 @@ public class ProfilManager extends JFrame {
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new GridLayout(1, 0));
 
-		JButton newRoom = new JButton("Neu");
-		JButton editRoom = new JButton("Bearbeiten");
+		JButton newProfil = new JButton("Neu");
+		editProfil = new JButton("Bearbeiten");
 
-		buttons.add(editRoom);
-		editRoom.setEnabled(false);
-		buttons.add(newRoom);
+		buttons.add(editProfil);
+		editProfil.setEnabled(false);
+		buttons.add(newProfil);
 		buttons.setPreferredSize(new Dimension(0, 50));
 
 		add(buttons, BorderLayout.SOUTH);
 
-		newRoom.addActionListener(new ActionListener() {
+		newProfil.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				profilEditor.setTarget(new Profil());
@@ -68,10 +69,11 @@ public class ProfilManager extends JFrame {
 			}
 		});
 
-		editRoom.addActionListener(new ActionListener() {
+		editProfil.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("rename");
+				profilEditor.setTarget(selectedProfil);
+				profilEditor.setVisible(true);
 			}
 		});
 
@@ -101,14 +103,17 @@ public class ProfilManager extends JFrame {
 		public void onSelect() {
 			Chat.setCurrentProfil(profil);
 			ChatroomManager.getInstance().setVisible(true);
+			ProfilManager.this.setVisible(false);
 		}
 
 		@Override
 		public void onActive(boolean b) {
 			if (b) {
 				selectedProfil = profil;
+				editProfil.setEnabled(true);
 			} else {
 				selectedProfil = null;
+				editProfil.setEnabled(true);
 			}
 		}
 
@@ -132,8 +137,8 @@ public class ProfilManager extends JFrame {
 		int i;
 		for (i = profilItems.size(); i-- > 0;) {
 			ProfilItem mv = profilItems.get(i);
-			if (mv.getProfil().getId() <= id) {
-				if (mv.getProfil().getId() == id) {
+			if ((int)mv.getProfil().getId() <= (int)id) {
+				if ((int)mv.getProfil().getId() == (int)id) {
 					mv.setProfil(profil);
 					return;
 				} else {

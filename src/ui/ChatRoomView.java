@@ -28,7 +28,9 @@ public class ChatRoomView extends JFrame {
 	private JPanel postFormPanel = new JPanel();
 	private JTextArea postFormTextArea = new JTextArea();
 	private JButton sendButton = new JButton("▶");
+	private JPanel leftPanel = new JPanel();
 	private ProfilView profilView = new ProfilView();
+	private JButton changeProfile = new JButton("Profil wechseln");
 
 	public ChatRoomView(ChatRoom chatRoom) {
 		messageList.setBackground(Color.BLACK);
@@ -46,7 +48,10 @@ public class ChatRoomView extends JFrame {
 		postFormTextArea.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,18));
 		postFormPanel.add(scroll, BorderLayout.CENTER);
 		postFormPanel.add(sendButton, BorderLayout.EAST);
-		postFormPanel.add(profilView , BorderLayout.WEST);
+		postFormPanel.add(leftPanel , BorderLayout.WEST);
+		leftPanel.setLayout(new BorderLayout());
+		leftPanel.add(profilView , BorderLayout.CENTER);
+		leftPanel.add(changeProfile,BorderLayout.SOUTH);
 		profilView.setProfil(Chat.getCurrentProfil());
 		profilView.setPreferredSize(new Dimension(150,0));
 		Chat.events.addEventListener(new ChatListener(){
@@ -59,6 +64,12 @@ public class ChatRoomView extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				sendMessage();
+			}
+		});
+		changeProfile.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				ProfilManager.getInstance().setVisible(true);
 			}
 		});
 	}
@@ -79,7 +90,7 @@ public class ChatRoomView extends JFrame {
 		updateUI();
 	}
 
-	private void updateUI() {
+	public void updateUI() {
 		setTitle("Chatroom " + chatRoom.getName());
 	}
 

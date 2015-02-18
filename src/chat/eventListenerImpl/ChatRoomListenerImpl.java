@@ -17,6 +17,7 @@ public class ChatRoomListenerImpl implements ResourceListener<ChatRoom> {
 	public void resourceChange(ResourcePool<ChatRoom> resourcePool,
 			ChatRoom resource) {
 		ChatroomManager.getInstance().update(resource);
+		resource.getView().updateUI();
 		System.out.println("resourceChange: " + resource);
 	}
 
