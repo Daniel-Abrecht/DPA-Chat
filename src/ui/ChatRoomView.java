@@ -15,8 +15,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import chat.Chat;
+import chat.eventListener.ChatListener;
 import chat.resources.ChatRoom;
 import chat.resources.Message;
+import chat.resources.Profil;
 
 @SuppressWarnings("serial")
 public class ChatRoomView extends JFrame {
@@ -26,6 +28,7 @@ public class ChatRoomView extends JFrame {
 	private JPanel postFormPanel = new JPanel();
 	private JTextArea postFormTextArea = new JTextArea();
 	private JButton sendButton = new JButton("▶");
+	private ProfilView profilView = new ProfilView();
 
 	public ChatRoomView(ChatRoom chatRoom) {
 		messageList.setBackground(Color.BLACK);
@@ -43,6 +46,15 @@ public class ChatRoomView extends JFrame {
 		postFormTextArea.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,18));
 		postFormPanel.add(scroll, BorderLayout.CENTER);
 		postFormPanel.add(sendButton, BorderLayout.EAST);
+		postFormPanel.add(profilView , BorderLayout.WEST);
+		profilView.setProfil(Chat.getCurrentProfil());
+		profilView.setPreferredSize(new Dimension(150,0));
+		Chat.events.addEventListener(new ChatListener(){
+			@Override
+			public void currentProfilChanged(Profil o, Profil n) {
+				profilView.setProfil(n);
+			}
+		});
 		sendButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -55,8 +67,8 @@ public class ChatRoomView extends JFrame {
 		String text = postFormTextArea.getText();
 		postFormTextArea.setText("");
 		Message msg = new Message();
-		msg.setProfil(Chat.currentProfil);
-		msg.register(Chat.currentProfil.getEndpointManager());
+		msg.setProfil(Chat.getCurrentProfil());
+		msg.register(Chat.getCurrentProfil().getEndpointManager());
 		msg.setChatRoom(chatRoom);
 		msg.setContent(text);
 		msg.updateRemote();

@@ -1,5 +1,6 @@
 package chat.resources;
 
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -31,10 +32,35 @@ public class ResourcePool<T extends Resource> implements
 	}
 
 	public void register(T resource, int id) {
-		boolean created = !resources.containsKey(id);
+		T old = resources.get(id);
 		resources.put(id, resource);
-		if (created) {
+		if (old == null) {
 			resourceEventHandler.resourceCreation(this, resource);
+		} else {
+			Class<?> clazz = resource.getClass();
+			Class<?> classOld = old.getClass();
+			do {
+				if (!classOld.isAssignableFrom(clazz))
+					continue;
+				Field[] fields = classOld.getDeclaredFields();
+				for (int i = 0; i < fields.length; i++) {
+					Field field = fields[i];
+					Preserve p = field.getAnnotation(Preserve.class);
+					if (p == null)
+						continue;
+					field.setAccessible(true);
+					try {
+						if (field.get(resource) != null)
+							continue;
+						Object ov = field.get(old);
+						if (ov == null)
+							continue;
+						field.set(resource, ov);
+					} catch (IllegalArgumentException | IllegalAccessException e) {
+						e.printStackTrace();
+					}
+				}
+			} while ((classOld = classOld.getSuperclass()) != null);
 		}
 		resourceEventHandler.resourceChange(this, resource);
 	}

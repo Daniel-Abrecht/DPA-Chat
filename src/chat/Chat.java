@@ -2,6 +2,7 @@ package chat;
 
 import static connectionManager.EventHandler.createEventHandler;
 import ui.ProfilManager;
+import chat.event.ChatEventHandler;
 import chat.event.EndpointEventHandler;
 import chat.eventListenerImpl.EndpointListenerImpl;
 import chat.receiveHandler.ResourceReciveHandler;
@@ -13,10 +14,11 @@ public class Chat {
 	private final static String multicastAddr = "231.255.255.10";
 	private final static int port = 3311;
 
-	public static ConnectionManager connectionManager = new ConnectionManager(
+	public static final ConnectionManager connectionManager = new ConnectionManager(
 			multicastAddr, port);;
-	public static EndpointEventHandler endpointEventHandler = createEventHandler(EndpointEventHandler.class);
-	public static Profil currentProfil = null;
+	public static final EndpointEventHandler endpointEventHandler = createEventHandler(EndpointEventHandler.class);
+	private static Profil currentProfil = null;
+	public static final ChatEventHandler events = createEventHandler(ChatEventHandler.class);;
 
 	public static void main(String[] args) {
 
@@ -25,5 +27,15 @@ public class Chat {
 		connectionManager.start();
 
 		ProfilManager.getInstance().setVisible(true);
+	}
+
+	public static Profil getCurrentProfil() {
+		return currentProfil;
+	}
+
+	public static void setCurrentProfil(Profil currentProfil) {
+		Profil oldProfil = Chat.currentProfil;
+		Chat.currentProfil = currentProfil;
+		events.currentProfilChanged(oldProfil, currentProfil);
 	}
 }

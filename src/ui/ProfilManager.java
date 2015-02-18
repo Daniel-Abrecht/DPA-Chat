@@ -79,6 +79,8 @@ public class ProfilManager extends JFrame {
 
 	static class UserManagerListener extends WindowAdapter {
 		public void windowClosing(WindowEvent e) {
+			if(Utils.VisibleWindowCount()<=1)
+				System.exit(0);
 			e.getWindow().setVisible(false);
 		}
 	}
@@ -97,7 +99,7 @@ public class ProfilManager extends JFrame {
 
 		@Override
 		public void onSelect() {
-			Chat.currentProfil = profil;
+			Chat.setCurrentProfil(profil);
 			ChatroomManager.getInstance().setVisible(true);
 		}
 

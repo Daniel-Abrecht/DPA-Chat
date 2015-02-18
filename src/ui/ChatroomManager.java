@@ -3,6 +3,7 @@ package ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
@@ -12,17 +13,17 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import chat.resources.ChatRoom;
 
 @SuppressWarnings("serial")
-public class ChatroomManager extends JFrame {
+public class ChatroomManager extends Frame {
 	private VScrollList vScrollList = new VScrollList();
 	private ChatRoomEditor chatRoomEditor = new ChatRoomEditor();
 	public ChatRoom selectedChatroom;
 	private ArrayList<ChatroomItem> chatRoomItems = new ArrayList<ChatroomItem>();
+	private JButton editRoom;
 	private static ChatroomManager chatroomManager;
 
 	public static ChatroomManager getInstance() {
@@ -41,7 +42,7 @@ public class ChatroomManager extends JFrame {
 		setLayout(new BorderLayout());
 
 		Label l = new Label("Chatrooms");
-		l.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,30));
+		l.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30));
 		add(l, BorderLayout.NORTH);
 		add(vScrollList, BorderLayout.CENTER);
 
@@ -49,7 +50,7 @@ public class ChatroomManager extends JFrame {
 		buttons.setLayout(new GridLayout(1, 0));
 
 		JButton newRoom = new JButton("Neu");
-		JButton editRoom = new JButton("Umbenennen");
+		editRoom = new JButton("Umbenennen");
 
 		buttons.add(editRoom);
 		editRoom.setEnabled(false);
@@ -69,7 +70,8 @@ public class ChatroomManager extends JFrame {
 		editRoom.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("rename");
+				chatRoomEditor.setTarget(selectedChatroom);
+				chatRoomEditor.setVisible(true);
 			}
 		});
 
@@ -77,7 +79,8 @@ public class ChatroomManager extends JFrame {
 
 	static class ChatroomManagerListener extends WindowAdapter {
 		public void windowClosing(WindowEvent e) {
-			e.getWindow().setVisible(false);
+			if (Utils.VisibleWindowCount() <= 1)
+				System.exit(0);
 		}
 	}
 
@@ -100,7 +103,13 @@ public class ChatroomManager extends JFrame {
 
 		@Override
 		public void onActive(boolean b) {
-			selectedChatroom = chatRoom;
+			if (b) {
+				selectedChatroom = chatRoom;
+				editRoom.setEnabled(true);
+			} else {
+				selectedChatroom = null;
+				editRoom.setEnabled(false);
+			}
 		}
 
 		public ChatRoom getChatRoom() {
@@ -123,8 +132,8 @@ public class ChatroomManager extends JFrame {
 		int i;
 		for (i = chatRoomItems.size(); i-- > 0;) {
 			ChatroomItem mv = chatRoomItems.get(i);
-			if (mv.getChatRoom().getId() <= id) {
-				if (mv.getChatRoom().getId() == id) {
+			if ((int) mv.getChatRoom().getId() <= (int) id) {
+				if ((int) mv.getChatRoom().getId() == (int) id) {
 					mv.setChatRoom(chatRoom);
 					return;
 				} else {
@@ -144,7 +153,7 @@ public class ChatroomManager extends JFrame {
 
 	public void remove(Integer id) {
 		for (Integer i = chatRoomItems.size(); i-- > 0;) {
-			if (chatRoomItems.get(i).getChatRoom().getId() == id) {
+			if ((int) chatRoomItems.get(i).getChatRoom().getId() == (int) id) {
 				chatRoomItems.remove(i);
 				vScrollList.remove(i);
 				break;

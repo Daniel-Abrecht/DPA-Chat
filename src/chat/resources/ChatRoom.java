@@ -9,6 +9,7 @@ import serialisation.Expose;
 public class ChatRoom extends Resource implements ChatRoomListener {
 	@Expose
 	private String name;
+	@Preserve
 	private ChatRoomView view;
 
 	public String getName() {
