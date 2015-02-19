@@ -22,6 +22,7 @@ public class MessageView extends JPanel {
 		textArea.setEditable(false);
 		textArea.setLineWrap(true);
 		textArea.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 18));
+		profileView.setPreferredSize(new Dimension(100,0));
 		add(textArea, BorderLayout.CENTER);
 		add(profileView , BorderLayout.WEST);
 		setMessage(message);

@@ -17,12 +17,13 @@ import chat.resources.Profil;
 @SuppressWarnings("serial")
 class ProfilEditor extends JFrame {
 	public JTextField nameField = new JTextField();
+	public JTextField descField = new JTextField();
 	protected Profil profil;
 
 	public ProfilEditor() {
 		super();
 		setTitle("Profil Editor");
-		setSize(300, 120);
+		setSize(300, 140);
 		setLayout(new BorderLayout());
 		JPanel btns = new JPanel();
 		btns.setLayout(new GridLayout(1, 0));
@@ -49,7 +50,10 @@ class ProfilEditor extends JFrame {
 		content.setLayout(new GridLayout(0, 2));
 		content.add(new Label("Name"));
 		content.add(nameField);
+		content.add(new Label("Beschreibung"));
+		content.add(descField);
 		nameField.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 20));
+		descField.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 20));
 		add(content, BorderLayout.CENTER);
 	}
 
