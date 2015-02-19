@@ -15,7 +15,7 @@ public class Chat {
 	private final static int port = 3311;
 
 	public static final ConnectionManager connectionManager = new ConnectionManager(
-			multicastAddr, port);;
+			multicastAddr, port);
 	public static final EndpointEventHandler endpointEventHandler = createEventHandler(EndpointEventHandler.class);
 	private static Profil currentProfil = null;
 	public static final ChatEventHandler events = createEventHandler(ChatEventHandler.class);;
