@@ -12,20 +12,20 @@ public class HashCalculator {
 		if (o == null)
 			return 0;
 		if (o instanceof Byte) {
-			final int len = Byte.BYTES;
-			ch.update(toBytes(((Byte) o).byteValue()), off, len);
+			final int len = 1;
+			ch.update(toBytes(((Byte) o).byteValue()), 0, len);
 			off += len;
 		} else if (o instanceof Short) {
-			final int len = Short.BYTES;
-			ch.update(toBytes(((Short) o).shortValue()), off, len);
+			final int len = 2;
+			ch.update(toBytes(((Short) o).shortValue()), 0, len);
 			off += len;
 		} else if (o instanceof Integer) {
-			final int len = Integer.BYTES;
-			ch.update(toBytes(((Integer) o).intValue()), off, len);
+			final int len = 4;
+			ch.update(toBytes(((Integer) o).intValue()), 0, len);
 			off += len;
 		} else if (o instanceof Long) {
-			final int len = Long.BYTES;
-			ch.update(toBytes(((Long) o).longValue()), off, len);
+			final int len = 8;
+			ch.update(toBytes(((Long) o).longValue()), 0, len);
 			off += len;
 		} else if (o instanceof Character) {
 			short x = (short) (char) o;
@@ -35,9 +35,9 @@ public class HashCalculator {
 			return calcHash(by, ch, off);
 		} else if (o instanceof byte[]) {
 			byte[] by = (byte[]) o;
-			ch.update(toBytes(((Long) o).longValue()), off, by.length);
+			ch.update(toBytes(((Long) o).longValue()), 0, by.length);
 			off += by.length;
-		} else if (o instanceof Object) {
+		} else if (o instanceof Object[]) {
 			Object[] ob = (Object[]) o;
 			for (int i = 0; i < ob.length; i++) {
 				off += calcHash(ob[i], ch, off);

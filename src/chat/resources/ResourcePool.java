@@ -14,6 +14,7 @@ import static connectionManager.EventHandler.createEventHandler;
 public class ResourcePool<T extends Resource> implements
 		EventHandlerIface<ResourceListener<T>> {
 
+	private int publicHashCode = 0;
 	private int resIdCounter = 0;
 	private Map<Integer, T> resources = new ConcurrentHashMap<Integer, T>();
 
@@ -21,6 +22,39 @@ public class ResourcePool<T extends Resource> implements
 
 	@SuppressWarnings("unchecked")
 	private ResourceEventHandler<T> resourceEventHandler = createEventHandler(ResourceEventHandler.class);
+
+	/**
+	 * Contains the network-wide valid hascode for some kind of resource.
+	 * 
+	 * If the network-wide reflection of an ressource in this ressourcepool
+	 * changes, for example by transmitting a new version of the object, this
+	 * method must be invoked to update the hash-code.
+	 * 
+	 * Todo: Find a solution to prevent double transmissions of objects due to
+	 * race-conditions between the transmission of the hash-code information and
+	 * its change because of the transmission of a changed object. The order in
+	 * which the transmitted object and the hascode arrives is inconsistent.
+	 * Possible solutions may be a small hash history with an expirtion time for
+	 * each hash change info.
+	 * 
+	 * @param oldHash
+	 *            the old hascode of the resource
+	 * @param newHash
+	 *            the new hashcode of the resource
+	 */
+	public void updatePublicHashCode(int oldHash, int newHash) {
+		// math trick: zwei Identische xor operationen heben sich auf:
+		// x ^ y ^z ^ y = x ^ z
+		publicHashCode = publicHashCode ^ oldHash ^ newHash;
+	}
+
+	public int getPublicHashCode() {
+		return publicHashCode;
+	}
+
+	public void setPublicHashCode(int publicHashCode) {
+		this.publicHashCode = publicHashCode;
+	}
 
 	public ResourcePool(EndpointManager endpointManager) {
 		this.endpointManager = endpointManager;
