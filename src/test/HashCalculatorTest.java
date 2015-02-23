@@ -3,28 +3,12 @@ package test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
-
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import serialisation.Expose;
-import chat.resources.HashCalculator;
+import chat.checksum.HashCalculator;
 
 public class HashCalculatorTest {
-
-	private HashCalculator hc;
-	
-	@Before
-	public void setUp() throws Exception {
-		hc = new HashCalculator();
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		hc = null;
-	}
 
 	@Test
 	public void test() {
@@ -40,10 +24,10 @@ public class HashCalculatorTest {
 			@Expose
 			Integer b = 345;
 		};
-		assertTrue(Arrays.equals(hc.calcHash(12345), hc.calcHash(12345)));
-		assertFalse(Arrays.equals(hc.calcHash(12345), hc.calcHash(54321)));
-		assertTrue(Arrays.equals(hc.calcHash(a), hc.calcHash(a)));
-		assertFalse(Arrays.equals(hc.calcHash(a), hc.calcHash(b)));
+		assertTrue(HashCalculator.calcHash(12345)==HashCalculator.calcHash(12345));
+		assertFalse(HashCalculator.calcHash(12345)==HashCalculator.calcHash(54321));
+		assertTrue(HashCalculator.calcHash(a)==HashCalculator.calcHash(a));
+		assertFalse(HashCalculator.calcHash(a)==HashCalculator.calcHash(b));
 	}
 
 }

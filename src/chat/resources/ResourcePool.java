@@ -14,7 +14,7 @@ import static connectionManager.EventHandler.createEventHandler;
 public class ResourcePool<T extends Resource> implements
 		EventHandlerIface<ResourceListener<T>> {
 
-	private int publicHashCode = 0;
+	private int checksum = 0;
 	private int resIdCounter = 0;
 	private Map<Integer, T> resources = new ConcurrentHashMap<Integer, T>();
 
@@ -37,23 +37,25 @@ public class ResourcePool<T extends Resource> implements
 	 * Possible solutions may be a small hash history with an expirtion time for
 	 * each hash change info.
 	 * 
-	 * @param oldHash
-	 *            the old hascode of the resource
-	 * @param newHash
-	 *            the new hashcode of the resource
+	 * @param oldChecksum
+	 *            the old checksum of the resource
+	 * @param newChechsum
+	 *            the new checksum of the resource
 	 */
-	public void updatePublicHashCode(int oldHash, int newHash) {
+	public void updatePublicHashCode(int oldChecksum, int newChechsum) {
 		// math trick: zwei Identische xor operationen heben sich auf:
 		// x ^ y ^z ^ y = x ^ z
-		publicHashCode = publicHashCode ^ oldHash ^ newHash;
+		int oldCh = checksum;
+		checksum = checksum ^ oldChecksum ^ newChechsum;
+		getEndpointManager().updateChecksum(oldCh,checksum);
 	}
 
-	public int getPublicHashCode() {
-		return publicHashCode;
+	public int getChecksum() {
+		return checksum;
 	}
 
-	public void setPublicHashCode(int publicHashCode) {
-		this.publicHashCode = publicHashCode;
+	public void setChecksum(int publicHashCode) {
+		this.checksum = publicHashCode;
 	}
 
 	public ResourcePool(EndpointManager endpointManager) {

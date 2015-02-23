@@ -5,6 +5,7 @@ import ui.ProfilManager;
 import chat.event.ChatEventHandler;
 import chat.event.EndpointEventHandler;
 import chat.eventListenerImpl.EndpointListenerImpl;
+import chat.receiveHandler.ChecksumReciveHandler;
 import chat.receiveHandler.ResourceReciveHandler;
 import chat.resources.Profil;
 import connectionManager.ConnectionManager;
@@ -22,6 +23,7 @@ public class Chat {
 
 	public static void main(String[] args) {
 
+		connectionManager.addHandler(new ChecksumReciveHandler());
 		connectionManager.addHandler(new ResourceReciveHandler());
 		endpointEventHandler.addEventListener(new EndpointListenerImpl());
 		connectionManager.start();

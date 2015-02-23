@@ -1,4 +1,4 @@
-package chat.resources;
+package chat.checksum;
 
 import java.lang.reflect.Field;
 import java.util.zip.Checksum;
@@ -8,7 +8,7 @@ import serialisation.Expose;
 
 public class HashCalculator {
 
-	private int calcHash(Object o, Checksum ch, int off) {
+	private static int calcHash(Object o, Checksum ch, int off) {
 		if (o == null)
 			return 0;
 		if (o instanceof Byte) {
@@ -35,7 +35,7 @@ public class HashCalculator {
 			return calcHash(by, ch, off);
 		} else if (o instanceof byte[]) {
 			byte[] by = (byte[]) o;
-			ch.update(toBytes(((Long) o).longValue()), 0, by.length);
+			ch.update(by, 0, by.length);
 			off += by.length;
 		} else if (o instanceof Object[]) {
 			Object[] ob = (Object[]) o;
@@ -64,22 +64,22 @@ public class HashCalculator {
 		return off;
 	}
 
-	private byte[] toBytes(byte value) {
+	private static byte[] toBytes(byte value) {
 		return new byte[] { value };
 	}
 
-	private byte[] toBytes(short value) {
+	private static byte[] toBytes(short value) {
 		return new byte[] { (byte) ((value >> 8) & 0xFF),
 				(byte) ((value >> 0) & 0xFF) };
 	}
 
-	private byte[] toBytes(int value) {
+	private static byte[] toBytes(int value) {
 		return new byte[] { (byte) ((value >> 24) & 0xFF),
 				(byte) ((value >> 16) & 0xFF), (byte) ((value >> 8) & 0xFF),
 				(byte) ((value >> 0) & 0xFF) };
 	}
 
-	private byte[] toBytes(long value) {
+	private static byte[] toBytes(long value) {
 		return new byte[] { (byte) ((value >> 56) & 0xFF),
 				(byte) ((value >> 48) & 0xFF), (byte) ((value >> 40) & 0xFF),
 				(byte) ((value >> 32) & 0xFF), (byte) ((value >> 24) & 0xFF),
@@ -87,9 +87,9 @@ public class HashCalculator {
 				(byte) ((value >> 0) & 0xFF) };
 	}
 
-	public byte[] calcHash(Object o) {
+	public static int calcHash(Object o) {
 		CRC32 ch = new CRC32();
 		calcHash(o, ch, 0);
-		return toBytes((int) ch.getValue());
+		return (int) ch.getValue();
 	}
 }

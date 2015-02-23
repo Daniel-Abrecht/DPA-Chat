@@ -17,6 +17,7 @@ public class EndpointManager {
 
 	private Endpoint endpoint;
 	private Map<Class<? extends Resource>, ResourcePool<? extends Resource>> resourcePools = new ConcurrentHashMap<Class<? extends Resource>, ResourcePool<? extends Resource>>();
+	private int checksum = 0;
 
 	public EndpointManager(Endpoint e) {
 		this.endpoint = e;
@@ -51,6 +52,10 @@ public class EndpointManager {
 	@SuppressWarnings("unchecked")
 	public <T extends Resource> ResourcePool<T> getResourcePool(Class<T> resClass) {
 		return (ResourcePool<T>) resourcePools.get(resClass);
+	}
+
+	public void updateChecksum(int oldChecksum, int newChecksum) {
+		checksum  = checksum ^ oldChecksum ^ newChecksum;
 	}
 
 }

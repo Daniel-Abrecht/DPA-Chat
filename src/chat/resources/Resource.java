@@ -1,6 +1,7 @@
 package chat.resources;
 
 import chat.Chat;
+import chat.checksum.HashCalculator;
 import chat.manager.EndpointManager;
 import serialisation.Expose;
 
@@ -8,6 +9,8 @@ public abstract class Resource {
 	private ResourcePool<Resource> resourcePool;
 	@Expose
 	private Integer id = -1;
+	@Preserve
+	private int checksum = 0;
 
 	public void register(ResourcePool<Resource> parent) {
 		if (this.resourcePool != null)
@@ -41,6 +44,7 @@ public abstract class Resource {
 
 	public Resource reconstruct(EndpointManager em) {
 		register(em);
+		updateChecksum();
 		return this;
 	}
 
@@ -50,6 +54,7 @@ public abstract class Resource {
 
 	public void updateRemote() {
 		Chat.connectionManager.send(this);
+		updateChecksum();
 	}
 
 	public ResourcePool<Resource> getResourcePool() {
@@ -63,6 +68,16 @@ public abstract class Resource {
 	public boolean isLocal() {
 		EndpointManager e = getEndpointManager();
 		return e == Chat.connectionManager.getLocalEndpointManager();
+	}
+
+	public int getChecksum() {
+		return checksum;
+	}
+
+	private void updateChecksum() {
+		int oldChecksum = checksum;
+		checksum = HashCalculator.calcHash(this);
+		getResourcePool().updatePublicHashCode(oldChecksum, checksum);
 	}
 
 }
