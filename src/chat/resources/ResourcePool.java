@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import serialisation.Expose;
 import connectionManager.EventHandlerIface;
 import chat.event.ResourceEventHandler;
 import chat.eventListener.ResourceListener;
@@ -43,11 +44,9 @@ public class ResourcePool<T extends Resource> implements
 	 *            the new checksum of the resource
 	 */
 	public void updatePublicHashCode(int oldChecksum, int newChechsum) {
-		// math trick: zwei Identische xor operationen heben sich auf:
-		// x ^ y ^z ^ y = x ^ z
 		int oldCh = checksum;
-		checksum = checksum ^ oldChecksum ^ newChechsum;
-		getEndpointManager().updateChecksum(oldCh,checksum);
+		checksum = checksum - oldChecksum + newChechsum;
+		getEndpointManager().updateChecksum(oldCh, checksum);
 	}
 
 	public int getChecksum() {
@@ -86,7 +85,8 @@ public class ResourcePool<T extends Resource> implements
 						continue;
 					field.setAccessible(true);
 					try {
-						if (field.get(resource) != null)
+						if (field.get(resource) != null
+								&& field.getAnnotation(Expose.class) != null)
 							continue;
 						Object ov = field.get(old);
 						if (ov == null)

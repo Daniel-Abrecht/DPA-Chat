@@ -55,7 +55,11 @@ public class EndpointManager {
 	}
 
 	public void updateChecksum(int oldChecksum, int newChecksum) {
-		checksum  = checksum ^ oldChecksum ^ newChecksum;
+		checksum  = checksum - oldChecksum + newChecksum;
+	}
+
+	public int getChechsum() {
+		return checksum;
 	}
 
 }

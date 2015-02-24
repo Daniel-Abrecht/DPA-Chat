@@ -59,6 +59,7 @@ class ProfilEditor extends JFrame {
 
 	protected void save() {
 		profil.setName(nameField.getText());
+		profil.setDescription(descField.getText());
 		profil.updateRemote();
 	}
 
@@ -67,6 +68,7 @@ class ProfilEditor extends JFrame {
 			profil.register(Chat.connectionManager.getLocalEndpointManager());
 		}
 		nameField.setText(profil.getName());
+		descField.setText(profil.getDescription());
 		this.profil = profil;
 	}
 }

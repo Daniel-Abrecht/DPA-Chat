@@ -12,6 +12,8 @@ public class ChecksumReciveHandler implements ReceiveHandler {
 	}
 
 	@Override
-	public void onReceive(Container container,Endpoint e) {
+	public void onReceive(Container container, Endpoint e) {
+		ChecksumContainer chc = (ChecksumContainer) container.getObject();
+		System.out.println(chc);
 	}
 }

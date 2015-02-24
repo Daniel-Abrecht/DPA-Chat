@@ -1,7 +1,11 @@
 package chat;
 
 import static connectionManager.EventHandler.createEventHandler;
+
+import java.util.Timer;
+
 import ui.ProfilManager;
+import chat.checksum.ChecksumDistributor;
 import chat.event.ChatEventHandler;
 import chat.event.EndpointEventHandler;
 import chat.eventListenerImpl.EndpointListenerImpl;
@@ -27,6 +31,9 @@ public class Chat {
 		connectionManager.addHandler(new ResourceReciveHandler());
 		endpointEventHandler.addEventListener(new EndpointListenerImpl());
 		connectionManager.start();
+
+		Timer timer = new Timer();
+		timer.scheduleAtFixedRate(new ChecksumDistributor(connectionManager.getLocalEndpointManager()), 0, 3 * 1000);
 
 		ProfilManager.getInstance().setVisible(true);
 	}
