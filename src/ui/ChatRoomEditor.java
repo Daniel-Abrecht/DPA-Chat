@@ -42,10 +42,10 @@ class ChatRoomEditor extends JFrame  {
 				setVisible(false);
 				save();
 				if(chatRoom.isRegistred()){
-					chatRoom.updateRemote();
+					chatRoom = (ChatRoom) chatRoom.updateRemote();
 				}else{
-					chatRoom.register(Chat.getCurrentProfil().getEndpointManager());
-					chatRoom.updateRemote();
+					chatRoom = (ChatRoom) chatRoom.update(Chat.getCurrentProfil().getEndpointManager());
+					chatRoom = (ChatRoom) chatRoom.updateRemote();
 				}
 			}
 		});

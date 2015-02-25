@@ -12,14 +12,15 @@ public abstract class Resource {
 	@Preserve
 	private int checksum = 0;
 
-	public void register(ResourcePool<Resource> parent) {
+	public Resource update(ResourcePool<Resource> parent) {
 		if (this.resourcePool != null)
 			deregister();
 		this.resourcePool = parent;
 		if (id < 0) {
 			id = parent.register(this);
+			return this;
 		} else {
-			parent.register(this, id);
+			return parent.update(this, id);
 		}
 	}
 
@@ -28,8 +29,8 @@ public abstract class Resource {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void register(EndpointManager endpointManager) {
-		register((ResourcePool<Resource>) endpointManager.getResourcePool(this
+	public Resource update(EndpointManager endpointManager) {
+		return update((ResourcePool<Resource>) endpointManager.getResourcePool(this
 				.getClass()));
 	}
 
@@ -43,18 +44,24 @@ public abstract class Resource {
 	}
 
 	public Resource reconstruct(EndpointManager em) {
-		register(em);
-		updateChecksum();
-		return this;
+		Resource r = update(em);
+		r.updateChecksum();
+		return r;
 	}
 
 	public static Resource reconstruct(Object x, EndpointManager em) {
 		return ((Resource) x).reconstruct(em);
 	}
 
-	public void updateRemote() {
-		Chat.connectionManager.send(this);
-		updateChecksum();
+	public Resource updateRemote() {
+		Resource r = update();
+		Chat.connectionManager.send(r);
+		r.updateChecksum();
+		return r;
+	}
+
+	private Resource update() {
+		return resourcePool.update(this, id);
 	}
 
 	public ResourcePool<Resource> getResourcePool() {
@@ -74,8 +81,11 @@ public abstract class Resource {
 		return checksum;
 	}
 
-	private void updateChecksum() {
-		int oldChecksum = checksum;
+	void updateChecksum() {
+		Resource old = getResourcePool().getResource(id);
+		if (old == null)
+			return;
+		int oldChecksum = old.getChecksum();
 		checksum = HashCalculator.calcHash(this);
 		getResourcePool().updatePublicHashCode(oldChecksum, checksum);
 	}

@@ -2,6 +2,7 @@ package chat.checksum;
 
 import java.util.TimerTask;
 
+import chat.Chat;
 import chat.manager.EndpointManager;
 
 public class ChecksumDistributor extends TimerTask {
@@ -12,7 +13,9 @@ public class ChecksumDistributor extends TimerTask {
 	}
 
 	public void run() {
-		int checksum = endpointManager.getChechsum();
-		System.out.println(checksum);
+		int rootChecksum = endpointManager.getChechsum();
+		ChecksumContainer chc = new ChecksumContainer();
+		chc.setRootChecksum(rootChecksum);
+		Chat.connectionManager.send(chc);
 	}
 }

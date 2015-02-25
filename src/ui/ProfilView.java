@@ -32,6 +32,8 @@ public class ProfilView extends JPanel {
 	}
 
 	private void updateContents() {
+		if (profil == null)
+			return;
 		name.setText(profil.getName());
 	}
 

@@ -63,13 +63,14 @@ public class ResourcePool<T extends Resource> implements
 
 	public Integer register(T resource) {
 		resources.put(resIdCounter, resource);
+		resourceEventHandler.resourceCreation(this, resource);
 		return resIdCounter++;
 	}
 
-	public void register(T resource, int id) {
+	public T update(T resource, int id) {
 		T old = resources.get(id);
-		resources.put(id, resource);
 		if (old == null) {
+			resources.put(id, resource);
 			resourceEventHandler.resourceCreation(this, resource);
 		} else {
 			Class<?> clazz = resource.getClass();
@@ -80,25 +81,24 @@ public class ResourcePool<T extends Resource> implements
 				Field[] fields = classOld.getDeclaredFields();
 				for (int i = 0; i < fields.length; i++) {
 					Field field = fields[i];
-					Preserve p = field.getAnnotation(Preserve.class);
-					if (p == null)
+					if (field.getAnnotation(Preserve.class) != null
+							&& field.getAnnotation(Expose.class) == null)
 						continue;
 					field.setAccessible(true);
 					try {
-						if (field.get(resource) != null
-								&& field.getAnnotation(Expose.class) != null)
+						if (field.get(resource) == null
+								&& field.getAnnotation(Preserve.class) != null)
 							continue;
-						Object ov = field.get(old);
-						if (ov == null)
-							continue;
-						field.set(resource, ov);
+						Object nv = field.get(resource);
+						field.set(old, nv);
 					} catch (IllegalArgumentException | IllegalAccessException e) {
 						e.printStackTrace();
 					}
 				}
 			} while ((classOld = classOld.getSuperclass()) != null);
 		}
-		resourceEventHandler.resourceChange(this, resource);
+		resourceEventHandler.resourceChange(this, old == null ? resource : old);
+		return old == null ? resource : old;
 	}
 
 	public void deregister(T resource) {
@@ -129,7 +129,7 @@ public class ResourcePool<T extends Resource> implements
 			try {
 				@SuppressWarnings("unchecked")
 				T newres = (T) clazz.newInstance();
-				register(res = newres, rid);
+				res = newres = update(newres, rid);
 			} catch (InstantiationException | IllegalAccessException e) {
 				e.printStackTrace();
 				return null;

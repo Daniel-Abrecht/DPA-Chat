@@ -79,10 +79,10 @@ public class ChatRoomView extends JFrame {
 		postFormTextArea.setText("");
 		Message msg = new Message();
 		msg.setProfil(Chat.getCurrentProfil());
-		msg.register(Chat.getCurrentProfil().getEndpointManager());
+		msg = (Message) msg.update(Chat.getCurrentProfil().getEndpointManager());
 		msg.setChatRoom(chatRoom);
 		msg.setContent(text);
-		msg.updateRemote();
+		msg = (Message) msg.updateRemote();
 	}
 
 	private void setChatRoom(ChatRoom chatRoom) {

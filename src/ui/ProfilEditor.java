@@ -60,12 +60,12 @@ class ProfilEditor extends JFrame {
 	protected void save() {
 		profil.setName(nameField.getText());
 		profil.setDescription(descField.getText());
-		profil.updateRemote();
+		profil = (Profil) profil.updateRemote();
 	}
 
 	public void setTarget(Profil profil) {
 		if (!profil.isRegistred()) {
-			profil.register(Chat.connectionManager.getLocalEndpointManager());
+			profil = (Profil) profil.update(Chat.connectionManager.getLocalEndpointManager());
 		}
 		nameField.setText(profil.getName());
 		descField.setText(profil.getDescription());
