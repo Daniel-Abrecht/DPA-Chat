@@ -45,6 +45,7 @@ public class AnnotationProcessorAdapter implements GsonAdapter<Object> {
 				Object value = iterator.next();
 				array.add(context.serialize(value));
 			}
+			return array;
 		}
 		Class<? extends Object> objClass = object.getClass();
 		do {

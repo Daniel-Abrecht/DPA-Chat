@@ -1,8 +1,9 @@
 package chat.manager;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import chat.eventListenerImpl.ChatRoomListenerImpl;
 import chat.eventListenerImpl.MessageListenerImpl;
 import chat.eventListenerImpl.ProfilListenerImpl;
@@ -16,7 +17,8 @@ import connectionManager.Endpoint;
 public class EndpointManager {
 
 	private Endpoint endpoint;
-	private Map<Class<? extends Resource>, ResourcePool<? extends Resource>> resourcePools = new ConcurrentHashMap<Class<? extends Resource>, ResourcePool<? extends Resource>>();
+	private Map<Class<? extends Resource>, ResourcePool<? extends Resource>> resourcePools = new HashMap<Class<? extends Resource>, ResourcePool<? extends Resource>>();
+	private List<ResourcePool<? extends Resource>> resourcePoolList = new ArrayList<ResourcePool<? extends Resource>>();
 	private int checksum = 0;
 
 	public EndpointManager(Endpoint e) {
@@ -25,14 +27,17 @@ public class EndpointManager {
 		ResourcePool<Profil> profilResourcePool = new ResourcePool<Profil>(this);
 		profilResourcePool.addEventListener(new ProfilListenerImpl());
 		resourcePools.put(Profil.class, profilResourcePool);
+		resourcePoolList.add(profilResourcePool);
 
 		ResourcePool<ChatRoom> chatRoomResourcePool = new ResourcePool<ChatRoom>(this);
 		chatRoomResourcePool.addEventListener(new ChatRoomListenerImpl());
 		resourcePools.put(ChatRoom.class, chatRoomResourcePool);
+		resourcePoolList.add(chatRoomResourcePool);
 
 		ResourcePool<Message> messageResourcePool = new ResourcePool<Message>(this);
 		messageResourcePool.addEventListener(new MessageListenerImpl());
 		resourcePools.put(Message.class, messageResourcePool);
+		resourcePoolList.add(messageResourcePool);
 	}
 
 	public Endpoint getEndpoint() {
@@ -60,6 +65,10 @@ public class EndpointManager {
 
 	public int getChechsum() {
 		return checksum;
+	}
+
+	public List<ResourcePool<? extends Resource>> getResourcePoolList() {
+		return resourcePoolList;
 	}
 
 }
