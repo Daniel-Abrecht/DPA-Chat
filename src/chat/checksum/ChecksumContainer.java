@@ -19,6 +19,10 @@ public class ChecksumContainer {
 				: resPoolChecksums;
 	}
 
+	public boolean hasResPoolChecksums() {
+		return resPoolChecksums != null && resPoolChecksums.size() != 0;
+	}
+
 	public Integer getRootChecksum() {
 		return rootChecksum;
 	}

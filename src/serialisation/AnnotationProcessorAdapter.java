@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
@@ -21,11 +20,11 @@ import com.google.gson.JsonSerializationContext;
 public class AnnotationProcessorAdapter implements GsonAdapter<Object> {
 
 	private Object[] args;
-	
-	public AnnotationProcessorAdapter(Object... args){
+
+	public AnnotationProcessorAdapter(Object... args) {
 		this.args = args;
 	}
-	
+
 	@Override
 	public JsonElement serialize(Object object, Type type,
 			JsonSerializationContext context) {
@@ -74,9 +73,13 @@ public class AnnotationProcessorAdapter implements GsonAdapter<Object> {
 					try {
 						@SuppressWarnings("unchecked")
 						GsonAdapter<Object> a = (GsonAdapter<Object>) adapterClass[0]
-								.getConstructor(Object[].class).newInstance(new Object[]{args});
+								.getConstructor(Object[].class).newInstance(
+										new Object[] { args });
 						adapter = a;
-					} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+					} catch (InstantiationException | IllegalAccessException
+							| IllegalArgumentException
+							| InvocationTargetException | NoSuchMethodException
+							| SecurityException e) {
 						e.printStackTrace();
 						continue;
 					}
@@ -158,6 +161,28 @@ public class AnnotationProcessorAdapter implements GsonAdapter<Object> {
 			} else if (p.isString()) {
 				return p.getAsString();
 			}
+		} else if (element.isJsonArray()) {
+			Class<?> objectClass = (Class<?>) type;
+			if (List.class.isAssignableFrom(objectClass)) {
+				List<Object> list = null;
+				try {
+					@SuppressWarnings("unchecked")
+					List<Object> newInstance = (List<Object>) objectClass
+							.newInstance();
+					list = newInstance;
+				} catch (Exception e2) {
+				}
+				if (list == null)
+					list = new ArrayList<Object>();
+				JsonArray a = element.getAsJsonArray();
+				for (Iterator<JsonElement> iterator = a.iterator(); iterator
+						.hasNext();) {
+					JsonElement e = iterator.next();
+					Object eo = context.deserialize(e, objectClass.getTypeParameters()[0]);
+					list.add(eo);
+				}
+				return list;
+			}
 		} else if (element.isJsonObject()) {
 			Object object = null;
 			try {
@@ -203,9 +228,13 @@ public class AnnotationProcessorAdapter implements GsonAdapter<Object> {
 					try {
 						@SuppressWarnings("unchecked")
 						GsonAdapter<Object> a = (GsonAdapter<Object>) adapterClass[0]
-								.getConstructor(Object[].class).newInstance(new Object[]{args});
+								.getConstructor(Object[].class).newInstance(
+										new Object[] { args });
 						adapter = a;
-					} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+					} catch (InstantiationException | IllegalAccessException
+							| IllegalArgumentException
+							| InvocationTargetException | NoSuchMethodException
+							| SecurityException e) {
 						e.printStackTrace();
 						continue;
 					}
@@ -219,27 +248,6 @@ public class AnnotationProcessorAdapter implements GsonAdapter<Object> {
 				}
 			}
 			return object;
-		} else if (element.isJsonArray()) {
-			Class<?> objectClass = (Class<?>) type;
-			List<Object> list = null;
-			try {
-				if (List.class.isAssignableFrom(objectClass)) {
-					@SuppressWarnings("unchecked")
-					List<Object> newInstance = (List<Object>) objectClass
-							.newInstance();
-					list = newInstance;
-				}
-			} catch (Exception e2) {
-			}
-			if (list == null)
-				list = new ArrayList<Object>();
-			JsonArray a = element.getAsJsonArray();
-			for (Iterator<JsonElement> iterator = a.iterator(); iterator
-					.hasNext();) {
-				JsonElement e = iterator.next();
-				Object eo = context.deserialize(e, type);
-				list.add(eo);
-			}
 		}
 		return null;
 	}

@@ -50,6 +50,9 @@ public class Client extends Thread {
 			} catch (InterruptedException e) {
 				continue;
 			}
+			InetAddress destination = dataPacket.getDestination();
+			if (destination == null)
+				destination = group;
 			byte[] datas = dataPacket.getBuffer();
 			int size = dataPacket.getSize();
 			byte type = dataPacket.getType();
@@ -83,7 +86,7 @@ public class Client extends Thread {
 				System.arraycopy(datas, offset, buffer, seek, space);
 				offset += space;
 				seek += space;
-				DatagramPacket packet = new DatagramPacket(buffer, seek, group,
+				DatagramPacket packet = new DatagramPacket(buffer, seek, destination,
 						port);
 				int maxAttemps;
 				for (maxAttemps = 3; maxAttemps > 0; maxAttemps--) {

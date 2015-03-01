@@ -24,7 +24,7 @@ public class Endpoint {
 	}
 
 	public DataPacket createPacket(byte packetId, int packetSize) {
-		if (packetId > 0x3f) {
+		if (packetId > 0x7f) {
 			System.err.println("Impossible packet id!");
 			return null;
 		}

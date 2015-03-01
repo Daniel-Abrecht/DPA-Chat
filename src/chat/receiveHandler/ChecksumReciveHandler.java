@@ -32,7 +32,19 @@ public class ChecksumReciveHandler implements ReceiveHandler {
 					.getResourcePoolList();
 			for (ResourcePool<? extends Resource> resPool : resPools)
 				rpch.addRespoolChecksum(resPool.getChecksum());
-			Chat.connectionManager.send(rpch);
+			Chat.connectionManager.send(e,rpch);
+		} else if (chc.hasResPoolChecksums()) {
+			List<ResourcePool<? extends Resource>> resPools = em
+					.getResourcePoolList();
+			List<Integer> correctChecksums = chc.getResPoolChecksums();
+			System.err.println(correctChecksums);
+			for (int i = 0, n = Math.min(resPools.size(),correctChecksums.size()); i < n; i++) {
+				int currentChecksum = resPools.get(i).getChecksum();
+				int correctChecksum = correctChecksums.get(i);
+				if(currentChecksum==correctChecksum)
+					continue;
+				System.out.println("Respool "+ i + ": Checksum mismatch");
+			}
 		}
 	}
 }

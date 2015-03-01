@@ -1,5 +1,6 @@
 package connectionManager;
 
+import java.net.InetAddress;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -10,6 +11,7 @@ class DataPacket {
 	private byte[] buffer;
 	private int currentSize;
 	private Date creationTime;
+	private InetAddress destination;
 
 	public DataPacket(int packetSize) {
 		this.size = packetSize;
@@ -61,6 +63,14 @@ class DataPacket {
 
 	public int getSize() {
 		return size;
+	}
+
+	public InetAddress getDestination() {
+		return destination;
+	}
+
+	public void setDestination(InetAddress destination) {
+		this.destination = destination;
 	}
 
 }
