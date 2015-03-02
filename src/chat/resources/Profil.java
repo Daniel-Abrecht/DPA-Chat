@@ -5,9 +5,9 @@ import serialisation.Expose;
 
 @Deserializable
 public class Profil extends Resource {
-	@Expose
+	@Expose(position=0)
 	private String name;
-	@Expose
+	@Expose(position=1)
 	private String description;
 
 	public String getDescription() {

@@ -13,15 +13,15 @@ public class HashCalculatorTest {
 	@Test
 	public void test() {
 		Object a = new Object(){
-			@Expose
+			@Expose(position=0)
 			Integer a = 123;
-			@Expose
+			@Expose(position=1)
 			Integer b = 345;
 		};
 		Object b = new Object(){
-			@Expose
+			@Expose(position=0)
 			Integer a = 543;
-			@Expose
+			@Expose(position=1)
 			Integer b = 345;
 		};
 		assertTrue(HashCalculator.calcHash(12345)==HashCalculator.calcHash(12345));

@@ -7,7 +7,7 @@ import serialisation.Expose;
 
 @Deserializable
 public class ChatRoom extends Resource implements ChatRoomListener {
-	@Expose
+	@Expose(position=0)
 	private String name;
 	@Preserve
 	private ChatRoomView view;

@@ -3,8 +3,8 @@ package chat.checksum;
 import java.lang.reflect.Field;
 import java.util.zip.Checksum;
 import java.util.zip.CRC32;
-
 import serialisation.Expose;
+import static utils.BinaryUtils.toBytes;
 
 public class HashCalculator {
 
@@ -62,29 +62,6 @@ public class HashCalculator {
 			} while ((c = c.getSuperclass()) != null);
 		}
 		return off;
-	}
-
-	private static byte[] toBytes(byte value) {
-		return new byte[] { value };
-	}
-
-	private static byte[] toBytes(short value) {
-		return new byte[] { (byte) ((value >> 8) & 0xFF),
-				(byte) ((value >> 0) & 0xFF) };
-	}
-
-	private static byte[] toBytes(int value) {
-		return new byte[] { (byte) ((value >> 24) & 0xFF),
-				(byte) ((value >> 16) & 0xFF), (byte) ((value >> 8) & 0xFF),
-				(byte) ((value >> 0) & 0xFF) };
-	}
-
-	private static byte[] toBytes(long value) {
-		return new byte[] { (byte) ((value >> 56) & 0xFF),
-				(byte) ((value >> 48) & 0xFF), (byte) ((value >> 40) & 0xFF),
-				(byte) ((value >> 32) & 0xFF), (byte) ((value >> 24) & 0xFF),
-				(byte) ((value >> 16) & 0xFF), (byte) ((value >> 8) & 0xFF),
-				(byte) ((value >> 0) & 0xFF) };
 	}
 
 	public static int calcHash(Object o) {

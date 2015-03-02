@@ -9,9 +9,9 @@ import serialisation.Expose;
 @Deserializable
 public class ChecksumContainer {
 
-	@Expose
+	@Expose(position=0)
 	private Integer rootChecksum;
-	@Expose
+	@Expose(position=1)
 	List<Integer> resPoolChecksums;
 
 	public List<Integer> getResPoolChecksums() {

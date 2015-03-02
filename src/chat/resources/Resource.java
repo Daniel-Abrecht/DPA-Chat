@@ -7,7 +7,7 @@ import serialisation.Expose;
 
 public abstract class Resource {
 	private ResourcePool<Resource> resourcePool;
-	@Expose
+	@Expose(position=0)
 	private Integer id = -1;
 	@Preserve
 	private int checksum = 0;
