@@ -25,11 +25,11 @@ public class BinaryUtils {
 	}
 
 	public final static byte[] toBytes(float value) {
-		return toBytes(Float.floatToRawIntBits(value));
+		return toBytes(Float.floatToIntBits(value));
 	}
 
 	public final static byte[] toBytes(double value) {
-		return toBytes(Double.doubleToRawLongBits(value));
+		return toBytes(Double.doubleToLongBits(value));
 	}
 
 	public static String bytesToHex(byte[] bytes) {
@@ -42,6 +42,38 @@ public class BinaryUtils {
 			hexChars[j * 3 + 2] = (((j + 1) % 16) == 0) ? '\n' : ' ';
 		}
 		return new String(hexChars);
+	}
+
+	public static byte asByte(byte[] dst, int offset) {
+		return dst[offset];
+	}
+
+	public static short asShort(byte[] dst, int i) {
+		return (short) ((dst[i + 0] & 0xFF) << 8 | (dst[i + 1] & 0xFF));
+	}
+
+	public static int asInt(byte[] dst, int i) {
+		return (dst[i + 0] & 0xFF) << 24 | (dst[i + 1] & 0xFF) << 16
+				| (dst[i + 2] & 0xFF) << 8 | (dst[i + 3] & 0xFF);
+	}
+
+	public static long asLong(byte[] dst, int i) {
+		return (dst[i + 0] & 0xFF) << 56 | (dst[i + 1] & 0xFF) << 48
+				| (dst[i + 2] & 0xFF) << 40 | (dst[i + 3] & 0xFF) << 32
+				| (dst[i + 0] & 0xFF) << 24 | (dst[i + 1] & 0xFF) << 16
+				| (dst[i + 2] & 0xFF) << 8 | (dst[i + 3] & 0xFF);
+	}
+
+	public static char asChar(byte[] dst, int i) {
+		return (char) asShort(dst, i);
+	}
+
+	public static float asFloat(byte[] dst, int i) {
+		return Float.intBitsToFloat(asInt(dst,i));
+	}
+
+	public static double asDouble(byte[] dst, int i) {
+		return Double.longBitsToDouble(asLong(dst,i));
 	}
 
 }

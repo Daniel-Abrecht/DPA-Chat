@@ -2,6 +2,8 @@ package serialisation;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -30,25 +32,7 @@ public class BinaryEncoder implements ObjectEncoder<byte[]> {
 
 	public List<byte[]> encodeInternal(Object o, Class<?> type) {
 		List<byte[]> bl = new ArrayList<byte[]>();
-		while (type != null && !type.isAnnotationPresent(Deserializable.class))
-			type = type.getSuperclass();
-		if (type == null)
-			return bl;
-		List<Field> fl = new ArrayList<Field>();
-		do {
-			List<Field> fl2 = getFields(type);
-			Collections.sort(fl, new Comparator<Field>() {
-				@Override
-				public int compare(Field f1, Field f2) {
-					Expose e1 = f1.getAnnotation(Expose.class);
-					Expose e2 = f2.getAnnotation(Expose.class);
-					if(e1==null||e2==null)
-						return f1.getName().compareTo(f2.getName());
-					return e1.position()-e2.position();
-				}
-			});
-			fl.addAll(fl2);
-		} while ((type = type.getSuperclass()) != null);
+		List<Field> fl = getFields(type);
 		for (Iterator<Field> iterator = fl.iterator(); iterator.hasNext();) {
 			Field f = iterator.next();
 			f.setAccessible(true);
@@ -84,14 +68,32 @@ public class BinaryEncoder implements ObjectEncoder<byte[]> {
 	}
 
 	private List<Field> getFields(Class<?> c) {
-		List<Field> fields = new ArrayList<Field>();
-		for (Field f : c.getDeclaredFields()) {
-			Expose e = f.getAnnotation(Expose.class);
-			if (e == null)
-				continue;
-			fields.add(f);
-		}
-		return fields;
+		while (c != null && !c.isAnnotationPresent(Deserializable.class))
+			c = c.getSuperclass();
+		if (c == null)
+			return new ArrayList<Field>();
+		List<Field> fl = new ArrayList<Field>();
+		do {
+			List<Field> fields = new ArrayList<Field>();
+			for (Field f : c.getDeclaredFields()) {
+				Expose e = f.getAnnotation(Expose.class);
+				if (e == null)
+					continue;
+				fields.add(f);
+			}
+			Collections.sort(fl, new Comparator<Field>() {
+				@Override
+				public int compare(Field f1, Field f2) {
+					Expose e1 = f1.getAnnotation(Expose.class);
+					Expose e2 = f2.getAnnotation(Expose.class);
+					if (e1 == null || e2 == null)
+						return f1.getName().compareTo(f2.getName());
+					return e1.position() - e2.position();
+				}
+			});
+			fl.addAll(fields);
+		} while ((c = c.getSuperclass()) != null);
+		return fl;
 	}
 
 	private List<byte[]> encodeInternal(Field f, Object value) {
@@ -128,11 +130,14 @@ public class BinaryEncoder implements ObjectEncoder<byte[]> {
 			return Arrays
 					.asList(new byte[][] { toBytes((float) ((value == null) ? 0
 							: value)) });
+		if (Double.class.isAssignableFrom(c))
+			return Arrays
+					.asList(new byte[][] { toBytes((double) ((value == null) ? 0
+							: value)) });
 		return null;
 	}
 
-	@Override
-	public <R> R decode(byte[] buffer, Class<R> type) {
+	private <R> R decode(ByteBuffer buffer, Class<R> type) {
 		R o;
 		try {
 			o = type.newInstance();
@@ -141,21 +146,32 @@ public class BinaryEncoder implements ObjectEncoder<byte[]> {
 			return null;
 		}
 		List<Field> fl = getFields(type);
-		Collections.sort(fl, new Comparator<Field>() {
-			@Override
-			public int compare(Field f1, Field f2) {
-				return f1.getName().compareTo(f2.getName());
-			}
-		});
 		for (Iterator<Field> iterator = fl.iterator(); iterator.hasNext();) {
 			Field f = iterator.next();
 			f.setAccessible(true);
 			Object value = decodeInternal(f, buffer);
 			try {
-				if (value != null)
+				if (value != null) {
 					f.set(o, value);
-				else
-					f.set(o, decode(buffer, f.getType()));
+				} else {
+					Class<?> t = null;
+					Expose e = f.getAnnotation(Expose.class);
+					if (e != null) {
+						Class<? extends TvpeGetter>[] tgt = e
+								.getTypeGetterType();
+						if (tgt != null && tgt.length >= 1) {
+							try {
+								t = tgt[0].newInstance().getType(o, f);
+							} catch (InstantiationException
+									| IllegalAccessException e1) {
+								e1.printStackTrace();
+							}
+						}
+					}
+					if (t == null)
+						t = f.getType();
+					f.set(o, decode(buffer, t));
+				}
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
@@ -163,8 +179,50 @@ public class BinaryEncoder implements ObjectEncoder<byte[]> {
 		return o;
 	}
 
-	private Object decodeInternal(Field f, byte[] buffer) {
+	private Object decodeInternal(Field f, ByteBuffer buffer) {
+		byte[] dst = new byte[8];
+		Class<?> c = f.getType();
+		if (Byte.class.isAssignableFrom(c)) {
+			buffer.get(dst, 0, 1);
+			return utils.BinaryUtils.asByte(dst, 0);
+		}
+		if (Short.class.isAssignableFrom(c)) {
+			buffer.get(dst, 0, 2);
+			return utils.BinaryUtils.asShort(dst, 0);
+		}
+		if (Integer.class.isAssignableFrom(c)) {
+			buffer.get(dst, 0, 4);
+			return utils.BinaryUtils.asInt(dst, 0);
+		}
+		if (Long.class.isAssignableFrom(c)) {
+			buffer.get(dst, 0, 8);
+			return utils.BinaryUtils.asLong(dst, 0);
+		}
+		if (Character.class.isAssignableFrom(c)) {
+			buffer.get(dst, 0, 2);
+			return utils.BinaryUtils.asChar(dst, 0);
+		}
+		if (String.class.isAssignableFrom(c)) {
+			buffer.get(dst, 0, 4);
+			int length = utils.BinaryUtils.asInt(dst, 0);
+			byte[] strBuff = new byte[length];
+			buffer.get(strBuff, 0, length);
+			return new String(strBuff, Charset.forName("UTF-8"));
+		}
+		if (Float.class.isAssignableFrom(c)) {
+			buffer.get(dst, 0, 4);
+			return utils.BinaryUtils.asFloat(dst, 0);
+		}
+		if (Float.class.isAssignableFrom(c)) {
+			buffer.get(dst, 0, 8);
+			return utils.BinaryUtils.asDouble(dst, 0);
+		}
 		return null;
+	}
+
+	@Override
+	public <R> R decode(byte[] o, Class<R> c) {
+		return decode(ByteBuffer.wrap(o), c);
 	}
 
 }
