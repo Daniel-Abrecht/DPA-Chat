@@ -33,7 +33,7 @@ public class Chat {
 		connectionManager.start();
 
 		Timer timer = new Timer();
-		timer.scheduleAtFixedRate(new ChecksumDistributor(connectionManager.getLocalEndpointManager()), 0, 3 * 1000);
+//		timer.scheduleAtFixedRate(new ChecksumDistributor(connectionManager.getLocalEndpointManager()), 0, 3 * 1000);
 
 		ProfilManager.getInstance().setVisible(true);
 	}

@@ -7,11 +7,15 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Field;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(value=ElementType.FIELD)
+@Target(value = ElementType.FIELD)
 public @interface Expose {
 	static public interface TvpeGetter {
-		public Class<?> getType(Object o,Field f);
+		public Class<?> getType(Object o, Field f);
 	}
+
 	Class<? extends TvpeGetter>[] getTypeGetterType() default {};
+
 	int position();
+
+	Class<? extends CustomFieldEncoder>[] customFieldEncoder() default {};
 }

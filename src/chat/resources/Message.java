@@ -5,12 +5,12 @@ import serialisation.Expose;
 
 @Deserializable
 public class Message extends Resource {
-	@Expose(position=0)
-	private String content;
-	@Expose(position=1)//(adapter=ResourceGsonAdapter.class)
+	@Expose(position=0,customFieldEncoder=ResourceReferenceEncoder.class)//(adapter=ResourceGsonAdapter.class)
 	private ChatRoom chatRoom;
-	@Expose(position=2)//(adapter=ResourceGsonAdapter.class)
+	@Expose(position=1,customFieldEncoder=ResourceReferenceEncoder.class)//(adapter=ResourceGsonAdapter.class)
 	private Profil profil;
+	@Expose(position=2)
+	private String content;
 	
 	public ChatRoom getChatRoom() {
 		return chatRoom;
