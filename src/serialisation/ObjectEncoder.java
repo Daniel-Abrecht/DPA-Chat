@@ -23,4 +23,7 @@ public interface ObjectEncoder<T> {
 
 	List<Field> getFields(Class<?> c);
 
+	public Object getParameter(String value);
+	public void setParameter(String key, Object value);
+
 }

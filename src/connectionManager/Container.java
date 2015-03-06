@@ -8,7 +8,7 @@ import serialisation.Expose;
 @Deserializable
 public class Container {
 
-	public static class ContainerObjectTypeGetter implements Expose.TvpeGetter {
+	public static class ContainerObjectTypeGetter implements Expose.TypeGetter {
 		@Override
 		public Class<?> getType(Object o, Field f) {
 			try {

@@ -20,7 +20,7 @@ import chat.resources.Profil;
 
 @SuppressWarnings("serial")
 public class ProfilManager extends JFrame {
-	
+
 	private VScrollList vScrollList = new VScrollList();
 	private ProfilEditor profilEditor = new ProfilEditor();
 	public Profil selectedProfil;
@@ -44,7 +44,7 @@ public class ProfilManager extends JFrame {
 		setLayout(new BorderLayout());
 
 		Label l = new Label("Profile");
-		l.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,30));
+		l.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30));
 		add(l, BorderLayout.NORTH);
 		add(vScrollList, BorderLayout.CENTER);
 
@@ -81,7 +81,7 @@ public class ProfilManager extends JFrame {
 
 	static class UserManagerListener extends WindowAdapter {
 		public void windowClosing(WindowEvent e) {
-			if(Utils.VisibleWindowCount()<=1)
+			if (Utils.VisibleWindowCount() <= 1)
 				System.exit(0);
 			e.getWindow().setVisible(false);
 		}
@@ -133,18 +133,17 @@ public class ProfilManager extends JFrame {
 	};
 
 	public void update(Profil profil) {
-		Integer id = profil.getId();
-		int i;
-		for (i = profilItems.size(); i-- > 0;) {
+		int i = profilItems.size();
+		while (i-- > 0) {
 			ProfilItem mv = profilItems.get(i);
-			if ((int)mv.getProfil().getId() <= (int)id) {
-				if ((int)mv.getProfil().getId() == (int)id) {
-					mv.setProfil(profil);
-					return;
-				} else {
-					break;
-				}
-			}
+			Profil profilToCompare = mv.getProfil();
+			// speedup & sort
+			if (profilToCompare.compareIdentifier(profil) < 0)
+				break;
+			if (!profilToCompare.hasSameIdentifierAs(profil))
+				continue;
+			mv.setProfil(profil);
+			return;
 		}
 		if (i < 0)
 			i = profilItems.size();

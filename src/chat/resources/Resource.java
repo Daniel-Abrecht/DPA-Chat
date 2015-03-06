@@ -7,7 +7,7 @@ import serialisation.Expose;
 
 public abstract class Resource {
 	private ResourcePool<Resource> resourcePool;
-	@Expose(position=0)
+	@Expose(position = 0)
 	private Integer id = -1;
 	@Preserve
 	private int checksum = 0;
@@ -30,8 +30,8 @@ public abstract class Resource {
 
 	@SuppressWarnings("unchecked")
 	public Resource update(EndpointManager endpointManager) {
-		return update((ResourcePool<Resource>) endpointManager.getResourcePool(this
-				.getClass()));
+		return update((ResourcePool<Resource>) endpointManager
+				.getResourcePool(this.getClass()));
 	}
 
 	public void deregister() {
@@ -88,6 +88,39 @@ public abstract class Resource {
 		int oldChecksum = old.getChecksum();
 		checksum = HashCalculator.calcHash(this);
 		getResourcePool().updatePublicHashCode(oldChecksum, checksum);
+	}
+
+	/**
+	 * Check if two resources have the same identifying fields
+	 * 
+	 * @param res The other resource
+	 * @return Returns true if both resource share the same types, IDs, and EndpointManagers 
+	 */
+	public boolean hasSameIdentifierAs(Resource res) {
+		return (
+				this != null && res != null &&
+				this.getClass().equals(res.getClass()) &&
+				this.getId() != null && res.getId() != null &&
+				this.isRegistred() && res.isRegistred() &&
+				this.getId().equals(res.getId()) &&
+				this.getEndpointManager().equals(res.getEndpointManager())
+		);
+	}
+	
+	public int compareIdentifier(Resource res) {
+		if (this == res)
+			return 0;
+		if (res == null)
+			return 1;
+		Integer a = this.getId();
+		Integer b = res.getId();
+		if(a==null&&b==null)
+			return 0;
+		if(a==null)
+			return -1;
+		if(b==null)
+			return 1;
+		return a.compareTo(b);
 	}
 
 }

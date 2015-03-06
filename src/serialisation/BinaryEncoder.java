@@ -10,13 +10,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
-import serialisation.Expose.TvpeGetter;
+import serialisation.Expose.TypeGetter;
 import static utils.BinaryUtils.toBytes;
 
 public class BinaryEncoder implements ObjectEncoder<byte[]> {
+
+	private Map<String, Object> parameters = new HashMap<String, Object>();
 
 	@Override
 	public byte[] encode(Object o) {
@@ -53,7 +57,7 @@ public class BinaryEncoder implements ObjectEncoder<byte[]> {
 				Class<?> t = null;
 				Expose e = f.getAnnotation(Expose.class);
 				if (e != null) {
-					Class<? extends TvpeGetter>[] tgt = e.getTypeGetterType();
+					Class<? extends TypeGetter>[] tgt = e.getTypeGetterType();
 					if (tgt != null && tgt.length >= 1) {
 						try {
 							t = tgt[0].newInstance().getType(o, f);
@@ -193,7 +197,7 @@ public class BinaryEncoder implements ObjectEncoder<byte[]> {
 			boolean success = true;
 			try {
 				value = decodeField(f, buffer);
-			} catch(UnsupportedOperationException e){
+			} catch (UnsupportedOperationException e) {
 				success = false;
 			}
 			try {
@@ -203,7 +207,7 @@ public class BinaryEncoder implements ObjectEncoder<byte[]> {
 					Class<?> t = null;
 					Expose e = f.getAnnotation(Expose.class);
 					if (e != null) {
-						Class<? extends TvpeGetter>[] tgt = e
+						Class<? extends TypeGetter>[] tgt = e
 								.getTypeGetterType();
 						if (tgt != null && tgt.length >= 1) {
 							try {
@@ -241,7 +245,8 @@ public class BinaryEncoder implements ObjectEncoder<byte[]> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <R> R decodePrimitive(Class<R> c, ByteBuffer buffer) throws UnsupportedOperationException {
+	public <R> R decodePrimitive(Class<R> c, ByteBuffer buffer)
+			throws UnsupportedOperationException {
 		byte[] dst = new byte[8];
 		if (Byte.class.isAssignableFrom(c) || byte.class.isAssignableFrom(c)) {
 			buffer.get(dst, 0, 1);
@@ -299,6 +304,16 @@ public class BinaryEncoder implements ObjectEncoder<byte[]> {
 	@Override
 	public <R> R decode(byte[] o, Class<R> c) {
 		return decode(ByteBuffer.wrap(o), c);
+	}
+
+	@Override
+	public Object getParameter(String value) {
+		return parameters.get(value);
+	}
+
+	@Override
+	public void setParameter(String key, Object value) {
+		parameters.put(key, value);
 	}
 
 }

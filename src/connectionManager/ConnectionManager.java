@@ -43,6 +43,7 @@ public class ConnectionManager {
 
 	public void reciveHandler(Endpoint e, DataPacket dp) {
 		ObjectEncoder<byte[]> encoder = new BinaryEncoder();
+		encoder.setParameter("endpointIp", e.getAddress());
 		Container c = (Container) encoder.decode(dp.getBuffer(),Container.class);
 		Object obj = c.getObject();
 		for (ReceiveHandler reciveHandler : reciveHandlers) {

@@ -36,12 +36,12 @@ public class ResourceReferenceEncoder implements CustomFieldEncoder {
 	@Override
 	public Object decodeField(ObjectEncoder<?> encoder, Field f, ByteBuffer o) {
 		ResourceReference ref = encoder.decode(o, ResourceReference.class);
-		if (ref.endpointIp == null || ref.resourceId < 0)
+		if (ref.resourceId < 0)
 			return null;
 		if( ref.endpointIp == null ){
-			System.err.println("Todo: ResourceReferenceEncoder.ResourceReference:decodeField, endpointIp is null");
-			return null;
+			ref.endpointIp = (InetAddress)encoder.getParameter("endpointIp");
 		}
+		System.out.println(ref.endpointIp);
 		EndpointManager em = Chat.connectionManager
 				.getEndpointManager(ref.endpointIp);
 		@SuppressWarnings("unchecked")

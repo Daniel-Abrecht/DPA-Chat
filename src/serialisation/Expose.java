@@ -9,11 +9,11 @@ import java.lang.reflect.Field;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(value = ElementType.FIELD)
 public @interface Expose {
-	static public interface TvpeGetter {
+	static public interface TypeGetter {
 		public Class<?> getType(Object o, Field f);
 	}
 
-	Class<? extends TvpeGetter>[] getTypeGetterType() default {};
+	Class<? extends TypeGetter>[] getTypeGetterType() default {};
 
 	int position();
 

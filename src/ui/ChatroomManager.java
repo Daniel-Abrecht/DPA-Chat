@@ -128,18 +128,16 @@ public class ChatroomManager extends Frame {
 	};
 
 	public void update(ChatRoom chatRoom) {
-		Integer id = chatRoom.getId();
-		int i;
-		for (i = chatRoomItems.size(); i-- > 0;) {
+		int i = chatRoomItems.size();
+		while (i-- > 0) {
 			ChatroomItem mv = chatRoomItems.get(i);
-			if ((int) mv.getChatRoom().getId() <= (int) id) {
-				if ((int) mv.getChatRoom().getId() == (int) id) {
-					mv.setChatRoom(chatRoom);
-					return;
-				} else {
-					break;
-				}
-			}
+			ChatRoom chatRoomToCompare = mv.getChatRoom();
+			if (chatRoomToCompare.compareIdentifier(chatRoom) < 0)
+				break;
+			if (!chatRoomToCompare.hasSameIdentifierAs(chatRoom))
+				continue;
+			mv.setChatRoom(chatRoom);
+			return;
 		}
 		if (i < 0)
 			i = chatRoomItems.size();

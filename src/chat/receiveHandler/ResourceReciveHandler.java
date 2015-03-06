@@ -14,9 +14,12 @@ public class ResourceReciveHandler implements ReceiveHandler {
 	}
 
 	@Override
-	public void onReceive(Container container,Endpoint e) {
+	public void onReceive(Container container, Endpoint e) {
 		EndpointManager em = endpointMap.sync(e);
-		Resource res = Resource.reconstruct(container.getObject(),em);
-		System.out.println(res+" | id: "+res.getId());
+		Resource res = Resource.reconstruct(container.getObject(), em);
+		System.out.println(e.getAddress() + " | "
+				+ em.getEndpoint().getAddress());
+		System.out.println(res.isLocal() + " | " + res + " | id: "
+				+ res.getId());
 	}
 }

@@ -45,16 +45,16 @@ public class ChatRoomView extends JFrame {
 				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		postFormTextArea.setLineWrap(true);
-		postFormTextArea.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,18));
+		postFormTextArea.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 18));
 		postFormPanel.add(scroll, BorderLayout.CENTER);
 		postFormPanel.add(sendButton, BorderLayout.EAST);
-		postFormPanel.add(leftPanel , BorderLayout.WEST);
+		postFormPanel.add(leftPanel, BorderLayout.WEST);
 		leftPanel.setLayout(new BorderLayout());
-		leftPanel.add(profilView , BorderLayout.CENTER);
-		leftPanel.add(changeProfile,BorderLayout.SOUTH);
+		leftPanel.add(profilView, BorderLayout.CENTER);
+		leftPanel.add(changeProfile, BorderLayout.SOUTH);
 		profilView.setProfil(Chat.getCurrentProfil());
-		profilView.setPreferredSize(new Dimension(150,0));
-		Chat.events.addEventListener(new ChatListener(){
+		profilView.setPreferredSize(new Dimension(150, 0));
+		Chat.events.addEventListener(new ChatListener() {
 			@Override
 			public void currentProfilChanged(Profil o, Profil n) {
 				profilView.setProfil(n);
@@ -79,7 +79,8 @@ public class ChatRoomView extends JFrame {
 		postFormTextArea.setText("");
 		Message msg = new Message();
 		msg.setProfil(Chat.getCurrentProfil());
-		msg = (Message) msg.update(Chat.getCurrentProfil().getEndpointManager());
+		msg = (Message) msg
+				.update(Chat.getCurrentProfil().getEndpointManager());
 		msg.setChatRoom(chatRoom);
 		msg.setContent(text);
 		msg = (Message) msg.updateRemote();
@@ -95,18 +96,15 @@ public class ChatRoomView extends JFrame {
 	}
 
 	public void update(Message message) {
-		Integer id = message.getId();
+		/* TODO: Sort messages somehow */
 		int i;
 		for (i = messageViews.size(); i-- > 0;) {
 			MessageView mv = messageViews.get(i);
-			if (mv.getMessage().getId() <= id) {
-				if (mv.getMessage().getId() == id) {
-					mv.setMessage(message);
-					return;
-				} else {
-					break;
-				}
-			}
+			Message messageToCompare = mv.getMessage();
+			if (!messageToCompare.hasSameIdentifierAs(message))
+				continue;
+			mv.setMessage(message);
+			return;
 		}
 		if (i < 0)
 			i = messageViews.size();
