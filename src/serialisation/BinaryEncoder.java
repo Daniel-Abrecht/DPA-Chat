@@ -43,34 +43,8 @@ public class BinaryEncoder implements ObjectEncoder<byte[]> {
 		List<Field> fl = getFields(type);
 		for (Iterator<Field> iterator = fl.iterator(); iterator.hasNext();) {
 			Field f = iterator.next();
-			f.setAccessible(true);
-			Object value = null;
-			try {
-				value = f.get(o);
-			} catch (IllegalArgumentException | IllegalAccessException e) {
-				e.printStackTrace();
-			}
-			List<byte[]> b = encodeField(f, value);
-			if (b != null)
-				bl.addAll(b);
-			else {
-				Class<?> t = null;
-				Expose e = f.getAnnotation(Expose.class);
-				if (e != null) {
-					Class<? extends TypeGetter>[] tgt = e.getTypeGetterType();
-					if (tgt != null && tgt.length >= 1) {
-						try {
-							t = tgt[0].newInstance().getType(o, f);
-						} catch (InstantiationException
-								| IllegalAccessException e1) {
-							e1.printStackTrace();
-						}
-					}
-				}
-				if (t == null)
-					t = f.getType();
-				bl.addAll(encode(value, t));
-			}
+			List<byte[]> b = encodeField(f, o);
+			bl.addAll(b);
 		}
 		return bl;
 	}
@@ -107,27 +81,72 @@ public class BinaryEncoder implements ObjectEncoder<byte[]> {
 	}
 
 	@Override
-	public List<byte[]> encodeField(Field f, Object value) {
-		Expose e = f.getAnnotation(Expose.class);
-		Class<? extends CustomFieldEncoder>[] en = e.customFieldEncoder();
-		enBlock: if (en != null && en.length >= 1)
-			try {
-				Object result = en[0].newInstance().encodeField(this, f, value);
-				if (result == null)
-					break enBlock;
-				if (result instanceof byte[])
-					return Arrays.asList((byte[]) result);
-				if (result instanceof List) {
-					@SuppressWarnings("unchecked")
-					List<byte[]> result2 = (List<byte[]>) result;
-					return result2;
-				}
-				return Arrays.asList(encode(result));
-			} catch (InstantiationException | IllegalAccessException e1) {
-				e1.printStackTrace();
-			}
+	public List<byte[]> encodeField(Field f, Object root) {
+		f.setAccessible(true);
+		Object input = null;
+		try {
+			input = f.get(root);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
 		Class<?> c = f.getType();
-		return encodePrimitive(c, value);
+		Expose e = f.getAnnotation(Expose.class);
+		Class<? extends TypeGetter>[] tgt = e.getTypeGetterType();
+		List<Object> items;
+		List<byte[]> res = new ArrayList<byte[]>();
+		if (List.class.isAssignableFrom(c)) {
+			if (input != null) {
+				@SuppressWarnings("unchecked")
+				List<Object> input2 = (List<Object>) input;
+				items = input2;
+				res.addAll(encodePrimitive(Integer.class, items.size()));
+			} else {
+				res.addAll(encodePrimitive(Integer.class, -1));
+				return res;
+			}
+		} else {
+			items = new ArrayList<>();
+			items.add(input);
+		}
+		for (Object value : items) {
+			Class<? extends CustomFieldEncoder>[] en = e.customFieldEncoder();
+			if (en != null && en.length >= 1) {
+				enBlock: try {
+					Object result = en[0].newInstance().encodeField(this, f,
+							value);
+					if (result == null)
+						break enBlock;
+					if (result instanceof byte[])
+						return Arrays.asList((byte[]) result);
+					if (result instanceof List) {
+						@SuppressWarnings("unchecked")
+						List<byte[]> result2 = (List<byte[]>) result;
+						res = result2;
+						break enBlock;
+					}
+					res.addAll(Arrays.asList(encode(result)));
+					break enBlock;
+				} catch (InstantiationException | IllegalAccessException e1) {
+					e1.printStackTrace();
+				}
+			} else {
+				List<byte[]> bl = encodePrimitive(c, value);
+				if (bl != null){
+					res.addAll(bl);
+				}else{
+					if (tgt != null && tgt.length >= 1) {
+						try {
+							c = tgt[0].newInstance().getType(root, f);
+						} catch (InstantiationException
+								| IllegalAccessException e1) {
+							e1.printStackTrace();
+						}
+					}
+					res.addAll(encode(value, c));
+				}
+			}
+		}
+		return res;
 	}
 
 	@Override

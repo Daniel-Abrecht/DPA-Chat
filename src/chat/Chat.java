@@ -1,9 +1,9 @@
 package chat;
 
 import static connectionManager.EventHandler.createEventHandler;
-//import java.util.Timer;
+import java.util.Timer;
 import ui.ProfilManager;
-//import chat.checksum.ChecksumDistributor;
+import chat.checksum.ChecksumDistributor;
 import chat.event.ChatEventHandler;
 import chat.event.EndpointEventHandler;
 import chat.eventListenerImpl.EndpointListenerImpl;
@@ -16,6 +16,8 @@ public class Chat {
 
 	private final static String multicastAddr = "231.255.255.10";
 	private final static int port = 3311;
+	
+	public static final int dataIntegrityCheckInterval = 1000 * 10; // 10 every seconds
 
 	public static final ConnectionManager connectionManager = new ConnectionManager(
 			multicastAddr, port);
@@ -30,8 +32,8 @@ public class Chat {
 		endpointEventHandler.addEventListener(new EndpointListenerImpl());
 		connectionManager.start();
 
-//		Timer timer = new Timer();
-//		timer.scheduleAtFixedRate(new ChecksumDistributor(connectionManager.getLocalEndpointManager()), 0, 3 * 1000);
+		Timer timer = new Timer();
+		timer.scheduleAtFixedRate(new ChecksumDistributor(connectionManager.getLocalEndpointManager()), 0, dataIntegrityCheckInterval);
 
 		ProfilManager.getInstance().setVisible(true);
 	}
