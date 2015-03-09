@@ -7,7 +7,7 @@ public class Endpoint {
 
 	private Date lastMessageArrivalTime;
 	private DataPacket[] dataPackets = new DataPacket[0x80];
-	private final int packetExpires = 10 * 1000; // 10 seconds
+	private final int packetExpires = 2 * 1000; // 2 seconds
 	protected InetAddress address;
 
 	public Endpoint(InetAddress socketAddress) {
@@ -24,11 +24,11 @@ public class Endpoint {
 	}
 
 	public DataPacket createPacket(byte packetId, int packetSize) {
-		if (packetId > 0x7f) {
+		if (packetId > 0x7f || packetId < 0) {
 			System.err.println("Impossible packet id!");
 			return null;
 		}
-		if (packetId < 0) {
+		if (packetSize < 0) {
 			System.err.println("Invalid packet size!");
 			return null;
 		}
@@ -40,7 +40,7 @@ public class Endpoint {
 	}
 
 	public void removePacket(byte packetId) {
-		if (packetId > 0x3f) {
+		if (packetId > 0x7f || packetId < 0) {
 			System.err.println("Impossible packet id!");
 			return;
 		}

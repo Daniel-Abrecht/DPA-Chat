@@ -19,7 +19,7 @@ public interface ObjectEncoder<T> {
 
 	public <R> R decodePrimitive(Class<R> c, ByteBuffer buffer);
 
-	public Object decodeField(Field f, ByteBuffer buffer);
+	public Object decodeField(Object root, Field f, ByteBuffer buffer);
 
 	List<Field> getFields(Class<?> c);
 

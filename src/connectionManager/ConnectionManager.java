@@ -46,6 +46,8 @@ public class ConnectionManager {
 		encoder.setParameter("endpointIp", e.getAddress());
 		Container c = (Container) encoder.decode(dp.getBuffer(),Container.class);
 		Object obj = c.getObject();
+		if (obj == null)
+			return;
 		for (ReceiveHandler reciveHandler : reciveHandlers) {
 			if (reciveHandler.getHandledClass()
 					.isAssignableFrom(obj.getClass())) {
@@ -76,8 +78,7 @@ public class ConnectionManager {
 		o = new Container(o);
 		ObjectEncoder<byte[]> encoder = new BinaryEncoder();
 		byte[] buffer = encoder.encode(o);
-		System.out.println(o);
-		System.out.println(bytesToHex(buffer));
+		System.out.println("send: " + bytesToHex(buffer));
 		DataPacket packet = new DataPacket(buffer.length);
 		packet.fill(buffer, 0, buffer.length, 0);
 		if (e != null)

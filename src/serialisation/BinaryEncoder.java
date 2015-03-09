@@ -130,18 +130,17 @@ public class BinaryEncoder implements ObjectEncoder<byte[]> {
 					e1.printStackTrace();
 				}
 			} else {
-				List<byte[]> bl = encodePrimitive(c, value);
-				if (bl != null){
-					res.addAll(bl);
-				}else{
-					if (tgt != null && tgt.length >= 1) {
-						try {
-							c = tgt[0].newInstance().getType(root, f);
-						} catch (InstantiationException
-								| IllegalAccessException e1) {
-							e1.printStackTrace();
-						}
+				if (tgt != null && tgt.length >= 1) {
+					try {
+						c = tgt[0].newInstance().getType(root, f);
+					} catch (InstantiationException | IllegalAccessException e1) {
+						e1.printStackTrace();
 					}
+				}
+				List<byte[]> bl = encodePrimitive(c, value);
+				if (bl != null) {
+					res.addAll(bl);
+				} else {
 					res.addAll(encode(value, c));
 				}
 			}
@@ -213,34 +212,9 @@ public class BinaryEncoder implements ObjectEncoder<byte[]> {
 			Field f = iterator.next();
 			f.setAccessible(true);
 			Object value = null;
-			boolean success = true;
+			value = decodeField(o, f, buffer);
 			try {
-				value = decodeField(f, buffer);
-			} catch (UnsupportedOperationException e) {
-				success = false;
-			}
-			try {
-				if (success) {
-					f.set(o, value);
-				} else {
-					Class<?> t = null;
-					Expose e = f.getAnnotation(Expose.class);
-					if (e != null) {
-						Class<? extends TypeGetter>[] tgt = e
-								.getTypeGetterType();
-						if (tgt != null && tgt.length >= 1) {
-							try {
-								t = tgt[0].newInstance().getType(o, f);
-							} catch (InstantiationException
-									| IllegalAccessException e1) {
-								e1.printStackTrace();
-							}
-						}
-					}
-					if (t == null)
-						t = f.getType();
-					f.set(o, decode(buffer, t));
-				}
+				f.set(o, value);
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
@@ -249,17 +223,69 @@ public class BinaryEncoder implements ObjectEncoder<byte[]> {
 	}
 
 	@Override
-	public Object decodeField(Field f, ByteBuffer buffer) {
+	public Object decodeField(Object root, Field f, ByteBuffer buffer) {
 		Expose e = f.getAnnotation(Expose.class);
-		Class<? extends CustomFieldEncoder>[] en = e.customFieldEncoder();
-		if (en != null && en.length >= 1)
-			try {
-				return en[0].newInstance().decodeField(this, f, buffer);
-			} catch (InstantiationException | IllegalAccessException e1) {
-				e1.printStackTrace();
-			}
 		Class<?> c = f.getType();
-		return decodePrimitive(c, buffer);
+		Class<? extends CustomFieldEncoder>[] en = e.customFieldEncoder();
+		Class<? extends TypeGetter>[] tgt = e.getTypeGetterType();
+		boolean isList = List.class.isAssignableFrom(c);
+		int size = 1;
+		List<Object> retList = null;
+		if (isList) {
+			try {
+				@SuppressWarnings("unchecked")
+				List<Object> newInstance = (List<Object>) c.newInstance();
+				retList = newInstance;
+			} catch (InstantiationException | IllegalAccessException e2) {
+				if(ArrayList.class.isAssignableFrom(c))
+					retList = new ArrayList<Object>();
+				else
+					return null;
+			}
+			if (tgt != null && tgt.length >= 1) {
+				try {
+					c = tgt[0].newInstance().getType(root, f);
+				} catch (InstantiationException | IllegalAccessException e1) {
+					e1.printStackTrace();
+					return null;
+				}
+			}
+			// Nested lists aren't supported yet
+			if (List.class.isAssignableFrom(c))
+				return null;
+			size = decodePrimitive(Integer.class, buffer);
+			if (size < 0)
+				return null;
+		}
+		for (int i = 0; i < size; i++) {
+			if (en != null && en.length >= 1)
+				try {
+					return en[0].newInstance().decodeField(this, f, buffer);
+				} catch (InstantiationException | IllegalAccessException e1) {
+					e1.printStackTrace();
+				}
+			try {
+				Object ret = decodePrimitive(c, buffer);
+				if (!isList)
+					return ret;
+				else
+					retList.add(ret);
+			} catch (UnsupportedOperationException ex) {
+				if (tgt != null && tgt.length >= 1) {
+					try {
+						c = tgt[0].newInstance().getType(root, f);
+					} catch (InstantiationException | IllegalAccessException e1) {
+						e1.printStackTrace();
+					}
+				}
+				Object ret = decode(buffer, c);
+				if (!isList)
+					return ret;
+				else
+					retList.add(ret);
+			}
+		}
+		return retList;
 	}
 
 	@SuppressWarnings("unchecked")

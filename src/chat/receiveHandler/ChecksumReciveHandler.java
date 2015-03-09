@@ -24,6 +24,7 @@ public class ChecksumReciveHandler implements ReceiveHandler {
 	public void onReceive(Container container, Endpoint e) {
 		EndpointManager em = endpointMap.sync(e);
 		ChecksumContainer chc = (ChecksumContainer) container.getObject();
+		System.out.println(chc);
 		Integer rootChecksum = chc.getRootChecksum();
 		if (rootChecksum != null && (int) em.getChechsum() != rootChecksum) {
 			System.out.println("Checksum mismatch");
