@@ -173,7 +173,7 @@ public class BinaryEncoder implements ObjectEncoder<byte[]> {
 							: value)) });
 		if (String.class.isAssignableFrom(c))
 			try {
-				byte[] res = ((String) ((value == null) ? 0 : value))
+				byte[] res = ((String) ((value == null) ? "0" : value))
 						.getBytes("UTF-8");
 				return Arrays.asList(new byte[][] { toBytes(res.length), res });
 			} catch (UnsupportedEncodingException e1) {
@@ -237,7 +237,7 @@ public class BinaryEncoder implements ObjectEncoder<byte[]> {
 				List<Object> newInstance = (List<Object>) c.newInstance();
 				retList = newInstance;
 			} catch (InstantiationException | IllegalAccessException e2) {
-				if(ArrayList.class.isAssignableFrom(c))
+				if(c.isAssignableFrom(ArrayList.class))
 					retList = new ArrayList<Object>();
 				else
 					return null;

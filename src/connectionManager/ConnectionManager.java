@@ -78,11 +78,11 @@ public class ConnectionManager {
 		o = new Container(o);
 		ObjectEncoder<byte[]> encoder = new BinaryEncoder();
 		byte[] buffer = encoder.encode(o);
-		System.out.println("send: " + bytesToHex(buffer));
 		DataPacket packet = new DataPacket(buffer.length);
 		packet.fill(buffer, 0, buffer.length, 0);
 		if (e != null)
 			packet.setDestination(e.getAddress());
+		System.out.println("-- send to "+packet.getDestination()+" --\n" + bytesToHex(buffer));
 		client.send(packet);
 	}
 

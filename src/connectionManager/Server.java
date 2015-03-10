@@ -104,6 +104,7 @@ class Server extends Thread {
 			if (full) {
 				// data packet full
 				e.removePacket(packetId);
+				System.out.println("-- recived from "+e.getAddress()+" --\n"+ bytesToHex(dp.getBuffer()));
 				connectionManager.reciveHandler(e, dp);
 			}
 		}
