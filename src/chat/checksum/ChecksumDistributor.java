@@ -14,7 +14,7 @@ public class ChecksumDistributor extends TimerTask {
 
 	public void run() {
 		int rootChecksum = endpointManager.getChechsum();
-		ChecksumContainer chc = new ChecksumContainer();
+		EndpointControlInfoContainer chc = new EndpointControlInfoContainer();
 		chc.setRootChecksum(rootChecksum);
 		Chat.connectionManager.send(chc);
 	}

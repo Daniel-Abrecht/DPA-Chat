@@ -1,13 +1,16 @@
 package chat;
 
 import static connectionManager.EventHandler.createEventHandler;
+
 import java.util.Timer;
+
 import ui.ProfilManager;
 import chat.checksum.ChecksumDistributor;
 import chat.event.ChatEventHandler;
 import chat.event.EndpointEventHandler;
 import chat.eventListenerImpl.EndpointListenerImpl;
-import chat.receiveHandler.ChecksumReciveHandler;
+import chat.receiveHandler.EndpointControlInfoReciveHandler;
+import chat.receiveHandler.RespoolChecksumReciveHandler;
 import chat.receiveHandler.ResourceReciveHandler;
 import chat.resources.Profil;
 import connectionManager.ConnectionManager;
@@ -27,7 +30,8 @@ public class Chat {
 
 	public static void main(String[] args) {
 
-		connectionManager.addHandler(new ChecksumReciveHandler());
+		connectionManager.addHandler(new RespoolChecksumReciveHandler());
+		connectionManager.addHandler(new EndpointControlInfoReciveHandler());
 		connectionManager.addHandler(new ResourceReciveHandler());
 		endpointEventHandler.addEventListener(new EndpointListenerImpl());
 		connectionManager.start();

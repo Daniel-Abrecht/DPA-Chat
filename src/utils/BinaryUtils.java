@@ -1,5 +1,7 @@
 package utils;
 
+import java.nio.ByteBuffer;
+
 public class BinaryUtils {
 	public final static byte[] toBytes(byte value) {
 		return new byte[] { value };
@@ -32,6 +34,21 @@ public class BinaryUtils {
 		return toBytes(Double.doubleToLongBits(value));
 	}
 
+	public final static byte[] toBytesIncludeNull(Integer value) {
+		if (value == null)
+			return new byte[] { -1 };
+		int contains = value;
+		if (contains <= 252) {
+			return new byte[] { (byte) contains };
+		} else if (contains < (1 << 16)) {
+			return new byte[] { -2, (byte) (contains >> 8), (byte) contains };
+		} else {
+			return new byte[] { -3, (byte) (contains >> 24),
+					(byte) (contains >> 16), (byte) (contains >> 8),
+					(byte) contains };
+		}
+	}	
+	
 	public static String bytesToHex(byte[] bytes) {
 		final char[] hexArray = "0123456789ABCDEF".toCharArray();
 		char[] hexChars = new char[bytes.length * 3];
@@ -46,6 +63,23 @@ public class BinaryUtils {
 
 	public static byte asByte(byte[] dst, int offset) {
 		return dst[offset];
+	}
+
+	public static Integer asIntegerOrNull(ByteBuffer dst) {
+		byte first = dst.get();
+		if (first == -1)
+			return null;
+		if (first == -2){
+			byte[] buf = new byte[2];
+			dst.get(buf, 0, 2);
+			return (int) asShort(buf, 0) & 0xFFFF;
+		}
+		if (first == -3){
+			byte[] buf = new byte[4];
+			dst.get(buf, 0, 4);
+			return (int) asInt(buf, 0);
+		}
+		return first & 0xFF;
 	}
 
 	public static short asShort(byte[] dst, int i) {
