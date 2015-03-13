@@ -10,6 +10,7 @@ import chat.event.ChatEventHandler;
 import chat.event.EndpointEventHandler;
 import chat.eventListenerImpl.EndpointListenerImpl;
 import chat.receiveHandler.EndpointControlInfoReciveHandler;
+import chat.receiveHandler.ResourceChecksumContainerReciveHandler;
 import chat.receiveHandler.RespoolChecksumReciveHandler;
 import chat.receiveHandler.ResourceReciveHandler;
 import chat.resources.Profil;
@@ -30,9 +31,10 @@ public class Chat {
 
 	public static void main(String[] args) {
 
-		connectionManager.addHandler(new RespoolChecksumReciveHandler());
 		connectionManager.addHandler(new EndpointControlInfoReciveHandler());
 		connectionManager.addHandler(new ResourceReciveHandler());
+		connectionManager.addHandler(new RespoolChecksumReciveHandler());
+		connectionManager.addHandler(new ResourceChecksumContainerReciveHandler());
 		endpointEventHandler.addEventListener(new EndpointListenerImpl());
 		connectionManager.start();
 
