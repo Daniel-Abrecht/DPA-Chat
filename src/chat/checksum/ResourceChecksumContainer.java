@@ -132,4 +132,8 @@ public class ResourceChecksumContainer {
 				+ "]";
 	}
 
+	public List<IdChecksumPair> getChecksums() {
+		return checksumHolder.resourceChecksums;
+	}
+
 }
