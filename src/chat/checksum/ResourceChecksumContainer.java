@@ -31,8 +31,8 @@ public class ResourceChecksumContainer {
 			int contains = 0;
 			List<byte[]> nextChunck = null;
 			for (IdChecksumPair icp : icpl) {
-				int distance = icp.id - lastId;
-				if (distance > 1) {
+				int distance = icp.id - lastId - 1;
+				if (distance > 0|| nextChunck == null ) {
 					if( nextChunck != null){
 						result.add(toBytesIncludeNull(contains));
 						result.addAll(nextChunck);
@@ -99,7 +99,7 @@ public class ResourceChecksumContainer {
 		}
 
 	}
-	
+
 	public static class ChecksumHolder {
 		private List<IdChecksumPair> resourceChecksums;
 
@@ -108,20 +108,24 @@ public class ResourceChecksumContainer {
 			return "ChecksumHolder [resourceChecksums=" + resourceChecksums
 					+ "]";
 		}
-		
+
 	}
-	
+
+	@Expose(position=0)
+	private int respoolIndex;
+
 	// Helper, allows using a custom encoder
 	@Expose(position=1,customFieldEncoder=resourceChecksumsCustomEncoder.class)
 	public ChecksumHolder checksumHolder = new ChecksumHolder();
-	
-	public void setChecksums(ResourcePool<? extends Resource> resourcePool) {
+
+	public void setChecksums(ResourcePool<? extends Resource> resourcePool,int respoolIndex) {
 		checksumHolder.resourceChecksums = new ArrayList<IdChecksumPair>();
 		for (Resource resource : resourcePool.getResources()) {
 			IdChecksumPair icp = new IdChecksumPair();
 			icp.id = resource.getId();
 			icp.checksum = resource.getChecksum();
 			checksumHolder.resourceChecksums.add(icp);
+			this.respoolIndex = respoolIndex;
 		}
 		Collections.sort( checksumHolder.resourceChecksums );
 	}
@@ -134,6 +138,10 @@ public class ResourceChecksumContainer {
 
 	public List<IdChecksumPair> getChecksums() {
 		return checksumHolder.resourceChecksums;
+	}
+
+	public int getRespoolIndex() {
+		return respoolIndex;
 	}
 
 }

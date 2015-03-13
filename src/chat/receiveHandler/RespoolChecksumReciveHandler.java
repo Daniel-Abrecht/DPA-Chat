@@ -38,7 +38,7 @@ public class RespoolChecksumReciveHandler implements ReceiveHandler {
 				continue;
 			System.out.println("Respool " + i + ": Checksum mismatch");
 			ResourceChecksumContainer resChecksums = new ResourceChecksumContainer();
-			resChecksums.setChecksums(resourcePool);
+			resChecksums.setChecksums(resourcePool,i);
 			Chat.connectionManager.send(e, resChecksums);
 		}
 	}
