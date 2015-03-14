@@ -6,10 +6,11 @@ import serialisation.Expose;
 @Deserializable
 public class ResourceRequest {
 	@Expose(position=0)
-	private int respoolIndex;
-	@Expose(position=1)
-	private int id;
+	private int respoolIndex = -1;
+	@Expose(position = 1)
+	private int id = -1;
 
+	public ResourceRequest(){}
 	public ResourceRequest(int respoolIndex,int id){
 		this.respoolIndex = respoolIndex;
 		this.id = id;

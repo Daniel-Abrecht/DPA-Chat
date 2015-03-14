@@ -44,12 +44,26 @@ public class ResourceChecksumContainerReciveHandler implements ReceiveHandler {
 		Iterator<Resource> it2 = list.iterator();
 		IdChecksumPair c = null;
 		Resource r = null;
-		while (it1.hasNext() && it2.hasNext()) {
-			if (c == null)
+		int id = 0;
+		while (it1.hasNext() || it2.hasNext()) {
+			if (c == null && it1.hasNext())
 				c = it1.next();
-			if (r == null)
+			if (r == null && it2.hasNext()){
 				r = it2.next();
-			int id = r.getId();
+				id = r.getId();
+			}
+			if (r != null && (c == null || id < c.id)) { // Object shouldn't be there
+				System.out.println("Unexpected existence of resource '" + r + "' detected");
+				r.deregister();
+				r = null;
+				continue;
+			}
+			if (c != null && (r == null || id > c.id)) { // Object missing
+				System.out.println("Missing resource with id " + c.id + " detected");
+				requestResource(c.id,res.getRespoolIndex(),e);
+				c = null;
+				continue;
+			}
 			if (c.id == id) { // same object
 				if (c.checksum != r.getChecksum()){
 					System.out.println("Difference between local copy of resource '" + r + "' and original detected.");
@@ -59,23 +73,11 @@ public class ResourceChecksumContainerReciveHandler implements ReceiveHandler {
 				r = null;
 				continue;
 			}
-			if (c.id < id) { // Object shouldn't be there
-				System.out.println("Unexpected existence of resource '" + r + "'detected");
-				r.deregister();
-				c = null;
-				continue;
-			}
-			if (id < c.id) { // Object missing
-				System.out.println("Missing resource with id " + c.id + "detected");
-				requestResource(c.id,res.getRespoolIndex(),e);
-				r = null;
-				continue;
-			}
 		}
 	}
 
 	private void requestResource(int id, int respoolIndex, Endpoint e) {
-		System.out.println("New copy of resource " + respoolIndex + ":" + id + "detected");
+		System.out.println("New copy of resource " + respoolIndex + ":" + id + " requested");
 		Chat.connectionManager.send(e, new ResourceRequest(respoolIndex,id));
 	}
 }

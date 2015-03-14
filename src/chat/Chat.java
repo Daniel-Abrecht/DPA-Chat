@@ -11,6 +11,7 @@ import chat.event.EndpointEventHandler;
 import chat.eventListenerImpl.EndpointListenerImpl;
 import chat.receiveHandler.EndpointControlInfoReciveHandler;
 import chat.receiveHandler.ResourceChecksumContainerReciveHandler;
+import chat.receiveHandler.ResourceRequestHandler;
 import chat.receiveHandler.RespoolChecksumReciveHandler;
 import chat.receiveHandler.ResourceReciveHandler;
 import chat.resources.Profil;
@@ -35,6 +36,7 @@ public class Chat {
 		connectionManager.addHandler(new ResourceReciveHandler());
 		connectionManager.addHandler(new RespoolChecksumReciveHandler());
 		connectionManager.addHandler(new ResourceChecksumContainerReciveHandler());
+		connectionManager.addHandler(new ResourceRequestHandler());
 		endpointEventHandler.addEventListener(new EndpointListenerImpl());
 		connectionManager.start();
 
