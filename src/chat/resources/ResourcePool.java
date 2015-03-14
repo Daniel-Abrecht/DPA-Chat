@@ -43,7 +43,7 @@ public class ResourcePool<T extends Resource> implements
 	 * @param newChechsum
 	 *            the new checksum of the resource
 	 */
-	public void updatePublicHashCode(int oldChecksum, int newChechsum) {
+	synchronized public void updatePublicHashCode(int oldChecksum, int newChechsum) {
 		int oldCh = checksum;
 		checksum = checksum - oldChecksum + newChechsum;
 		getEndpointManager().updateChecksum(oldCh, checksum);

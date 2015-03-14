@@ -1,9 +1,6 @@
 package chat.receiveHandler;
 
-import static chat.manager.EndpointMap.endpointMap;
-
 import java.util.List;
-
 import chat.Chat;
 import chat.checksum.ResourceChecksumContainer;
 import chat.checksum.RespoolChecksumContainer;
@@ -13,6 +10,7 @@ import chat.resources.ResourcePool;
 import connectionManager.Container;
 import connectionManager.ReceiveHandler;
 import connectionManager.Endpoint;
+import static chat.Chat.connectionManager;
 
 public class RespoolChecksumReciveHandler implements ReceiveHandler {
 
@@ -23,7 +21,7 @@ public class RespoolChecksumReciveHandler implements ReceiveHandler {
 
 	@Override
 	public void onReceive(Container container, Endpoint e) {
-		EndpointManager em = endpointMap.sync(e);
+		EndpointManager em = connectionManager.getLocalEndpointManager();
 		RespoolChecksumContainer chc = (RespoolChecksumContainer) container.getObject();
 		if (!chc.hasResPoolChecksums())
 			return;

@@ -81,7 +81,7 @@ public abstract class Resource {
 		return checksum;
 	}
 
-	void updateChecksum() {
+	synchronized void updateChecksum() {
 		Resource old = getResourcePool().getResource(id);
 		if (old == null)
 			return;
