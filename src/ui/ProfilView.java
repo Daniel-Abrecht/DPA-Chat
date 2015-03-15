@@ -38,14 +38,14 @@ public class ProfilView extends JPanel {
 	}
 
 	public static void updateViewsWithProfile(Profil profil) {
+		if (profil == null)
+			return;
 		for (Iterator<ProfilView> iterator = profilViews.iterator(); iterator
 				.hasNext();) {
 			ProfilView view = iterator.next();
 			if (view.profil == null)
 				continue;
-			if (!view.profil.getId().equals(profil.getId()))
-				continue;
-			if (view.profil.getEndpointManager() != profil.getEndpointManager())
+			if (view.profil.hasSameIdentifierAs(profil))
 				continue;
 			view.setProfil(profil);
 		}

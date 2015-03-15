@@ -23,6 +23,8 @@ public class ResourcePool<T extends Resource> implements
 
 	@SuppressWarnings("unchecked")
 	private ResourceEventHandler<T> resourceEventHandler = createEventHandler(ResourceEventHandler.class);
+	
+	private Object checksumLock = new Object();
 
 	/**
 	 * Contains the network-wide valid hascode for some kind of resource.
@@ -43,10 +45,13 @@ public class ResourcePool<T extends Resource> implements
 	 * @param newChechsum
 	 *            the new checksum of the resource
 	 */
-	synchronized public void updatePublicHashCode(int oldChecksum, int newChechsum) {
-		int oldCh = checksum;
-		checksum = checksum - oldChecksum + newChechsum;
-		getEndpointManager().updateChecksum(oldCh, checksum);
+	public void updatePublicHashCode(int oldChecksum,
+			int newChechsum) {
+		synchronized (checksumLock) {
+			int oldCh = checksum;
+			checksum = checksum - oldChecksum + newChechsum;
+			getEndpointManager().updateChecksum(oldCh, checksum);
+		}
 	}
 
 	public int getChecksum() {
@@ -63,41 +68,44 @@ public class ResourcePool<T extends Resource> implements
 
 	public Integer register(T resource) {
 		resources.put(resIdCounter, resource);
-		resourceEventHandler.resourceCreation(this, resource);
 		return resIdCounter++;
 	}
 
 	public T update(T resource, int id) {
 		T old = resources.get(id);
-		if (old == null) {
-			resources.put(id, resource);
-			resourceEventHandler.resourceCreation(this, resource);
-		} else {
-			Class<?> clazz = resource.getClass();
-			Class<?> classOld = old.getClass();
-			do {
-				if (!classOld.isAssignableFrom(clazz))
-					continue;
-				Field[] fields = classOld.getDeclaredFields();
-				for (int i = 0; i < fields.length; i++) {
-					Field field = fields[i];
-					if (field.getAnnotation(Preserve.class) != null
-							&& field.getAnnotation(Expose.class) == null)
+		synchronized (old == null ? resource : old) {
+			if (old == null) {
+				resources.put(id, resource);
+				resourceEventHandler.resourceCreation(this, resource);
+			} else {
+				Class<?> clazz = resource.getClass();
+				Class<?> classOld = old.getClass();
+				do {
+					if (!classOld.isAssignableFrom(clazz))
 						continue;
-					field.setAccessible(true);
-					try {
-						if (field.get(resource) == null
-								&& field.getAnnotation(Preserve.class) != null)
+					Field[] fields = classOld.getDeclaredFields();
+					for (int i = 0; i < fields.length; i++) {
+						Field field = fields[i];
+						if (field.getAnnotation(Preserve.class) != null
+								&& field.getAnnotation(Expose.class) == null)
 							continue;
-						Object nv = field.get(resource);
-						field.set(old, nv);
-					} catch (IllegalArgumentException | IllegalAccessException e) {
-						e.printStackTrace();
+						field.setAccessible(true);
+						try {
+							if (field.get(resource) == null
+									&& field.getAnnotation(Preserve.class) != null)
+								continue;
+							Object nv = field.get(resource);
+							field.set(old, nv);
+						} catch (IllegalArgumentException
+								| IllegalAccessException e) {
+							e.printStackTrace();
+						}
 					}
-				}
-			} while ((classOld = classOld.getSuperclass()) != null);
+				} while ((classOld = classOld.getSuperclass()) != null);
+			}
+			resourceEventHandler.resourceChange(this, old == null ? resource
+					: old);
 		}
-		resourceEventHandler.resourceChange(this, old == null ? resource : old);
 		return old == null ? resource : old;
 	}
 

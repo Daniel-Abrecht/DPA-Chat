@@ -59,8 +59,12 @@ public class EndpointManager {
 		return (ResourcePool<T>) resourcePools.get(resClass);
 	}
 
+	private Object checksumLock = new Object();
+	
 	synchronized public void updateChecksum(int oldChecksum, int newChecksum) {
-		checksum  = checksum - oldChecksum + newChecksum;
+		synchronized (checksumLock) {
+			checksum = checksum - oldChecksum + newChecksum;
+		}
 	}
 
 	public int getChechsum() {

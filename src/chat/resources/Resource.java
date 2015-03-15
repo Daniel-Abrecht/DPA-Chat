@@ -11,7 +11,7 @@ public abstract class Resource {
 	private Integer id = -1;
 	@Preserve
 	private int checksum = 0;
-
+	
 	public Resource update(ResourcePool<Resource> parent) {
 		if (this.resourcePool != null)
 			deregister();
@@ -81,12 +81,15 @@ public abstract class Resource {
 		return checksum;
 	}
 
-	synchronized void updateChecksum() {
+	void updateChecksum() {
+		int oldChecksum;
 		Resource old = getResourcePool().getResource(id);
-		if (old == null)
-			return;
-		int oldChecksum = old.getChecksum();
-		checksum = HashCalculator.calcHash(this);
+		synchronized (old) {
+			if (old == null)
+				return;
+			oldChecksum = old.getChecksum();
+			checksum = HashCalculator.calcHash(this);
+		}
 		getResourcePool().updatePublicHashCode(oldChecksum, checksum);
 	}
 
