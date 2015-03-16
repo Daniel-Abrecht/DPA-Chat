@@ -18,9 +18,10 @@ import chat.resources.ChatRoom;
 
 @SuppressWarnings("serial")
 class ChatRoomEditor extends JFrame  {
+	private static ChatRoomEditor instance;
 	public JTextField nameField = new JTextField();
 	private ChatRoom chatRoom;
-	public ChatRoomEditor(){
+	private ChatRoomEditor(){
 		super();
 		setTitle("Chatroom Editor");
 		setSize(300,120);
@@ -67,5 +68,11 @@ class ChatRoomEditor extends JFrame  {
 	public void setTarget(ChatRoom chatRoom) {
 		nameField.setText(chatRoom.getName());
 		this.chatRoom = chatRoom;
+	}
+
+	public static ChatRoomEditor getInstance() {
+		if (instance != null)
+			return instance;
+		return instance = new ChatRoomEditor();
 	}
 }

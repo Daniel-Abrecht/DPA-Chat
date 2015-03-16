@@ -20,7 +20,7 @@ import chat.resources.ChatRoom;
 @SuppressWarnings("serial")
 public class ChatroomManager extends Frame {
 	private VScrollList vScrollList = new VScrollList();
-	private ChatRoomEditor chatRoomEditor = new ChatRoomEditor();
+	private ChatRoomEditor chatRoomEditor = ChatRoomEditor.getInstance();
 	public ChatRoom selectedChatroom;
 	private ArrayList<ChatroomItem> chatRoomItems = new ArrayList<ChatroomItem>();
 	private JButton editRoom;
