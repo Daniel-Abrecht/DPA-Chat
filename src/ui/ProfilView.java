@@ -45,7 +45,7 @@ public class ProfilView extends JPanel {
 			ProfilView view = iterator.next();
 			if (view.profil == null)
 				continue;
-			if (view.profil.hasSameIdentifierAs(profil))
+			if (!view.profil.hasSameIdentifierAs(profil))
 				continue;
 			view.setProfil(profil);
 		}
