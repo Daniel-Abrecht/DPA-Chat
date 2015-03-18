@@ -8,8 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -18,12 +18,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
-
+import java.io.File;
 import chat.Chat;
 import chat.eventListener.ChatListener;
 import chat.resources.ChatRoom;
 import chat.resources.Message;
 import chat.resources.Profil;
+import static chat.utils.Data.saveChatlog;
 
 @SuppressWarnings("serial")
 public class ChatRoomView extends JFrame {
@@ -58,6 +59,16 @@ public class ChatRoomView extends JFrame {
 				JMenuItem menuItem = new JMenuItem("Chatlog Speichern");
 				menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
 						ActionEvent.CTRL_MASK));
+				menuItem.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						JFileChooser fileChooser = new JFileChooser();
+						if (fileChooser.showSaveDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
+							File file = fileChooser.getSelectedFile();
+							saveChatlog(file,chatRoom);
+						}
+					}
+				});
 				menu.add(menuItem);
 			}
 			menuBar.add(menu);

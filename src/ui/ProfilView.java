@@ -1,11 +1,10 @@
 package ui;
 
 import java.awt.BorderLayout;
-import java.awt.Label;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import chat.resources.Profil;
@@ -13,7 +12,7 @@ import chat.resources.Profil;
 @SuppressWarnings("serial")
 public class ProfilView extends JPanel {
 	private static List<ProfilView> profilViews = new ArrayList<ProfilView>();
-	private Label name = new Label();
+	private JLabel name = new JLabel();
 	private Profil profil;
 
 	public ProfilView() {

@@ -1,6 +1,8 @@
 package ui;
 
 import javax.swing.JFrame;
+import javax.swing.JTextArea;
+import static chat.Chat.*;
 
 @SuppressWarnings("serial")
 class AboutDialog extends JFrame {
@@ -9,7 +11,15 @@ class AboutDialog extends JFrame {
 	private AboutDialog() {
 		super();
 		setTitle("Über DPA-Chat");
-		setSize(300, 120);
+		setSize(600, 400);
+		setResizable(false);
+		JTextArea infotext = new JTextArea(
+				appName + " v" +version + "\n"
+			+	"Von " + developer + "\n\n\n"
+			+ licence
+		);
+		infotext.setEditable(false);
+		add(infotext);
 	}
 
 	public static AboutDialog getInstance() {
