@@ -31,7 +31,7 @@ public class Chat {
 	public static final ChatEventHandler events = createEventHandler(ChatEventHandler.class);;
 
 	public final static String appName = "DPA-Chat";
-	public final static String version = "0.1.0";
+	public final static String version = "0.1.1";
 	public final static String developer = "Daniel Patrik Abrecht";
 	public final static String licence =
 			"The MIT License (MIT)\n"+

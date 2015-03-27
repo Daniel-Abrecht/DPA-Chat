@@ -40,6 +40,8 @@ class ChatRoomEditor extends JFrame  {
 		change.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				if (nameField.getText().length() == 0)
+					return;
 				setVisible(false);
 				save();
 				if(chatRoom.isRegistred()){

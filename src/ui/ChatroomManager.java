@@ -3,22 +3,19 @@ package ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.GridLayout;
-import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import chat.resources.ChatRoom;
 
 @SuppressWarnings("serial")
-public class ChatroomManager extends Frame {
+public class ChatroomManager extends JFrame {
 	private VScrollList vScrollList = new VScrollList();
 	private ChatRoomEditor chatRoomEditor = ChatRoomEditor.getInstance();
 	public ChatRoom selectedChatroom;
@@ -38,10 +35,14 @@ public class ChatroomManager extends Frame {
 
 		setTitle("Chatroom Manager");
 		setSize(400, 600);
-		addWindowListener(new ChatroomManagerListener());
+		addWindowListener(new DefaultWindowCloseListener(){
+			public void windowClosing(WindowEvent e) {
+				super.windowClosing(e);
+			}
+		});
 		setLayout(new BorderLayout());
 
-		Label l = new Label("Chatrooms");
+		JLabel l = new JLabel("Chatrooms");
 		l.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30));
 		add(l, BorderLayout.NORTH);
 		add(vScrollList, BorderLayout.CENTER);
@@ -77,21 +78,15 @@ public class ChatroomManager extends Frame {
 
 	}
 
-	static class ChatroomManagerListener extends WindowAdapter {
-		public void windowClosing(WindowEvent e) {
-			if (Utils.VisibleWindowCount() <= 1)
-				System.exit(0);
-		}
-	}
-
 	private class ChatroomItem extends DefaultListItem {
-		private Label label = new Label();
+		private JLabel label = new JLabel();
 		private ChatRoom chatRoom;
 
 		public ChatroomItem(ChatRoom chatRoom) {
 			setChatRoom(chatRoom);
 			setLayout(new BorderLayout(50, 50));
 			add(label, BorderLayout.CENTER);
+			label.setFont(getFont());
 			setPreferredSize(new Dimension(0, 50));
 			label.addMouseListener(this);
 		}

@@ -1,12 +1,9 @@
 package chat.utils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collection;
-
 import chat.manager.EndpointManager;
 import chat.resources.ChatRoom;
 import chat.resources.Message;

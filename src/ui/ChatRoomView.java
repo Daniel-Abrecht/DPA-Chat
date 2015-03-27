@@ -7,7 +7,9 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -18,7 +20,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
+
 import java.io.File;
+
 import chat.Chat;
 import chat.eventListener.ChatListener;
 import chat.resources.ChatRoom;
@@ -90,6 +94,13 @@ public class ChatRoomView extends JFrame {
 
 		setJMenuBar(menuBar);
 		
+		addWindowListener(new DefaultWindowCloseListener(){
+			public void windowClosing(WindowEvent e) {
+				super.windowClosing(e);
+				e.getWindow().setVisible(false);
+			}
+		});
+
 		messageList.setBackground(Color.BLACK);
 		setChatRoom(chatRoom2);
 		setSize(800, 600);
