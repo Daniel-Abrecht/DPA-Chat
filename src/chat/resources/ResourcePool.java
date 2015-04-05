@@ -145,4 +145,16 @@ public class ResourcePool<T extends Resource> implements
 		return res;
 	}
 
+	public static interface BooleanQuery <T extends Resource> {
+		public boolean checkTruth(T resource);
+	};
+	
+	public  boolean queryTruth( Class<T> res, BooleanQuery<T> q ){
+		Collection<T> resources = this.getResources();
+		for(T resource : resources)
+			if(q.checkTruth(resource))
+				return true;
+		return false;
+	}
+
 }

@@ -23,7 +23,7 @@ class ProfilEditor extends JFrame {
 	public ProfilEditor() {
 		super();
 		setTitle("Profil Editor");
-		setSize(300, 140);
+		setSize(300, 160);
 		setLayout(new BorderLayout());
 		JPanel btns = new JPanel();
 		btns.setLayout(new GridLayout(1, 0));

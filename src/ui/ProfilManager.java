@@ -8,14 +8,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import chat.Chat;
+import chat.resources.Message;
 import chat.resources.Profil;
+import chat.resources.ResourcePool;
 
 @SuppressWarnings("serial")
 public class ProfilManager extends JFrame {
@@ -25,6 +25,7 @@ public class ProfilManager extends JFrame {
 	public Profil selectedProfil;
 	private ArrayList<ProfilItem> profilItems = new ArrayList<ProfilItem>();
 	private JButton editProfil;
+	private JButton removeProfil;
 	private static ProfilManager profilManager;
 
 	public static ProfilManager getInstance() {
@@ -55,9 +56,12 @@ public class ProfilManager extends JFrame {
 		JPanel buttons = new JPanel();
 		buttons.setLayout(new GridLayout(1, 0));
 
+		removeProfil = new JButton("Löschen");
+		removeProfil.setEnabled(false);
 		JButton newProfil = new JButton("Neu");
 		editProfil = new JButton("Bearbeiten");
 
+		buttons.add(removeProfil);
 		buttons.add(editProfil);
 		editProfil.setEnabled(false);
 		buttons.add(newProfil);
@@ -78,6 +82,15 @@ public class ProfilManager extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				profilEditor.setTarget(selectedProfil);
 				profilEditor.setVisible(true);
+			}
+		});
+
+		removeProfil.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				selectedProfil.deregister();
+				removeProfil.setEnabled(false);
+				selectedProfil = null;
 			}
 		});
 
@@ -108,9 +121,20 @@ public class ProfilManager extends JFrame {
 			if (b) {
 				selectedProfil = profil;
 				editProfil.setEnabled(true);
+				boolean referenced = profil
+						.getEndpointManager()
+						.getResourcePool(Message.class)
+						.queryTruth(Message.class,
+								new ResourcePool.BooleanQuery<Message>() {
+									public boolean checkTruth(Message message) {
+										return message.getProfil() == profil;
+									}
+								});
+				removeProfil.setEnabled(!referenced);
 			} else {
 				selectedProfil = null;
-				editProfil.setEnabled(true);
+				editProfil.setEnabled(false);
+				removeProfil.setEnabled(false);
 			}
 		}
 
@@ -153,13 +177,25 @@ public class ProfilManager extends JFrame {
 	}
 
 	public void remove(Integer id) {
-		for (Integer i = profilItems.size(); i-- > 0;) {
+		for (int i = profilItems.size(); i-- > 0;) {
 			if (profilItems.get(i).getProfil().getId() == id) {
+				System.err.println("remove entry at index " + i);
+				vScrollList.remove(i); // JPanel seams to have a bug
+//				vScrollList.remove(profilItems.get(i)); // This doesn't work too, damn it swing!
 				profilItems.remove(i);
-				vScrollList.remove(i);
+				vScrollList.revalidate();
+				vScrollList.repaint();				
 				break;
 			}
 		}
+		// bugfix //
+		vScrollList.removeAll();
+		for(ProfilItem item : profilItems){
+			vScrollList.add(item);
+		}
+		vScrollList.revalidate();
+		vScrollList.repaint();				
+		////////////
 	}
 
 }
