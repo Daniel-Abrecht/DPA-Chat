@@ -15,6 +15,8 @@ import chat.receiveHandler.ResourceRequestHandler;
 import chat.receiveHandler.RespoolChecksumReciveHandler;
 import chat.receiveHandler.ResourceReciveHandler;
 import chat.resources.Profil;
+import static chat.utils.Data.loadProfiles;
+import static chat.utils.Data.saveProfiles;
 import connectionManager.ConnectionManager;
 
 public class Chat {
@@ -57,7 +59,7 @@ public class Chat {
 			"SOFTWARE.";
 	
 	public static void main(String[] args) {
-
+		
 		connectionManager.addHandler(new EndpointControlInfoReciveHandler());
 		connectionManager.addHandler(new ResourceReciveHandler());
 		connectionManager.addHandler(new RespoolChecksumReciveHandler());
@@ -65,6 +67,8 @@ public class Chat {
 		connectionManager.addHandler(new ResourceRequestHandler());
 		endpointEventHandler.addEventListener(new EndpointListenerImpl());
 		connectionManager.start();
+
+		loadProfiles();
 
 		Timer timer = new Timer();
 		timer.scheduleAtFixedRate(new ChecksumDistributor(connectionManager.getLocalEndpointManager()), 0, dataIntegrityCheckInterval);
@@ -80,5 +84,10 @@ public class Chat {
 		Profil oldProfil = Chat.currentProfil;
 		Chat.currentProfil = currentProfil;
 		events.currentProfilChanged(oldProfil, currentProfil);
+	}
+
+	public static void closeChatApp() {
+		saveProfiles();
+		System.exit(0);
 	}
 }
