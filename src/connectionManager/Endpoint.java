@@ -52,7 +52,7 @@ public class Endpoint {
 			DataPacket d = dataPackets[i];
 			if (d == null)
 				continue;
-			if (new Date().getTime() - d.getCreationTime().getTime() > packetExpires) {
+			if (new Date().getTime() - d.getLastMessageArrivalTime().getTime() > packetExpires) {
 				removePacket((byte) i);
 			}
 		}

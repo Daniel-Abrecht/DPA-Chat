@@ -11,6 +11,8 @@ import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import utils.BinaryUtils;
 import static utils.BinaryUtils.bytesToHex;
 
 class Server extends Thread {
@@ -54,12 +56,6 @@ class Server extends Thread {
 
 	private class DataParser {
 
-		private int getInteger(byte[] bs, int offset) {
-			return ((bs[offset] & 0xFF) << 24)
-					| ((bs[offset + 1] & 0xFF) << 16)
-					| ((bs[offset + 2] & 0xFF) << 8) | (bs[offset + 3] & 0xFF);
-		}
-
 		public void parse(DatagramPacket packet) {
 			int length = packet.getLength();
 			byte[] bs = packet.getData();
@@ -79,7 +75,7 @@ class Server extends Thread {
 					System.err.println("Invalid packet size!");
 					return;
 				}
-				int packetSize = getInteger(bs, 1);
+				int packetSize = BinaryUtils.asInt(bs, 1);
 				if (packetSize < 0) {
 					System.out.println("--dump--\n" + bytesToHex(bs)
 							+ "\n--dump end--");
@@ -92,8 +88,9 @@ class Server extends Thread {
 				dp = e.getPacket(packetId);
 				if (dp == null)
 					dp = e.createPacket(packetId, 0);
-				int packetNr = getInteger(bs, 1) & 0x01FFFFFF;
+				int packetNr = BinaryUtils.asInt(bs, 1) & 0x01FFFFFF;
 				offset = (256 - 6) + packetNr * (256 - 5);
+//				System.err.println("Packet "+packetId+" | nr: "+packetNr+" | offset: "+offset );
 			}
 			Boolean full = dp.fill(bs, first ? 6 : 5, length - (first ? 6 : 5),
 					offset);

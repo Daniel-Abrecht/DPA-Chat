@@ -10,14 +10,14 @@ class DataPacket {
 	private byte type;
 	private byte[] buffer;
 	private int currentSize;
-	private Date creationTime;
+	private Date updateTime;
 	private InetAddress destination;
 
 	public DataPacket(int packetSize) {
 		this.size = packetSize;
 		this.currentSize = 0;
 		buffer = new byte[packetSize];
-		creationTime = new Date();
+		updateTime = new Date();
 	}
 
 	public void setType(byte type) {
@@ -29,6 +29,7 @@ class DataPacket {
 	}
 
 	public Boolean fill(byte[] bs, int i, int j, int offset) {
+//		System.out.println("0:"+ (offset + j)+"/"+ (currentSize + j)+"/"+size);
 		if (size != 0 && offset + j > size) {
 			buffer = null;
 			System.err.println("Recived too much datas");
@@ -44,17 +45,19 @@ class DataPacket {
 			buffer = new byte[0];
 		}
 		if (size == 0) {
-			int requiredSize = offset - j;
+			int requiredSize = offset + j;
 			if (buffer.length < requiredSize)
 				buffer = Arrays.copyOf(buffer, requiredSize); // Slow
 		}
 		System.arraycopy(bs, i, buffer, offset, j);
+		updateTime = new Date();
 		currentSize += j;
+//		System.out.println("1:"+currentSize+"/"+size);
 		return currentSize == size;
 	}
 
-	public Date getCreationTime(){
-		return creationTime;
+	public Date getLastMessageArrivalTime(){
+		return updateTime;
 	}
 	
 	public byte[] getBuffer() {

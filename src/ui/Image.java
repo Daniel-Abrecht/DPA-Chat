@@ -42,6 +42,8 @@ class Image extends JComponent {
 
 	public void setImg(BufferedImage img) {
 		this.img = img;
+		revalidate();
+		repaint();
 	}
 	
 }

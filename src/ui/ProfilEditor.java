@@ -69,12 +69,10 @@ class ProfilEditor extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				JFileChooser fileChooser = new JFileChooser();
-				if (fileChooser.showSaveDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
+				if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.APPROVE_OPTION) {
 					File file = fileChooser.getSelectedFile();
 					try {
 						img.setImg(ImageTools.mergeIntoViewport(ImageIO.read(file),300,300));
-						img.revalidate();
-						img.repaint();
 					} catch (IOException e) {
 						e.printStackTrace();
 					}

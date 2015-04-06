@@ -56,7 +56,7 @@
     </display>  
   </class>  
   <association id="7">    
-    <end type="SOURCE" refId="3" navigable="false">      
+    <end type="SOURCE" refId="5" navigable="false">      
       <attribute id="8" name="localEndpoint">        
         <position height="0" width="0" x="-3593" y="261"/>      
       </attribute>      
@@ -68,87 +68,87 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="10">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="11" name="queue">        
-        <position height="0" width="0" x="-3593" y="260"/>      
-      </attribute>      
-      <multiplicity id="12" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="-3593" y="260"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="13">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="14" name="client">        
-        <position height="0" width="0" x="-3593" y="261"/>      
-      </attribute>      
-      <multiplicity id="15" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-3593" y="261"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="16">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="17" name="connectionManager">        
+      <attribute id="11" name="connectionManager">        
         <position height="0" width="0" x="-3572" y="467"/>      
       </attribute>      
-      <multiplicity id="18" minimum="0" maximum="1">        
+      <multiplicity id="12" minimum="0" maximum="1">        
         <position height="0" width="0" x="-3572" y="467"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <nesting id="19">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="2"/>  
-  </nesting>  
-  <association id="20">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="21" name="dataPackets">        
-        <position height="0" width="0" x="-3593" y="260"/>      
-      </attribute>      
-      <multiplicity id="22" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="-3593" y="260"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="23">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="24" name="localEndpoint">        
+  <association id="13">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="14" name="endpoints">        
         <position height="0" width="0" x="-3593" y="261"/>      
       </attribute>      
-      <multiplicity id="25" minimum="0" maximum="1">        
+      <multiplicity id="15" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="-3593" y="261"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="26">    
+  <association id="16">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="27" name="server">        
+      <attribute id="17" name="server">        
         <position height="0" width="0" x="-3593" y="261"/>      
       </attribute>      
-      <multiplicity id="28" minimum="0" maximum="1">        
+      <multiplicity id="18" minimum="0" maximum="1">        
         <position height="0" width="0" x="-3593" y="261"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="29">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="30" name="endpoints">        
+  <association id="19">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="20" name="client">        
         <position height="0" width="0" x="-3593" y="261"/>      
       </attribute>      
-      <multiplicity id="31" minimum="0" maximum="2147483647">        
+      <multiplicity id="21" minimum="0" maximum="1">        
+        <position height="0" width="0" x="-3593" y="261"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="22">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="2"/>  
+  </nesting>  
+  <association id="23">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="24" name="queue">        
+        <position height="0" width="0" x="-3593" y="260"/>      
+      </attribute>      
+      <multiplicity id="25" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="-3593" y="260"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="26">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="27" name="dataPackets">        
+        <position height="0" width="0" x="-3593" y="260"/>      
+      </attribute>      
+      <multiplicity id="28" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="-3593" y="260"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="29">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="30" name="localEndpoint">        
+        <position height="0" width="0" x="-3593" y="261"/>      
+      </attribute>      
+      <multiplicity id="31" minimum="0" maximum="1">        
         <position height="0" width="0" x="-3593" y="261"/>      
       </multiplicity>    
     </end>    

@@ -81,8 +81,9 @@ public class Client extends Thread {
 					packetNr++;
 				}
 				int space = buffer.length - seek;
-				if (space > size)
-					space = size;
+				if (offset+space > size)
+					space = size-offset;
+//				System.out.println("arraycopy: "+datas.length+" | "+offset+" | "+buffer.length+" | "+seek+" | "+space);
 				System.arraycopy(datas, offset, buffer, seek, space);
 				offset += space;
 				seek += space;
@@ -91,7 +92,17 @@ public class Client extends Thread {
 				int maxAttemps;
 				for (maxAttemps = 3; maxAttemps > 0; maxAttemps--) {
 					try {
-						socket.send(packet);
+						try {
+							// The network will discard
+							// udp packets it can't
+							// handle in time
+/*							if ((packetNr + 1) % 15 == 0)
+								Thread.sleep(100); 
+							if ((packetNr + 1) % 60 == 0)
+								Thread.sleep(200); */
+							socket.send(packet);
+							Thread.sleep(3);
+						} catch (InterruptedException e) {	}
 						break;
 					} catch (IOException e) {
 						e.printStackTrace();
