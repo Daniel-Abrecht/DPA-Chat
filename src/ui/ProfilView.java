@@ -13,11 +13,13 @@ import chat.resources.Profil;
 public class ProfilView extends JPanel {
 	private static List<ProfilView> profilViews = new ArrayList<ProfilView>();
 	private JLabel name = new JLabel();
+	private Image img = new Image();
 	private Profil profil;
 
 	public ProfilView() {
 		setLayout(new BorderLayout());
-		add(name, BorderLayout.NORTH);
+		add(img, BorderLayout.CENTER);
+		add(name, BorderLayout.SOUTH);
 		profilViews.add(this);
 	}
 
@@ -33,6 +35,7 @@ public class ProfilView extends JPanel {
 	private void updateContents() {
 		if (profil == null)
 			return;
+		img.setImg(profil.getImage());
 		name.setText(profil.getName());
 	}
 

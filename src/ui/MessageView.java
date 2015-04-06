@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
+
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
@@ -26,13 +28,14 @@ public class MessageView extends JPanel {
 		add(textArea, BorderLayout.CENTER);
 		add(profileView , BorderLayout.WEST);
 		setMessage(message);
+		setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
 	}
 
 	@Override
 	public Dimension getPreferredSize() {
 		Insets ins = getParent().getInsets();
 		Dimension dim = new Dimension(getParent().getSize().width - ins.left
-				- ins.right, super.getPreferredSize().height);
+				- ins.right, Math.max(super.getPreferredSize().height,50));
 		return dim;
 	}
 
