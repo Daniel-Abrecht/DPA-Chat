@@ -1,9 +1,7 @@
 package chat;
 
 import static connectionManager.EventHandler.createEventHandler;
-
 import java.util.Timer;
-
 import ui.ProfilManager;
 import chat.checksum.ChecksumDistributor;
 import chat.event.ChatEventHandler;

@@ -25,7 +25,7 @@ public class ImageBufferEncoder implements CustomFieldEncoder {
 		imgDatas[5] = (byte) (h >> 16);
 		imgDatas[6] = (byte) (h >> 8);
 		imgDatas[7] = (byte) h;
-		for (int i = w * h; i-- > 0;) {
+		for (int i = 0; i < w * h; i++) {
 			int rgb = imgbuf.getRGB(i % w, i / w);
 			imgDatas[8 + i * 4 + 0] = (byte) (rgb >> 24); // a
 			imgDatas[8 + i * 4 + 1] = (byte) (rgb >> 16); // r
@@ -45,7 +45,7 @@ public class ImageBufferEncoder implements CustomFieldEncoder {
 		if(w==0||h==0)
 			return null;
 		BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-		for (int i = w * h; i-- > 0;) {
+		for (int i = 0; i < w * h; i++) {
 			o.get(buf, 0, 4);
 			int rgb = BinaryUtils.asInt(buf, 0);
 			img.setRGB(i % w, i / w, rgb);
