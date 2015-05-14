@@ -35,6 +35,8 @@ public abstract class Resource {
 	}
 
 	public void deregister() {
+		if(resourcePool==null)
+			return;
 		resourcePool.deregister(this);
 		id = -1;
 	}
@@ -69,6 +71,8 @@ public abstract class Resource {
 	}
 
 	public EndpointManager getEndpointManager() {
+		if(resourcePool==null)
+			return null;
 		return resourcePool.getEndpointManager();
 	}
 

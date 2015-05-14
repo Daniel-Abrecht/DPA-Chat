@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="create_run_jar" name="Create Runnable Jar for Project DPA-Chat">
     <target name="create_run_jar">
-        <jar destfile="build/DPA-Chat_1.0.0.jar">
+        <jar destfile="build/DPA-Chat_1.0.1.jar">
             <manifest>
                 <attribute name="Main-Class" value="chat.Chat"/>
                 <attribute name="Class-Path" value="."/>

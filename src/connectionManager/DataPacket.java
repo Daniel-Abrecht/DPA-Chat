@@ -6,18 +6,37 @@ import java.util.Date;
 
 class DataPacket {
 
+	public static final byte TYPE_CUSTOM_DATAS = 0;
+	public static final byte TYPE_PACKET_REQUEST = 1;
+	public static final int segmentSize = 1<<8;
 	private int size;
-	private byte type;
+	private byte type = TYPE_CUSTOM_DATAS;
 	private byte[] buffer;
+	private boolean[] recivedSegments;
+	private int recivedSegmentCount = 0;
 	private int currentSize;
 	private Date updateTime;
 	private InetAddress destination;
+	public boolean fixMissing = true;
 
 	public DataPacket(int packetSize) {
 		this.size = packetSize;
 		this.currentSize = 0;
 		buffer = new byte[packetSize];
+		recivedSegments = new boolean[getSegmentCount(packetSize,segmentSize)];
 		updateTime = new Date();
+	}
+
+	public int getRecivedSegmentCount() {
+		return recivedSegmentCount;
+	}
+
+	public boolean[] getRecivedSegmentInfo() {
+		return recivedSegments;
+	}
+
+	private int getSegmentCount(int size,int bufferSize){
+		return (bufferSize+size)/(bufferSize-5);
 	}
 
 	public void setType(byte type) {
@@ -29,16 +48,9 @@ class DataPacket {
 	}
 
 	public Boolean fill(byte[] bs, int i, int j, int offset) {
-//		System.out.println("0:"+ (offset + j)+"/"+ (currentSize + j)+"/"+size);
 		if (size != 0 && offset + j > size) {
 			buffer = null;
 			System.err.println("Recived too much datas");
-			return null;
-		}
-		if (offset - currentSize > 256 * 100
-				|| (size == 0 && offset > 256 * 100)) {
-			buffer = null;
-			System.err.println("Packet reorder limit exceeded");
 			return null;
 		}
 		if (buffer == null) {
@@ -46,13 +58,19 @@ class DataPacket {
 		}
 		if (size == 0) {
 			int requiredSize = offset + j;
-			if (buffer.length < requiredSize)
+			if (buffer.length < requiredSize){
 				buffer = Arrays.copyOf(buffer, requiredSize); // Slow
+				recivedSegments = Arrays.copyOf(recivedSegments, getSegmentCount(requiredSize,segmentSize));
+			}
 		}
+		int pnr = (offset + 1) / (segmentSize - 5);
+		if(recivedSegments[pnr])
+			return false; // already recived
+		recivedSegmentCount++;
+		recivedSegments[pnr] = true;
 		System.arraycopy(bs, i, buffer, offset, j);
 		updateTime = new Date();
 		currentSize += j;
-//		System.out.println("1:"+currentSize+"/"+size);
 		return currentSize == size;
 	}
 

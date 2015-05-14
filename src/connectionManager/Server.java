@@ -61,6 +61,7 @@ class Server extends Thread {
 			byte[] bs = packet.getData();
 			if (length < 1) {
 				System.err.println("Invalid packet size!");
+				Thread.dumpStack();
 				return;
 			}
 			boolean first = (bs[0] & 0x80) != 0;
@@ -73,6 +74,7 @@ class Server extends Thread {
 			if (first) {
 				if (length < 6) {
 					System.err.println("Invalid packet size!");
+					Thread.dumpStack();
 					return;
 				}
 				int packetSize = BinaryUtils.asInt(bs, 1);
@@ -84,12 +86,13 @@ class Server extends Thread {
 				byte type = bs[5];
 				dp = e.createPacket(packetId, packetSize);
 				dp.setType(type);
+				dp.setDestination(e.getAddress());
 			} else {
 				dp = e.getPacket(packetId);
 				if (dp == null)
 					dp = e.createPacket(packetId, 0);
 				int packetNr = BinaryUtils.asInt(bs, 1) & 0x01FFFFFF;
-				offset = (256 - 6) + packetNr * (256 - 5);
+				offset = (DataPacket.segmentSize - 6) + packetNr * (DataPacket.segmentSize - 5);
 //				System.err.println("Packet "+packetId+" | nr: "+packetNr+" | offset: "+offset );
 			}
 			Boolean full = dp.fill(bs, first ? 6 : 5, length - (first ? 6 : 5),
@@ -114,7 +117,7 @@ class Server extends Thread {
 			DataParser dataParser = new DataParser();
 			socket = new MulticastSocket(port);
 			socket.joinGroup(group);
-			byte[] buffer = new byte[256];
+			byte[] buffer = new byte[DataPacket.segmentSize];
 			while (running) {
 				try {
 					cleanup();
@@ -152,7 +155,7 @@ class Server extends Thread {
 			if (new Date().getTime() - e.getLastMessageArrivalTime().getTime() > endpointExpires) {
 				endpoints.remove(e.getAddress());
 			} else {
-				e.cleanup();
+				e.cleanup(connectionManager);
 			}
 		}
 	}
