@@ -105,7 +105,7 @@ public class Client extends Thread {
 	}
 	
 	public DataPacket getCachedPacket(int id){
-		int diff = (idCounter - id) & 0xFF;
+		int diff = ((idCounter & 0x7F) - id) & 0x7F;
 		if(diff>=retransmissionCache.length)
 			return null; // not in cache
 		return retransmissionCache[id % retransmissionCache.length];
@@ -142,7 +142,7 @@ public class Client extends Thread {
 					break;
 				}
 			}
-			idCounter = (idCounter + 1) & 0x7f;
+			idCounter = (idCounter + 1) & 0x7F;
 		}
 	}
 }
