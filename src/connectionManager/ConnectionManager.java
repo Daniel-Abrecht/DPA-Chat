@@ -13,6 +13,11 @@ import utils.BinaryUtils;
 import chat.manager.EndpointManager;
 import static utils.BinaryUtils.bytesToHex;
 
+/**
+ * Abstraktionsschicht zum vereinfachten senden und empfangen von Daten
+ * 
+ * @author Daniel Abrecht
+ */
 public class ConnectionManager {
 
 	private Server server;
@@ -20,6 +25,12 @@ public class ConnectionManager {
 	private List<ReceiveHandler> reciveHandlers = new ArrayList<ReceiveHandler>();
 	private Endpoint localEndpoint;
 
+	/**
+	 * Konstruktor zur initialisierung des ConnectionManager
+	 * 
+	 * @param multicastAddr Addresse zum Senden und Empfangen von Daten
+	 * @param port Port zum Senden und Empfangen von Daten
+	 */
 	public ConnectionManager(String multicastAddr, int port) {
 		InetAddress addr;
 		try {
@@ -33,16 +44,28 @@ public class ConnectionManager {
 		this.localEndpoint = server.getLocalEndpoint();
 	}
 
+	/**
+	 * Sende und Empfangsthreads starten
+	 */
 	public void start() {
 		server.start();
 		client.start();
 	}
 
+	/**
+	 * Stoppen der Threads
+	 */
 	public void end() {
 		server.end();
 		client.end();
 	}
 
+	/**
+	 * Behandelt empfangene Daten 
+	 * 
+	 * @param e Endpoint, von welchem die daten Empfangen wurden
+	 * @param dp Das Datenpacket
+	 */
 	public void reciveHandler(Endpoint e, DataPacket dp) {
 		switch(dp.getType()){
         	case DataPacket.TYPE_CUSTOM_DATAS: {
@@ -83,23 +106,51 @@ public class ConnectionManager {
 		}
 	}
 
+	/**
+	 * Recivehandler hinzufügen
+	 * 
+	 * @param reciveHandler der ReciveHandler
+	 * @see connectionManager.ReceiveHandler
+	 */
 	public void addHandler(ReceiveHandler reciveHandler) {
 		reciveHandlers.add(reciveHandler);
 	}
 
+	/**
+	 * Senden eines Objekts
+	 * @param o Das zu sendende Objekt
+	 */
 	public void send(Object o) {
 		send(null,o);
 	}
 
+	/**
+	 * Getter für EndpointManager
+	 * 
+	 * @param addr Adresse des Endpoints des EndpointManagers
+	 * @return Den endpointManager
+	 */
 	public EndpointManager getEndpointManager(InetAddress addr) {
 		Endpoint e = server.getOrCreateEndpoint(addr);
 		return endpointMap.sync(e);
 	}
 
+	/**
+	 * Getter für lokalen EndpointManager
+	 * 
+	 * @return Der lokale endpointManager
+	 */
 	public EndpointManager getLocalEndpointManager() {
 		return endpointMap.sync(localEndpoint);
 	}
 
+	/**
+	 * Verarbeitet die Anforderungen des Erneuten Sendens von Fragmenten eines Datenpaketes
+	 * 
+	 * @param inetAddress Zieladresse
+	 * @param id PacketId
+	 * @param packetNumber Array der zu sendenden Fragmente
+	 */
 	public void requestLostPackets(InetAddress inetAddress,byte id,int packetNumber[]) {
 		byte buffer[] = new byte[1+4+4*packetNumber.length];
 		buffer[0] = id;
@@ -121,6 +172,11 @@ public class ConnectionManager {
 		client.send(packet);
 	}
 
+	/**
+	 * Objekt an Endpoint senden
+	 * @param e der Endpoint
+	 * @param o das Objekt
+	 */
 	public void send(Endpoint e, Object o) {
 		o = new Container(o);
 		ObjectEncoder<byte[]> encoder = new BinaryEncoder();

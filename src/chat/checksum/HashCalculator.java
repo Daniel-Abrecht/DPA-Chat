@@ -6,6 +6,11 @@ import java.util.zip.CRC32;
 import serialisation.Expose;
 import static utils.BinaryUtils.toBytes;
 
+/**
+ * Klasse zum berechnen einer Prüfsumme
+ * 
+ * @author Daniel Abrecht
+ */
 public class HashCalculator {
 
 	private static int calcHash(Object o, Checksum ch, int off) {
@@ -64,6 +69,13 @@ public class HashCalculator {
 		return off;
 	}
 
+	/**
+	 * Berechnet eine Platformübergreifend eindeutige Checksumme
+	 * für die in einem Objekt enthaltenen Daten.
+	 * 
+	 * @param o Das objekt dessen checksumme zu berechnen ist
+	 * @return Die checksumme des Objekts
+	 */
 	public static int calcHash(Object o) {
 		CRC32 ch = new CRC32();
 		calcHash(o, ch, 0);

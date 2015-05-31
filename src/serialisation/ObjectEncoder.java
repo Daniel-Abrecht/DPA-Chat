@@ -4,6 +4,13 @@ import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 import java.util.List;
 
+/**
+ * Interface für Serializer
+ * 
+ * @author Daniel Abrehct
+ * @param <T> Zieltyp
+ * @see serialisation.BinaryEncoder for futur details
+ */
 public interface ObjectEncoder<T> {
 	public T encode(Object o);
 

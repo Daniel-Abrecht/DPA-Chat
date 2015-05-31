@@ -24,7 +24,18 @@ import chat.resources.Profil;
 import chat.resources.ResourcePool;
 import static chat.manager.EndpointMap.endpointMap;
 
+/**
+ * Klasse zum Speichern und Laden von Daten
+ * 
+ * @author Daniel Abrecht
+ */
 public class Data {
+	
+	/**
+	 * Funktion zum Speichern eines Chatlogs
+	 * @param file Datei, in welche geschrieben werden soll
+	 * @param chatroom Chatroom, dessen nachrichten im chatlog gespeichert werden sollen
+	 */
 	public static void saveChatlog(File file, ChatRoom chatroom) {
 		PrintWriter os = null;
 		try {
@@ -48,6 +59,11 @@ public class Data {
 		os.close();
 	}
 
+	/**
+	 * Hilfsklasse für (de)serializer
+	 * 
+	 * @author Daniel Abrecht
+	 */
 	@Deserializable
 	public static class ProfileMemoryConfig {
 		public static class ProfileTypeGetter implements Expose.TypeGetter {
@@ -62,6 +78,9 @@ public class Data {
 	
 	final static Path profileStorageFile = Paths.get(System.getProperty("user.home") + "/.DPA-Chat.profile");
 
+	/**
+	 * Laden der Profile
+	 */
 	public static void loadProfiles() {
 		if(Files.notExists(profileStorageFile, LinkOption.NOFOLLOW_LINKS))
 			return;
@@ -83,6 +102,9 @@ public class Data {
 		}
 	}
 
+	/**
+	 * Speichern der Profile
+	 */
 	public static void saveProfiles() {
 		ObjectEncoder<byte[]> encoder = new BinaryEncoder();
 		ProfileMemoryConfig pmc = new ProfileMemoryConfig();

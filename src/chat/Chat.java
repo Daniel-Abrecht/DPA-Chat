@@ -17,6 +17,13 @@ import static chat.utils.Data.loadProfiles;
 import static chat.utils.Data.saveProfiles;
 import connectionManager.ConnectionManager;
 
+/**
+ * Hauptclasse der Chat-App. 
+ * Beinhaltet Informationen und Einstellungen der Hauptklasse,
+ * Instanziert einige benötigte klassen, registriert die event listener, etc.
+ * 
+ * @author Daniel Abrecht
+ */
 public class Chat {
 
 	private final static String multicastAddr = "231.255.255.10";
@@ -56,6 +63,9 @@ public class Chat {
 			"OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n"+
 			"SOFTWARE.";
 	
+	/**
+	 * Initialisierung: Registrieren der event listener, anzeigen des ProfilManagers, usw.
+	 */
 	public static void main(String[] args) {
 		
 		connectionManager.addHandler(new EndpointControlInfoReciveHandler());
@@ -74,16 +84,27 @@ public class Chat {
 		ProfilManager.getInstance().setVisible(true);
 	}
 
+	/**
+	 * Getter für aktuell verwendetes profil
+	 * @return aktuelles profil
+	 */
 	public static Profil getCurrentProfil() {
 		return currentProfil;
 	}
 
+	/**
+	 * Setter für zu verwendetes profil
+	 * @param currentProfil neues profil
+	 */
 	public static void setCurrentProfil(Profil currentProfil) {
 		Profil oldProfil = Chat.currentProfil;
 		Chat.currentProfil = currentProfil;
 		events.currentProfilChanged(oldProfil, currentProfil);
 	}
 
+	/**
+	 * Beenden der Anwendung, daten speichern, etc.
+	 */
 	public static void closeChatApp() {
 		saveProfiles();
 		System.exit(0);

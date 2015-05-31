@@ -5,6 +5,12 @@ import chat.eventListener.ResourceListener;
 import chat.resources.ChatRoom;
 import chat.resources.ResourcePool;
 
+/**
+ * Behandelt Chatroom events
+ * 
+ * @author Daniel Abrecht
+ * @see chat.eventListener.ResourceListener
+ */
 public class ChatRoomListenerImpl implements ResourceListener<ChatRoom> {
 
 	@Override
@@ -13,6 +19,9 @@ public class ChatRoomListenerImpl implements ResourceListener<ChatRoom> {
 		System.out.println("resourceCreation: " + resource);
 	}
 
+	/**
+	 * Aktualisiert UI
+	 */
 	@Override
 	public void resourceChange(ResourcePool<ChatRoom> resourcePool,
 			ChatRoom resource) {
@@ -21,6 +30,9 @@ public class ChatRoomListenerImpl implements ResourceListener<ChatRoom> {
 		System.out.println("resourceChange: " + resource);
 	}
 
+	/**
+	 * Aktualisiert UI
+	 */
 	@Override
 	public void resourceRemovation(ResourcePool<ChatRoom> resourcePool,
 			ChatRoom resource) {

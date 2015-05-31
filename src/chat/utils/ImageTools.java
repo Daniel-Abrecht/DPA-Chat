@@ -5,8 +5,18 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
+/**
+ * Hilfsklasse zur Manipulation von BufferedImage objekten
+ * 
+ * @author Daniel Abrecht
+ */
 public class ImageTools {
 
+	/**
+	 * Image nach BufferedImage konvertieren
+	 * @param img
+	 * @return das Image als BufferedImage
+	 */
 	public static BufferedImage toBufferedImage(Image img) {
 		if (img instanceof BufferedImage) {
 			return (BufferedImage) img;
@@ -24,6 +34,13 @@ public class ImageTools {
 	    return bimage;
 	}
 	
+	/**
+	 * Skalieren eines BufferedImage unter berücksichtigung des AspectRatio
+	 * @param img Das Bild
+	 * @param vw Maximale Breite
+	 * @param vh Maximale Höhe
+	 * @return Skaliertes bild
+	 */
 	public static BufferedImage mergeIntoViewport(BufferedImage img, int vw, int vh) {
 		int w = img.getWidth();
 		int h = img.getHeight();
@@ -40,6 +57,11 @@ public class ImageTools {
 		return toBufferedImage(img.getScaledInstance(w,h,BufferedImage.SCALE_SMOOTH));
 	}
 
+	/**
+	 * Berechnet den Abstand zum Rand eines Zentrierten Bildes
+	 * @param img Grösse des Bildes
+	 * @param viewport grösse des Sichtfelds
+	 */
 	public static Dimension calculateCenterMarigin(Dimension img, Dimension viewport) {
 		return new Dimension(
 			(viewport.width - img.width) / 2,

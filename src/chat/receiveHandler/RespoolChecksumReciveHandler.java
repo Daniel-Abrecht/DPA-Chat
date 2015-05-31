@@ -12,6 +12,12 @@ import connectionManager.ReceiveHandler;
 import connectionManager.Endpoint;
 import static chat.Chat.connectionManager;
 
+/**
+ * Diese kalsse behandelt empfangene RespoolChecksumContainer Objecte
+ * 
+ * @author Daniel Abrecht
+ * @see connectionManager.ReceiveHandler
+ */
 public class RespoolChecksumReciveHandler implements ReceiveHandler {
 
 	@Override
@@ -19,6 +25,17 @@ public class RespoolChecksumReciveHandler implements ReceiveHandler {
 		return RespoolChecksumContainer.class;
 	}
 
+	/**
+	 * Überprüft die checksummen der RessourcePools um einen Unterschied zwischen
+	 * den Datenbeständen der eigenen Daten und denen des Endpoints
+	 * zu ermitteln.
+	 * 
+	 * Sendet bei bedarf Weitere checksummen um die betroffenen
+	 * Ressourcen zu ermitteln.
+	 * 
+	 * @param container Enthält das Objekt mit den CHecksummen
+	 * @param e der Endpoint von welchem diese stammen
+	 */
 	@Override
 	public void onReceive(Container container, Endpoint e) {
 		EndpointManager em = connectionManager.getLocalEndpointManager();

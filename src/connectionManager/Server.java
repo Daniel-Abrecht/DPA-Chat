@@ -15,6 +15,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import utils.BinaryUtils;
 import static utils.BinaryUtils.bytesToHex;
 
+/**
+ * Thread für das Empfangen der Daten
+ * 
+ * @author Daniel Abrecht
+ */
 class Server extends Thread {
 	private int port;
 	private MulticastSocket socket;
@@ -26,6 +31,12 @@ class Server extends Thread {
 
 	private final int endpointExpires = 60 * 1000; // 1 minute
 
+	/**
+	 * Konstruktor für Initialisierung
+	 * @param cm verwendeter ConnectionManager
+	 * @param addr Multicastadresse, von welcher daten Empfangen werden
+	 * @param port Port, auf welcher daten Empfangen werden
+	 */
 	public Server(ConnectionManager cm, InetAddress addr, int port) {
 		this.port = port;
 		this.connectionManager = cm;
@@ -37,6 +48,10 @@ class Server extends Thread {
 		}
 	}
 
+	/**
+	 * Überprüft, ob es sich um eine Adresse dieses Hosts handelt
+	 * @param addr Die zu Prüfende Adresse
+	 */
 	public static boolean isLocal(InetAddress addr) {
 		// Check if the address is a valid special local or loop back
 		if (addr.isAnyLocalAddress() || addr.isLoopbackAddress())
@@ -50,12 +65,24 @@ class Server extends Thread {
 		}
 	}
 
+	/**
+	 * Thread beenden
+	 */
 	public void end() {
 		running = false;
 	}
 
+	/**
+	 * Hilfsklasse zum Parsen der empfangenen Datenfragmente
+	 * 
+	 * @author Daniel Abrecht
+	 */
 	private class DataParser {
 
+		/**
+		 * Parst ein Datenfragment und füllt dessen die Daten in das Datenpacket ein
+		 * @param packet Das Datenfragment
+		 */
 		public void parse(DatagramPacket packet) {
 			int length = packet.getLength();
 			byte[] bs = packet.getData();
@@ -110,6 +137,10 @@ class Server extends Thread {
 		}
 	}
 
+	/**
+	 * Hauptmethode des threads,
+	 * Empfangen von packeten
+	 */
 	public void run() {
 		running = true;
 		try {
@@ -136,6 +167,11 @@ class Server extends Thread {
 		}
 	}
 
+	/**
+	 * Getter/Factory für Endoints mittels Adresse
+	 * @param inetAddress Die Addresse des Endpoints
+	 * @return den Endpoint
+	 */
 	public Endpoint getOrCreateEndpoint(InetAddress inetAddress) {
 		Endpoint e;
 		if (isLocal(inetAddress)) {
@@ -150,6 +186,9 @@ class Server extends Thread {
 		return e;
 	}
 
+	/**
+	 * Aufraumen, entfernen nichtmehr vorhandener Endpoints
+	 */
 	private void cleanup() {
 		for (Endpoint e : endpoints.values()) {
 			if (new Date().getTime() - e.getLastMessageArrivalTime().getTime() > endpointExpires) {
@@ -160,6 +199,9 @@ class Server extends Thread {
 		}
 	}
 
+	/**
+	 * Getter für lokalen Endpoint
+	 */
 	public Endpoint getLocalEndpoint() {
 		return localEndpoint;
 	}

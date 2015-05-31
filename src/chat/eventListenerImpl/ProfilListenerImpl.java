@@ -6,6 +6,12 @@ import chat.eventListener.ResourceListener;
 import chat.resources.Profil;
 import chat.resources.ResourcePool;
 
+/**
+ * Behandelt Profil events
+ * 
+ * @author Daniel Abrecht
+ * @see chat.eventListener.ResourceListener
+ */
 public class ProfilListenerImpl implements ResourceListener<Profil> {
 
 	@Override
@@ -14,6 +20,9 @@ public class ProfilListenerImpl implements ResourceListener<Profil> {
 		System.out.println("resourceCreation: " + resource);
 	}
 
+	/**
+	 * Aktualisiert UI
+	 */
 	@Override
 	public void resourceChange(ResourcePool<Profil> resourcePool,
 			Profil resource) {
@@ -23,6 +32,9 @@ public class ProfilListenerImpl implements ResourceListener<Profil> {
 		System.out.println("resourceChange: " + resource);
 	}
 
+	/**
+	 * Aktualisiert UI
+	 */
 	@Override
 	public void resourceRemovation(ResourcePool<Profil> resourcePool,
 			Profil resource) {

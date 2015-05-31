@@ -18,10 +18,19 @@ import java.util.Map;
 import serialisation.Expose.TypeGetter;
 import static utils.BinaryUtils.toBytes;
 
+/**
+ * (de)serializer für beliebige Objekte
+ * 
+ * @author Daniel Abrecht
+ */
 public class BinaryEncoder implements ObjectEncoder<byte[]> {
 
 	private Map<String, Object> parameters = new HashMap<String, Object>();
 
+	/**
+	 * Serialiser für unbekannte Objekte
+	 * @param o das Objekt
+	 */
 	@Override
 	public byte[] encode(Object o) {
 		List<byte[]> bl = encode(o, o.getClass());
@@ -37,6 +46,11 @@ public class BinaryEncoder implements ObjectEncoder<byte[]> {
 		return buffer;
 	}
 
+	/**
+	 * Serialiser für objekte mit vorgegebem typ
+	 * @param o Das Objekt
+	 * @param type Typ des Objekts
+	 */
 	@Override
 	public List<byte[]> encode(Object o, Class<?> type) {
 		List<byte[]> bl = new ArrayList<byte[]>();
@@ -49,6 +63,11 @@ public class BinaryEncoder implements ObjectEncoder<byte[]> {
 		return bl;
 	}
 
+	/**
+	 * Getter zur Emittlung der Felder einer Klasse
+	 * @param c Die Klasse
+	 * @return Eine Liste aller Felder einer Klasse
+	 */
 	@Override
 	public List<Field> getFields(Class<?> c) {
 		while (c != null && !c.isAnnotationPresent(Deserializable.class))
@@ -80,6 +99,11 @@ public class BinaryEncoder implements ObjectEncoder<byte[]> {
 		return fl;
 	}
 
+	/**
+	 * Serializer für ein Feld einer Klasse
+	 * @param f Feld der Klasse
+	 * @param root Objekt, welches das Feld enthält
+	 */
 	@Override
 	public List<byte[]> encodeField(Field f, Object root) {
 		f.setAccessible(true);
@@ -148,6 +172,11 @@ public class BinaryEncoder implements ObjectEncoder<byte[]> {
 		return res;
 	}
 
+	/**
+	 * Serializer für Primitive Datentypen
+	 * @param c Datentyp
+	 * @param value Das Objekt
+	 */
 	@Override
 	public List<byte[]> encodePrimitive(Class<?> c, Object value) {
 		if (Byte.class.isAssignableFrom(c) || byte.class.isAssignableFrom(c))
@@ -198,6 +227,11 @@ public class BinaryEncoder implements ObjectEncoder<byte[]> {
 		return null;
 	}
 
+	/**
+	 * Deserializer für ein Object vom typ type
+	 * @param type typ des Zielobjekts
+	 * @param buffer zu decodierende Binärdaten
+	 */
 	@Override
 	public <R> R decode(ByteBuffer buffer, Class<R> type) {
 		R o;
@@ -222,6 +256,12 @@ public class BinaryEncoder implements ObjectEncoder<byte[]> {
 		return o;
 	}
 
+	/**
+	 * Deserializer für das Feld eines Objekts
+	 * @param root Classe, die das Feld enthalt
+	 * @param f zu decodierendes Feld
+	 * @param buffer Zu decodierende daten
+	 */
 	@Override
 	public Object decodeField(Object root, Field f, ByteBuffer buffer) {
 		Expose e = f.getAnnotation(Expose.class);
@@ -288,6 +328,11 @@ public class BinaryEncoder implements ObjectEncoder<byte[]> {
 		return retList;
 	}
 
+	/**
+	 * Deserializer für primitive Datentypen
+	 * @param c Zieltyp
+	 * @param buffer daten
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public <R> R decodePrimitive(Class<R> c, ByteBuffer buffer)
@@ -346,16 +391,27 @@ public class BinaryEncoder implements ObjectEncoder<byte[]> {
 		throw new UnsupportedOperationException("Unsupported type");
 	}
 
+	/**
+	 * Deserializer für Objekte vom typ c
+	 * @param c zieltyp
+	 * @param o Daten
+	 */
 	@Override
 	public <R> R decode(byte[] o, Class<R> c) {
 		return decode(ByteBuffer.wrap(o), c);
 	}
 
+	/**
+	 * Getter für Parameter
+	 */
 	@Override
 	public Object getParameter(String value) {
 		return parameters.get(value);
 	}
 
+	/**
+	 * Setter für Parameter
+	 */
 	@Override
 	public void setParameter(String key, Object value) {
 		parameters.put(key, value);

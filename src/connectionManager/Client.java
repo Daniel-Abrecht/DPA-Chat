@@ -6,6 +6,11 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.util.concurrent.ArrayBlockingQueue;
 
+/**
+ * Klasse zum versenden von Daten
+ * 
+ * @author Daniel Abrecht
+ */
 public class Client extends Thread {
 	private MulticastSocket socket;
 	private int port;
@@ -13,16 +18,29 @@ public class Client extends Thread {
 	private ArrayBlockingQueue<DataPacket> queue;
 	private boolean running = true;
 
+	/**
+	 * Konstruktor für Initialisierung
+	 * 
+	 * @param group Multicast dresse der Zielrechner
+	 * @param port Port der Zielrechner
+	 */
 	public Client(InetAddress group, int port) {
 		this.port = port;
 		this.group = group;
 		this.queue = new ArrayBlockingQueue<DataPacket>(256);
 	}
 
+	/**
+	 * Um den thread zu beenden
+	 */
 	public void end() {
 		running = false;
 	}
 
+	/**
+	 * Daten zum Senden in Sendewarteschlange ablegen
+	 * @param datas Die zu sendenden Daten
+	 */
 	public void send(DataPacket datas) {
 		while (true) {
 			try {
@@ -35,6 +53,12 @@ public class Client extends Thread {
 		}
 	}
 
+	/**
+	 * Gerechnet die Anzahl benötikter Datenfragmente um alle Daten zu übertragen
+	 * 
+	 * @param size Anzahl bytes der daten
+	 * @param bufferSize Grösse des buffers in bytes
+	 */
 	private int getFragmentCount(int size,int bufferSize){
 		return (bufferSize+size)/(bufferSize-5);
 	}
@@ -87,6 +111,14 @@ public class Client extends Thread {
 	private int idCounter = 0;
 	DataPacket retransmissionCache[]= new DataPacket[1<<3]; // 1<<3=8; must be a power of two, must be smaller than 128=(1<<7)
 	
+	/**
+	 * Erneutes versenden eines Datenfrgments
+	 * 
+	 * @param dataPacket Datenpacket
+	 * @param packetNumber Nummer des Datenfragments
+	 * @param id Id des Datenpackets
+	 * @param destination Zieladresse
+	 */
 	public void retransmit(DataPacket dataPacket,int packetNumber,byte id,InetAddress destination){
 		byte[] buffer = new byte[DataPacket.segmentSize];
 		if (destination == null)
@@ -104,6 +136,12 @@ public class Client extends Thread {
 		}
 	}
 	
+	/**
+	 * Cache nach bereits gesendetem packet durchsuchen
+	 * 
+	 * @param id id des Packets
+	 * @return Das Packet oder null
+	 */
 	public DataPacket getCachedPacket(int id){
 		int diff = ((idCounter & 0x7F) - id) & 0x7F;
 		if(diff>=retransmissionCache.length)
@@ -111,6 +149,9 @@ public class Client extends Thread {
 		return retransmissionCache[id % retransmissionCache.length];
 	}
 	
+	/**
+	 * Hauptfunktion des threads, versended die Daten aus der queue
+	 */
 	public void run() {
 		byte[] buffer = new byte[DataPacket.segmentSize];
 		try {

@@ -17,12 +17,29 @@ import connectionManager.ReceiveHandler;
 import connectionManager.Endpoint;
 import static chat.manager.EndpointMap.endpointMap;
 
+/**
+ * Diese kalsse behandelt empfangene ResourceChecksumContainer Objecte
+ * 
+ * @author Daniel Abrecht
+ * @see connectionManager.ReceiveHandler
+ */
 public class ResourceChecksumContainerReciveHandler implements ReceiveHandler {
+	
 	@Override
 	public Class<?> getHandledClass() {
 		return ResourceChecksumContainer.class;
 	}
 
+	/**
+	 * Überprüft die Checksummen der Ressourcen um einen Unterschied zwischen
+	 * den Datenbeständen der eigenen Daten und denen des Endpoints
+	 * zu ermitteln.
+	 * 
+	 * Fordert bei bedarf die Daten der geändertenressource an oder löscht diese.
+	 * 
+	 * @param container Enthält das Objekt mit den Checksummen
+	 * @param e der Endpoint von welchem diese stammen
+	 */
 	@Override
 	public void onReceive(Container container, Endpoint e) {
 		ResourceChecksumContainer res = (ResourceChecksumContainer) container

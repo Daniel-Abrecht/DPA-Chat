@@ -7,12 +7,24 @@ import connectionManager.Container;
 import connectionManager.ReceiveHandler;
 import connectionManager.Endpoint;
 
+/**
+ * Diese kalsse behandelt empfangene Resource Objecte
+ * 
+ * @author Daniel Abrecht
+ * @see connectionManager.ReceiveHandler
+ */
 public class ResourceReciveHandler implements ReceiveHandler {
 	@Override
 	public Class<?> getHandledClass() {
 		return Resource.class;
 	}
 
+	/**
+	 * Aktualisiert die Datenbestände
+	 * 
+	 * @param container Enthält die neue/geänderte Ressource
+	 * @param e Der Endpoint, von welchem diese gesendet wurde
+	 */
 	@Override
 	public void onReceive(Container container, Endpoint e) {
 		EndpointManager em = endpointMap.sync(e);

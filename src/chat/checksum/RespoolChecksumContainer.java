@@ -9,6 +9,10 @@ import serialisation.Expose;
 @Deserializable
 public class RespoolChecksumContainer {
 
+	/**
+	 * Hilfsklasse für (de)serializer
+	 * @author Daniel Abrecht
+	 */
 	public static class resPoolChecksumsTypeGetter implements Expose.TypeGetter {
 		@Override
 		public Class<?> getType(Object o, Field f) {
@@ -19,15 +23,26 @@ public class RespoolChecksumContainer {
 	@Expose(position=1,getTypeGetterType=resPoolChecksumsTypeGetter.class)
 	List<Integer> resPoolChecksums;
 
+	/**
+	 * Getter für checksummen liste
+	 * @return Liste aller checksummen
+	 */
 	public List<Integer> getResPoolChecksums() {
 		return resPoolChecksums == null ? resPoolChecksums = new ArrayList<Integer>()
 				: resPoolChecksums;
 	}
-
+	
+	/**
+	 * Prüft, ob checksummen vorhanden sind
+	 */
 	public boolean hasResPoolChecksums() {
 		return resPoolChecksums != null && resPoolChecksums.size() != 0;
 	}
 
+	/**
+	 * Hinzufügen einer Checksumme zur liste
+	 * @param checksum
+	 */
 	public void addRespoolChecksum(int checksum) {
 		getResPoolChecksums().add(checksum);
 	}

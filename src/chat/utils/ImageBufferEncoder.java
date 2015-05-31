@@ -7,8 +7,18 @@ import serialisation.CustomFieldEncoder;
 import serialisation.ObjectEncoder;
 import utils.BinaryUtils;
 
+/**
+ * (de)serializer für BufferedImage objekte
+ * 
+ * @author Daniel Abrecht
+ * @see serialisation.CustomFieldEncoder
+ */
 public class ImageBufferEncoder implements CustomFieldEncoder {
 
+	/**
+	 * Serializer für BufferedImage objekte
+	 * @see serialisation.CustomFieldEncoder.encodeField
+	 */
 	@Override
 	public Object encodeField(ObjectEncoder<?> encoder, Field f, Object o) {
 		if(o==null)
@@ -35,6 +45,10 @@ public class ImageBufferEncoder implements CustomFieldEncoder {
 		return imgDatas;
 	}
 
+	/**
+	 * Deserializer für  BufferedImage objekte
+	 * @see serialisation.CustomFieldEncoder.decodeField
+	 */
 	@Override
 	public Object decodeField(ObjectEncoder<?> encoder, Field f, ByteBuffer o) {
 		byte buf[] = new byte[4];

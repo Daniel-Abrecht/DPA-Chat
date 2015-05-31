@@ -14,11 +14,29 @@ import chat.resources.Resource;
 import chat.resources.ResourcePool;
 import static utils.BinaryUtils.*;
 
+/**
+ * Hilfsklasse zum serialisieren und (de)serialisieren der Checksummen der
+ * Ressurcen
+ * 
+ * @author Daniel Abrecht
+ */
 @Deserializable
 public class ResourceChecksumContainer {
 
+	/**
+	 * Custom serializer zur platzsparenden  (de)serialisierung einer Liste
+	 * 
+	 * @author Daniel Abrecht
+	 */
 	public static class resourceChecksumsCustomEncoder implements CustomFieldEncoder {
 
+		/**
+		 * Methode für serialisirung
+		 * 
+		 * @param encoder Standardencoder
+		 * @param f Zu kodierendes Feld des Objects
+		 * @param o Object mit zu kodirendem feld
+		 */
 		@Override
 		public Object encodeField(ObjectEncoder<?> encoder, Field f, Object o) {
 			List<byte[]> result = new ArrayList<byte[]>();
@@ -53,6 +71,12 @@ public class ResourceChecksumContainer {
 			return result;
 		}
 
+		/**
+		 * Methode für deserialisirung
+		 * @param encoder Standarddecoder
+		 * @param f Zu dekodierendes Feld des Objects
+		 * @param o Object mit zu dekodirendem feld
+		 */
 		@Override
 		public Object decodeField(ObjectEncoder<?> encoder, Field f,
 				ByteBuffer o) {
@@ -83,11 +107,19 @@ public class ResourceChecksumContainer {
 			return ch;
 		}
 	}
-	
+
+	/**
+	 * Hilfsklasse zum spwichern von resourceId=>checksum paaren
+	 * 
+	 * @author Daniel Abrecht
+	 */
 	public static class IdChecksumPair implements Comparable<IdChecksumPair> {
 		public Integer id;
 		public Integer checksum;
 
+		/**
+		 * Vergleichen der IdChecksumPair classen für sortirung, sortierung nach id
+		 */
 		@Override
 		public int compareTo(IdChecksumPair that) {
 			return id - that.id;
@@ -100,6 +132,11 @@ public class ResourceChecksumContainer {
 
 	}
 
+	/**
+	 * Hilfsklasse, welche vom resourceChecksumsCustomEncoder (de)serialisiert werden kann
+	 * 
+	 * @author Daniel Abrecht
+	 */
 	public static class ChecksumHolder {
 		private List<IdChecksumPair> resourceChecksums;
 
@@ -118,6 +155,12 @@ public class ResourceChecksumContainer {
 	@Expose(position=1,customFieldEncoder=resourceChecksumsCustomEncoder.class)
 	public ChecksumHolder checksumHolder = new ChecksumHolder();
 
+	/**
+	 * Setter für checksummenliste
+	 * 
+	 * @param resourcePool RessourcePool, welcher die ressourcen entält
+	 * @param respoolIndex Index des RessourcePools im EndpointManager
+	 */
 	public void setChecksums(ResourcePool<? extends Resource> resourcePool,int respoolIndex) {
 		checksumHolder.resourceChecksums = new ArrayList<IdChecksumPair>();
 		for (Resource resource : resourcePool.getResources()) {
@@ -136,10 +179,18 @@ public class ResourceChecksumContainer {
 				+ "]";
 	}
 
+	/**
+	 * Getter für Checksummenliste
+	 * @return Liste mit id=>checksum paaren
+	 */
 	public List<IdChecksumPair> getChecksums() {
 		return checksumHolder.resourceChecksums;
 	}
 
+	/**
+	 * Getter für respoolIndex
+	 * @return respoolIndex
+	 */
 	public int getRespoolIndex() {
 		return respoolIndex;
 	}

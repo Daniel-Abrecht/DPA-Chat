@@ -10,8 +10,19 @@ import serialisation.Deserializable;
 import serialisation.Expose;
 import serialisation.ObjectEncoder;
 
+/**
+ * Custom serializer für BinaryEncoder, um ausschlieslich
+ * aufgrund der Id einer Ressource dessen Referenz der Instanz im ResourcePool zu Ermitteln
+ * 
+ * @author Daniel Abrecht
+ */
 public class ResourceReferenceEncoder implements CustomFieldEncoder {
 
+	/**
+	 * Hilfsklasse zur (de)serialisierung
+	 * 
+	 * @author Daniel Abrecht
+	 */
 	@Deserializable
 	public static class ResourceReference {
 		@Expose(position = 0)
@@ -20,6 +31,10 @@ public class ResourceReferenceEncoder implements CustomFieldEncoder {
 		public InetAddress endpointIp;
 	};
 
+	/**
+	 * Serializer
+	 * @see serialisation.CustomFieldEncoder
+	 */
 	@Override
 	public ResourceReference encodeField(ObjectEncoder<?> encoder, Field f,
 			Object o) {
@@ -33,6 +48,10 @@ public class ResourceReferenceEncoder implements CustomFieldEncoder {
 		return ref;
 	}
 
+	/**
+	 * Deserializer
+	 * @see serialisation.CustomFieldEncoder
+	 */
 	@Override
 	public Object decodeField(ObjectEncoder<?> encoder, Field f, ByteBuffer o) {
 		ResourceReference ref = encoder.decode(o, ResourceReference.class);

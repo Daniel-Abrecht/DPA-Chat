@@ -14,6 +14,11 @@ import chat.resources.Resource;
 import chat.resources.ResourcePool;
 import connectionManager.Endpoint;
 
+/**
+ * Klasse zur verwaltung eines Endpoints und deren RessourcPools
+ * 
+ * @author Daniel Abrecht
+ */
 public class EndpointManager {
 
 	private Endpoint endpoint;
@@ -21,6 +26,11 @@ public class EndpointManager {
 	private List<ResourcePool<? extends Resource>> resourcePoolList = new ArrayList<ResourcePool<? extends Resource>>();
 	private int checksum = 0;
 
+	/**
+	 * Konstruktor des EndpointManagers
+	 * 
+	 * @param e Der zu verwaltende Endpoint
+	 */
 	public EndpointManager(Endpoint e) {
 		this.endpoint = e;
 		
@@ -40,10 +50,20 @@ public class EndpointManager {
 		resourcePoolList.add(messageResourcePool);
 	}
 
+	/**
+	 * Getter für Endpoint
+	 * @return Der endpoint
+	 */
 	public Endpoint getEndpoint() {
 		return endpoint;
 	}
 
+	/**
+	 * Hinzufügen einer Ressource zum entsprechenden RessourcePool
+	 * 
+	 * @param resource Die Ressource
+	 * @return Ob das Hinzufügen erfolgreich war
+	 */
 	public boolean tryAdd(Resource resource) {
 		Class<? extends Resource> resClass = resource.getClass();
 		@SuppressWarnings("unchecked")
@@ -54,6 +74,12 @@ public class EndpointManager {
 		return true;
 	}
 
+	/**
+	 * Getter für RessourcePool
+	 * 
+	 * @param resClass Die classe die vom RessourcePool verwalteet wird
+	 * @return Der RessourcePool
+	 */
 	@SuppressWarnings("unchecked")
 	public <T extends Resource> ResourcePool<T> getResourcePool(Class<T> resClass) {
 		return (ResourcePool<T>) resourcePools.get(resClass);
@@ -61,16 +87,32 @@ public class EndpointManager {
 
 	private Object checksumLock = new Object();
 	
-	synchronized public void updateChecksum(int oldChecksum, int newChecksum) {
+	/**
+	 * Aktualisieren der Checksumme
+	 * 
+	 * @param oldChecksum alte Checksumme eines Ressourcepools
+	 * @param newChecksum neue Checksumme eines Ressourcepools
+	 */
+	public void updateChecksum(int oldChecksum, int newChecksum) {
 		synchronized (checksumLock) {
 			checksum = checksum - oldChecksum + newChecksum;
 		}
 	}
 
-	public int getChechsum() {
+	/**
+	 * Getter für Checksumme
+	 * 
+	 * @return Die checksumme
+	 */
+	public int getChecksum() {
 		return checksum;
 	}
 
+	/**
+	 * Getter für eine Liste aller RessourcePools
+	 * 
+	 * @return die RessourcePools
+	 */
 	public List<ResourcePool<? extends Resource>> getResourcePoolList() {
 		return resourcePoolList;
 	}

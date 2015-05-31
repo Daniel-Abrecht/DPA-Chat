@@ -8,12 +8,29 @@ import connectionManager.ReceiveHandler;
 import connectionManager.Endpoint;
 import static chat.Chat.connectionManager;
 
+/**
+ * Diese kalsse behandelt empfangene ResourceRequest Objecte
+ * 
+ * @author Daniel Abrecht
+ * @see connectionManager.ReceiveHandler
+ */
 public class ResourceRequestHandler implements ReceiveHandler {
+	
 	@Override
 	public Class<?> getHandledClass() {
 		return ResourceRequest.class;
 	}
 
+	/**
+	 * Überprüft die Hauptchecksumme um einen Unterschied zwischen
+	 * den Datenbeständen der eigenen Daten und denen des Endpoints
+	 * zu ermitteln.
+	 * 
+	 * Fordert bei bedarf die Daten der geändertenressource an oder löscht diese.
+	 * 
+	 * @param container Enthält das Objekt mit den Checksummen
+	 * @param e der Endpoint von welchem diese stammen
+	 */
 	@Override
 	public void onReceive(Container container, Endpoint e) {
 		ResourceRequest rq = (ResourceRequest) container.getObject();
