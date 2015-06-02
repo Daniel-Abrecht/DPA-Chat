@@ -16,6 +16,12 @@ import javax.swing.JTextField;
 import chat.Chat;
 import chat.resources.ChatRoom;
 
+
+/**
+ * Dialog zum Bearbeiten der Daten eines Chatrooms, z.B. Chatroomname, etc.
+ * 
+ * @author Daniel Abrecht
+ */
 @SuppressWarnings("serial")
 class ChatRoomEditor extends JFrame  {
 	private static ChatRoomEditor instance;

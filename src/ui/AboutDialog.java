@@ -7,6 +7,11 @@ import javax.swing.JTextArea;
 
 import static chat.Chat.*;
 
+/**
+ * Infodialog mit Anwendungsname, Version, Entwickler und lizenzinformation
+ * 
+ * @author Daniel Abrecht
+ */
 @SuppressWarnings("serial")
 class AboutDialog extends JFrame {
 	private static AboutDialog instance;

@@ -10,6 +10,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.Scrollable;
 
+/**
+ * GUI element für Scrollbare Liste
+ * 
+ * @author Daniel Abrecht
+ */
 @SuppressWarnings("serial")
 public class VScrollList extends JScrollPane {
 	static public class VPanel extends JPanel implements Scrollable {

@@ -8,8 +8,16 @@ import org.junit.Test;
 import serialisation.Expose;
 import chat.checksum.HashCalculator;
 
+/**
+ * Tests für HashCalculator
+ * 
+ * @author Daniel Abrecht
+ */
 public class HashCalculatorTest {
 
+	/**
+	 * Checksummenberechnung testen
+	 */
 	@Test
 	public void test() {
 		Object a = new Object(){

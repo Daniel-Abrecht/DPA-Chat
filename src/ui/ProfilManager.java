@@ -17,6 +17,11 @@ import chat.resources.Message;
 import chat.resources.Profil;
 import chat.resources.ResourcePool;
 
+/**
+ * Auswahldialog für zu verwendendes Profil
+ * 
+ * @author Daniel Abrecht
+ */
 @SuppressWarnings("serial")
 public class ProfilManager extends JFrame {
 

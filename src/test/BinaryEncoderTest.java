@@ -15,15 +15,26 @@ import serialisation.Deserializable;
 import serialisation.Expose;
 import serialisation.ObjectEncoder;
 
+/**
+ * Tests für Binary Encoder
+ * 
+ * @author Daniel Abrecht
+ */
 public class BinaryEncoderTest {
 	
 	private ObjectEncoder<byte[]> encoder;
 	
+	/**
+	 * Initialisierung vor Testcase
+	 */
 	@Before
 	public void setup(){
 		encoder = new BinaryEncoder();
 	}
 
+	/**
+	 * Cleanup nach Testcase
+	 */
 	@After
 	public void cleanup(){
 		encoder = null;
@@ -36,8 +47,17 @@ public class BinaryEncoderTest {
 		public String y;
 	};
 	
+	/**
+	 * Zu serialisierendes Objekt
+	 * 
+	 * @author Daniel Abrecht
+	 */
 	@Deserializable
 	public static class testObject2 extends testObject {
+		/**
+		 * @author Daniel Abrecht
+		 * @see Expose.TypeGetter
+		 */
 		public static class IntegerTypeGetter implements Expose.TypeGetter {
 			@Override
 			public Class<?> getType(Object o, Field f) {
@@ -48,6 +68,9 @@ public class BinaryEncoderTest {
 		public List<Integer> z;
 	};
 	
+	/**
+	 * Korrekte Serialisierung überprüfen
+	 */
 	@Test
 	public void encodeTest() {
 		testObject2 object = new testObject2();
@@ -63,6 +86,9 @@ public class BinaryEncoderTest {
 		}, result);
 	}
 
+	/**
+	 * Korrekte Deserialisierung überprüfen
+	 */
 	@Test
 	public void decodeTest() {
 		testObject2 result = encoder.decode(new byte[]{

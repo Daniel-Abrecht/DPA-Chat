@@ -12,6 +12,11 @@ import javax.swing.JTextArea;
 
 import chat.resources.Message;
 
+/**
+ * View einer Nachricht
+ * 
+ * @author Daniel Abrecht
+ */
 @SuppressWarnings("serial")
 public class MessageView extends JPanel {
 	private Message message;

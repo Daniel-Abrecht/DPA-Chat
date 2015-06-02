@@ -23,6 +23,11 @@ import chat.Chat;
 import chat.resources.Profil;
 import chat.utils.ImageTools;
 
+/**
+ * Dialog zur Bearbeiitung von Profilinformationen
+ * 
+ * @author Daniel Abrecht
+ */
 @SuppressWarnings("serial")
 class ProfilEditor extends JFrame {
 	public JTextField nameField = new JTextField();

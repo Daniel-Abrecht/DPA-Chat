@@ -6,6 +6,11 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
 
+/**
+ * Gui element zur Darstellung von Bildern unter berücksichtigung des Aspectratio
+ * 
+ * @author Daniel Abrecht
+ */
 @SuppressWarnings("serial")
 class Image extends JComponent {
 

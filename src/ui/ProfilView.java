@@ -9,6 +9,11 @@ import javax.swing.JPanel;
 
 import chat.resources.Profil;
 
+/**
+ * View eines Profils
+ * 
+ * @author Daniel Abrecht
+ */
 @SuppressWarnings("serial")
 public class ProfilView extends JPanel {
 	private static List<ProfilView> profilViews = new ArrayList<ProfilView>();

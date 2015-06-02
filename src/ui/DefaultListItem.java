@@ -9,6 +9,11 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 
+/**
+ * Klasse für Listeneinträge
+ * 
+ * @author Daniel Abrecht
+ */
 @SuppressWarnings("serial")
 public abstract class DefaultListItem extends JPanel implements MouseListener {
 	private Color cNormal = new Color(200, 200, 255);

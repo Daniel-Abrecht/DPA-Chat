@@ -2,6 +2,11 @@ package utils;
 
 import java.nio.ByteBuffer;
 
+/**
+ * Klasse zum Umwandeln zwischen Binärdaten und primitiven Datentypen
+ * 
+ * @author Daniel Abrecht
+ */
 public class BinaryUtils {
 	public final static byte[] toBytes(byte value) {
 		return new byte[] { value };

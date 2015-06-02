@@ -2,6 +2,11 @@ package ui;
 
 import java.awt.Window;
 
+/**
+ * Hilfreiche Funktionen mit Bezug auf UI
+ * 
+ * @author Daniel Abrecht
+ */
 public class Utils {
 	static int VisibleWindowCount() {
 		int n = 0;

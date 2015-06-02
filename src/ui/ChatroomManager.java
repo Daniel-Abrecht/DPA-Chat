@@ -14,6 +14,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import chat.resources.ChatRoom;
 
+/**
+ * Auswahldialog für Chatroom
+ * 
+ * @author Daniel Abrecht
+ */
 @SuppressWarnings("serial")
 public class ChatroomManager extends JFrame {
 	private VScrollList vScrollList = new VScrollList();

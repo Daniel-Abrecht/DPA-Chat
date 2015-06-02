@@ -30,6 +30,11 @@ import chat.resources.Message;
 import chat.resources.Profil;
 import static chat.utils.Data.saveChatlog;
 
+/**
+ * Fenster mit Chatverlauf und Postform
+ * 
+ * @author Daniel Abrecht
+ */
 @SuppressWarnings("serial")
 public class ChatRoomView extends JFrame {
 	private VScrollList messageList = new VScrollList();
